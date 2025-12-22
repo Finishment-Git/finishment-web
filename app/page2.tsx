@@ -2,7 +2,7 @@ import Navbar from "@/components/navbar";
 import Hero from "@/components/hero";
 import HowItWorks from "@/components/howitworks";
 import WhyUs from "@/components/whyus";
-import ContactUs from "@/components/contactUs"; // <--- Change this from Contact to ContactUs
+import ContactUs from "@/components/contactus"; // <--- Change this from Contact to ContactUs
 
 export default function Home() {
   return (
