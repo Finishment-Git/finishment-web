@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 
 export default function Hero() {
@@ -13,13 +14,42 @@ export default function Hero() {
         justifyContent: 'center',
         textAlign: 'center',
         color: 'white',
-        backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("/hero-background.png")',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
         padding: '0 20px',
         overflow: 'hidden'
       }}
     >
+      {/* Background Image with Next.js Image optimization */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        zIndex: 0
+      }}>
+        <Image
+          src="/hero-background.png"
+          alt=""
+          fill
+          priority
+          quality={90}
+          style={{
+            objectFit: 'cover',
+            objectPosition: 'center'
+          }}
+        />
+        {/* Dark overlay */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          backgroundColor: 'rgba(0, 0, 0, 0.6)',
+          zIndex: 1
+        }} />
+      </div>
+
       <div style={{ maxWidth: '1000px', position: 'relative', zIndex: 10 }}>
         
         {/* Main Heading Container */}
