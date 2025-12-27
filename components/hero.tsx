@@ -13,7 +13,6 @@ export default function Hero() {
         justifyContent: 'center',
         textAlign: 'center',
         color: 'white',
-        // Background with a dark overlay for high text contrast
         backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("/hero-background.png")',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
@@ -22,19 +21,46 @@ export default function Hero() {
       }}
     >
       <div style={{ maxWidth: '1000px', position: 'relative', zIndex: 10 }}>
-        {/* Main Heading - Extra Large & Bold */}
+        
+        {/* Main Heading Container */}
         <h1 style={{ 
-          fontSize: 'clamp(42px, 8vw, 78px)', // Scales from mobile to desktop
-          fontWeight: '900', 
-          lineHeight: '1.1',
           marginBottom: '24px',
-          letterSpacing: '-0.03em',
-          textShadow: '0 4px 10px rgba(0,0,0,0.5)'
+          textShadow: '0 4px 10px rgba(0,0,0,0.5)',
+          lineHeight: '1.2'
         }}>
-          Custom Stair Nosing Made <br style={{ display: 'none' }} className="md:block" /> From Your Flooring
+          {/* Line 1: Largest Font */}
+          <span style={{ 
+            display: 'block',
+            fontSize: 'clamp(42px, 9vw, 82px)', // Massive size
+            fontWeight: '900',
+            letterSpacing: '-0.03em',
+            marginBottom: '10px' // Space between this and next line
+          }}>
+            Custom Stair Nose
+          </span>
+
+          {/* Line 2: Smaller Font */}
+          <span style={{ 
+            display: 'block',
+            fontSize: 'clamp(24px, 5vw, 48px)', // Smaller size
+            fontWeight: '700',
+            color: '#e5e7eb' // Slightly softer white/grey
+          }}>
+            Perfect Match
+          </span>
+
+          {/* Line 3: Same size as Line 2 */}
+          <span style={{ 
+            display: 'block',
+            fontSize: 'clamp(24px, 5vw, 48px)', // Matches line above
+            fontWeight: '700',
+            color: '#e5e7eb'
+          }}>
+            Delivered in 24–72 Hours
+          </span>
         </h1>
         
-        {/* Subtext - Larger & High Readability */}
+        {/* Subtext */}
         <p style={{ 
           fontSize: 'clamp(18px, 2.5vw, 24px)', 
           lineHeight: '1.5', 
@@ -44,19 +70,18 @@ export default function Hero() {
           margin: '0 auto 48px',
           color: '#f3f4f6'
         }}>
-          Don't settle for mismatched transitions. We fabricate seamless, minimalist stair noses using your exact Vinyl, LVP, or SPC planks, in 24-72 hours.
+          We fabricate stair nose to match your exact flooring using the material you provide — so your stairs look seamless and professional. Order online in minutes.
         </p>
 
-        {/* Button Container - Side-by-Side Horizontal Layout */}
+        {/* Button Container */}
         <div style={{ 
           display: 'flex', 
-          flexDirection: 'row', // Horizontal alignment
+          flexDirection: 'row', 
           alignItems: 'center', 
           justifyContent: 'center', 
-          gap: '20px', // Space between buttons
-          flexWrap: 'wrap' // Stack on small mobile screens if needed
+          gap: '20px', 
+          flexWrap: 'wrap'
         }}>
-          {/* Primary Action: Solid Blue Button */}
           <Link href="#contact" style={{ 
             backgroundColor: '#2563eb', 
             color: 'white',
@@ -72,7 +97,6 @@ export default function Hero() {
             Start Your Order
           </Link>
           
-          {/* Secondary Action: Transparent White Border Button */}
           <Link href="#contact" style={{ 
             backgroundColor: 'rgba(255, 255, 255, 0.1)',
             border: '2px solid white',

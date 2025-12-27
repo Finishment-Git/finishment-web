@@ -36,10 +36,11 @@ export default function Navbar() {
       <div style={{ display: 'flex', gap: '25px', alignItems: 'center' }}>
         <a href="#how" style={{ color: '#4b5563', textDecoration: 'none', fontSize: '1.1rem', fontWeight: '500' }}>How it Works</a>
         <a href="#why" style={{ color: '#4b5563', textDecoration: 'none', fontSize: '1.1rem', fontWeight: '500' }}>Why Us</a>
+        <a href="#faq" style={{ color: '#4b5563', textDecoration: 'none', fontSize: '1.1rem', fontWeight: '500' }}>FAQ</a>
         
         {/* SOCIAL GRAPHICS */}
         <div style={{ display: 'flex', gap: '20px', marginLeft: '10px', borderLeft: '2px solid #d1d5db', paddingLeft: '20px' }}>
-          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" style={{ color: '#4b5563' }}>
+          <a href="https://www.instagram.com/wearefinishment/" target="_blank" rel="noopener noreferrer" style={{ color: '#4b5563' }}>
             <Instagram size={28} />
           </a>
           <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" style={{ color: '#4b5563' }}>
