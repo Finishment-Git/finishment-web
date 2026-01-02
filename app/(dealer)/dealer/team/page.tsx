@@ -79,7 +79,7 @@ export default function TeamManagement() {
       const profilesWithEmails = (data || []).map((p) => {
         return { 
           ...p, 
-          email: p.id === currentUser?.id ? (currentUser.email || 'N/A') : `User ${p.id.substring(0, 8)}...` 
+          email: p.id === currentUser?.id ? (currentUser?.email || 'N/A') : `User ${p.id.substring(0, 8)}...` 
         };
       });
       
