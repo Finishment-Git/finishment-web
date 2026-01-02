@@ -10,7 +10,6 @@ export const dynamic = 'force-dynamic';
 
 export default function DealerEducation() {
   const router = useRouter();
-  const supabase = createClient();
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [profile, setProfile] = useState<any>(null);
@@ -19,6 +18,7 @@ export default function DealerEducation() {
   // 1. Check if they are actually logged in and get profile
   useEffect(() => {
     const getUser = async () => {
+      const supabase = createClient();
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
         router.push('/dealer-login');
@@ -44,12 +44,13 @@ export default function DealerEducation() {
       }
     };
     getUser();
-  }, [router, supabase]);
+  }, [router]);
 
   // 2. The "Unlock" Logic
   const handleCompleteTraining = async () => {
     if (!user || !profile) return;
     setLoading(true);
+    const supabase = createClient();
 
     // Update user profile status to ACTIVE
     const { error: profileError } = await supabase

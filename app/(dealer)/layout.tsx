@@ -12,11 +12,11 @@ export default function DealerLayout({
   children: React.ReactNode
 }) {
   const router = useRouter();
-  const supabase = createClient();
   const [isPrimary, setIsPrimary] = useState(false);
 
   useEffect(() => {
     const checkUser = async () => {
+      const supabase = createClient();
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
         const { data: profile } = await supabase
@@ -28,9 +28,10 @@ export default function DealerLayout({
       }
     };
     checkUser();
-  }, [supabase]);
+  }, []);
 
   const handleLogout = async () => {
+    const supabase = createClient();
     await supabase.auth.signOut();
     router.push('/dealer-login');
   };

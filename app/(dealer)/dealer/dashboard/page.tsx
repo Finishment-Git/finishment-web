@@ -10,7 +10,6 @@ export const dynamic = 'force-dynamic';
 
 export default function DealerDashboard() {
   const router = useRouter();
-  const supabase = createClient();
   const [user, setUser] = useState<any>(null);
   const [profile, setProfile] = useState<any>(null);
   const [dealer, setDealer] = useState<any>(null);
@@ -18,6 +17,7 @@ export default function DealerDashboard() {
 
   useEffect(() => {
     const loadData = async () => {
+      const supabase = createClient();
       const { data: { user } } = await supabase.auth.getUser();
       
       if (!user) {
@@ -46,7 +46,7 @@ export default function DealerDashboard() {
     };
 
     loadData();
-  }, [router, supabase]);
+  }, [router]);
 
   if (loading) {
     return (

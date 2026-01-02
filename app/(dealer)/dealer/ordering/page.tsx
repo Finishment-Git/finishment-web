@@ -9,7 +9,6 @@ export const dynamic = 'force-dynamic';
 
 export default function DealerOrderingPage() {
   const router = useRouter();
-  const supabase = createClient();
   const [cart, setCart] = useState({});
   const [authorized, setAuthorized] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -18,6 +17,7 @@ export default function DealerOrderingPage() {
   // Check authorization on mount
   useEffect(() => {
     const checkAuthorization = async () => {
+      const supabase = createClient();
       const { data: { user } } = await supabase.auth.getUser();
       
       if (!user) {
@@ -52,7 +52,7 @@ export default function DealerOrderingPage() {
     };
 
     checkAuthorization();
-  }, [router, supabase]);
+  }, [router]);
 
   // Mock Data
   const products = [

@@ -9,7 +9,6 @@ export const dynamic = 'force-dynamic';
 
 export default function TeamManagement() {
   const router = useRouter();
-  const supabase = createClient();
   const [user, setUser] = useState<any>(null);
   const [profile, setProfile] = useState<any>(null);
   const [teamMembers, setTeamMembers] = useState<any[]>([]);
@@ -20,6 +19,7 @@ export default function TeamManagement() {
 
   useEffect(() => {
     const loadData = async () => {
+      const supabase = createClient();
       const { data: { user } } = await supabase.auth.getUser();
       
       if (!user) {
@@ -51,15 +51,15 @@ export default function TeamManagement() {
       }
 
       // Load all team members for this dealer
-      await loadTeamMembers(profileData.dealer_id);
+      await loadTeamMembers(profileData.dealer_id, supabase);
       setLoading(false);
     };
 
     loadData();
-  }, [router, supabase]);
+  }, [router]);
 
-  const loadTeamMembers = async (dealerId: string) => {
-    const { data, error } = await supabase
+  const loadTeamMembers = async (dealerId: string, supabaseClient: ReturnType<typeof createClient>) => {
+    const { data, error } = await supabaseClient
       .from('profiles')
       .select(`
         id,
@@ -76,7 +76,7 @@ export default function TeamManagement() {
       setTeamMembers([]);
     } else {
       // Get current user once (already available from useEffect)
-      const { data: { user: currentUser } } = await supabase.auth.getUser();
+      const { data: { user: currentUser } } = await supabaseClient.auth.getUser();
       
       // Map profiles with email information
       const profilesWithEmails = (data || []).map((p) => {
@@ -91,6 +91,7 @@ export default function TeamManagement() {
   };
 
   const toggleOrderPermission = async (memberId: string, currentValue: boolean) => {
+    const supabase = createClient();
     const { error } = await supabase
       .from('profiles')
       .update({ can_order: !currentValue })
@@ -101,7 +102,7 @@ export default function TeamManagement() {
     } else {
       // Reload team members
       if (profile?.dealer_id) {
-        await loadTeamMembers(profile.dealer_id);
+        await loadTeamMembers(profile.dealer_id, supabase);
       }
     }
   };
@@ -117,6 +118,7 @@ export default function TeamManagement() {
       return;
     }
 
+    const supabase = createClient();
     // Get dealer tax_id for invite
     const { data: dealerData } = await supabase
       .from('dealers')
