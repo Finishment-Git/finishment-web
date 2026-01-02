@@ -5,6 +5,9 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import Link from "next/link";
 
+// Prevent static generation - this page requires authentication
+export const dynamic = 'force-dynamic';
+
 export default function DealerDashboard() {
   const router = useRouter();
   const supabase = createClient();

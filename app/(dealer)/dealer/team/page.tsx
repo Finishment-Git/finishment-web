@@ -4,6 +4,9 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 
+// Prevent static generation - this page requires authentication
+export const dynamic = 'force-dynamic';
+
 export default function TeamManagement() {
   const router = useRouter();
   const supabase = createClient();

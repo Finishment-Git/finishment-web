@@ -5,6 +5,9 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import { CheckCircle, AlertTriangle, ShieldCheck, Ruler, Package } from 'lucide-react';
 
+// Prevent static generation - this page requires authentication
+export const dynamic = 'force-dynamic';
+
 export default function DealerEducation() {
   const router = useRouter();
   const supabase = createClient();
