@@ -68,28 +68,23 @@ export default function TeamManagement() {
       .eq('dealer_id', dealerId)
       .order('is_primary', { ascending: false });
 
-      if (error) {
-        console.error('Error loading team members:', error);
-        setTeamMembers([]);
-      } else {
-        // Get emails for each profile
-        const profilesWithEmails = await Promise.all(
-          (data || []).map(async (p) => {
-            // Get email from auth.users table via RPC or direct query
-            // Since we can't directly join auth.users, we'll use a workaround
-            // In production, you might want to store email in profiles or use a function
-            try {
-              const { data: { user } } = await supabase.auth.getUser();
-              // For other users, we'll need to query differently
-              // This is a limitation - we'll show user ID for now
-              return { ...p, email: p.id === user?.id ? user.email : `User ${p.id.substring(0, 8)}...` };
-            } catch {
-              return { ...p, email: `User ${p.id.substring(0, 8)}...` };
-            }
-          })
-        );
-        setTeamMembers(profilesWithEmails);
-      }
+    if (error) {
+      console.error('Error loading team members:', error);
+      setTeamMembers([]);
+    } else {
+      // Get current user once (already available from useEffect)
+      const { data: { user: currentUser } } = await supabase.auth.getUser();
+      
+      // Map profiles with email information
+      const profilesWithEmails = (data || []).map((p) => {
+        return { 
+          ...p, 
+          email: p.id === currentUser?.id ? (currentUser.email || 'N/A') : `User ${p.id.substring(0, 8)}...` 
+        };
+      });
+      
+      setTeamMembers(profilesWithEmails);
+    }
   };
 
   const toggleOrderPermission = async (memberId: string, currentValue: boolean) => {
