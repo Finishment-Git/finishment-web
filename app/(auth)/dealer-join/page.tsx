@@ -5,9 +5,11 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import Link from "next/link";
 
+// Prevent static generation - this page requires authentication
+export const dynamic = 'force-dynamic';
+
 const DealerJoinContent = () => {
   const router = useRouter();
-  const supabase = createClient();
   
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
@@ -24,6 +26,7 @@ const DealerJoinContent = () => {
     setLoading(true);
     setErrorMsg("");
 
+    const supabase = createClient();
     // Search for dealer by Tax ID
     const { data: dealer, error } = await supabase
       .from('dealers')
@@ -53,6 +56,7 @@ const DealerJoinContent = () => {
     setLoading(true);
     setErrorMsg("");
 
+    const supabase = createClient();
     // 1. Create the User (Auth)
     const { data: authData, error: authError } = await supabase.auth.signUp({
       email: formData.email,

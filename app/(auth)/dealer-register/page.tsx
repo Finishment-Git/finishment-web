@@ -4,9 +4,11 @@ import React, { useState } from 'react';
 import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client"; 
 
+// Prevent static generation - this page requires authentication
+export const dynamic = 'force-dynamic';
+
 const DealerRegister = () => {
   const router = useRouter();
-  const supabase = createClient();
   
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -22,6 +24,7 @@ const DealerRegister = () => {
     e.preventDefault();
     setLoading(true);
     
+    const supabase = createClient();
     // 1. Create the User (Auth)
     const { data: authData, error: authError } = await supabase.auth.signUp({
       email: formData.email,

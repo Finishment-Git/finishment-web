@@ -5,10 +5,12 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/utils/supabase/client"; 
 import Link from "next/link";
 
+// Prevent static generation - this page requires authentication
+export const dynamic = 'force-dynamic';
+
 const DealerLoginContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const supabase = createClient();
   
   // Show a success message if they just registered
   const justRegistered = searchParams.get('registered') === 'true';
@@ -25,6 +27,7 @@ const DealerLoginContent = () => {
     setLoading(true);
     setErrorMsg("");
 
+    const supabase = createClient();
     // 1. Log the user in
     const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
       email: formData.email,
