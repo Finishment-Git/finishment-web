@@ -1,5 +1,6 @@
 "use client";
 import { Instagram, Facebook } from "lucide-react";
+import Link from "next/link";
 
 export default function Navbar() {
   return (
@@ -48,7 +49,7 @@ export default function Navbar() {
           </a>
         </div>
 
-        <button style={{ 
+        <Link href="/dealer-register" style={{ 
           backgroundColor: '#2563eb', 
           color: 'white', 
           padding: '12px 24px', 
@@ -56,10 +57,26 @@ export default function Navbar() {
           border: 'none', 
           fontWeight: '600', 
           fontSize: '1rem',
-          cursor: 'pointer' 
+          cursor: 'pointer',
+          textDecoration: 'none',
+          display: 'inline-block'
         }}>
-          Get Started
-        </button>
+          Dealer Registration
+        </Link>
+        <Link href="/dealer-login" style={{ 
+          backgroundColor: 'transparent', 
+          color: '#2563eb', 
+          padding: '12px 24px', 
+          borderRadius: '8px', 
+          border: '2px solid #2563eb', 
+          fontWeight: '600', 
+          fontSize: '1rem',
+          cursor: 'pointer',
+          textDecoration: 'none',
+          display: 'inline-block'
+        }}>
+          Dealer Login
+        </Link>
       </div>
     </nav>
   );
