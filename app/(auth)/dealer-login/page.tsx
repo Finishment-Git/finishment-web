@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/utils/supabase/client"; 
 import Link from "next/link";
 
-const DealerLogin = () => {
+const DealerLoginContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const supabase = createClient();
@@ -141,6 +141,18 @@ const DealerLogin = () => {
         </div>
       </form>
     </div>
+  );
+};
+
+const DealerLogin = () => {
+  return (
+    <Suspense fallback={
+      <div style={{ maxWidth: '450px', margin: '60px auto', padding: '20px', fontFamily: 'sans-serif', textAlign: 'center' }}>
+        <p>Loading...</p>
+      </div>
+    }>
+      <DealerLoginContent />
+    </Suspense>
   );
 };
 

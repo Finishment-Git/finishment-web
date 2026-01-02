@@ -1,13 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
-import { useRouter, useSearchParams } from "next/navigation";
+import React, { useState, Suspense } from 'react';
+import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import Link from "next/link";
 
-const DealerJoin = () => {
+const DealerJoinContent = () => {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const supabase = createClient();
   
   const [loading, setLoading] = useState(false);
@@ -232,6 +231,18 @@ const DealerJoin = () => {
         </button>
       </div>
     </div>
+  );
+};
+
+const DealerJoin = () => {
+  return (
+    <Suspense fallback={
+      <div style={{ maxWidth: '500px', margin: '60px auto', padding: '20px', fontFamily: 'sans-serif', textAlign: 'center' }}>
+        <p>Loading...</p>
+      </div>
+    }>
+      <DealerJoinContent />
+    </Suspense>
   );
 };
 
