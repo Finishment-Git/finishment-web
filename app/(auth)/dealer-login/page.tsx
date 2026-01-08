@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, Suspense } from 'react';
+import React, { useState, Suspense, useEffect } from 'react';
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/utils/supabase/client"; 
 import Link from "next/link";
@@ -15,6 +15,9 @@ const DealerLoginContent = () => {
   // Show a success message if they just registered
   const justRegistered = searchParams.get('registered') === 'true';
 
+  const [view, setView] = useState<'login' | 'forgot' | 'reset'>('login');
+  const [resetEmailSent, setResetEmailSent] = useState(false);
+  const [newPassword, setNewPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [debugMsg, setDebugMsg] = useState("");
@@ -23,13 +26,68 @@ const DealerLoginContent = () => {
     password: '',
   });
 
+  const supabase = createClient();
+
+  // Check if we are returning from a password recovery link
+  useEffect(() => {
+    // Supabase sends recovery links with a specific hash
+    if (window.location.hash && (window.location.hash.includes('type=recovery') || window.location.hash.includes('access_token='))) {
+      setView('reset');
+    }
+  }, []);
+
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setErrorMsg("");
+    
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(formData.email, {
+        redirectTo: `${window.location.origin}/dealer-login`,
+      });
+
+      if (error) {
+        setErrorMsg(error.message);
+      } else {
+        setResetEmailSent(true);
+        setDebugMsg("Reset link sent!");
+      }
+    } catch (err: any) {
+      setErrorMsg(err.message || "An error occurred");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleUpdatePassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setErrorMsg("");
+
+    try {
+      const { error } = await supabase.auth.updateUser({
+        password: newPassword
+      });
+
+      if (error) {
+        setErrorMsg(error.message);
+      } else {
+        setDebugMsg("Password updated successfully! You can now log in.");
+        setView('login');
+        setNewPassword("");
+      }
+    } catch (err: any) {
+      setErrorMsg(err.message || "An error occurred");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setErrorMsg("");
     setDebugMsg("Starting login...");
-
-    const supabase = createClient();
     
     try {
       // 1. Log the user in
@@ -124,12 +182,20 @@ const DealerLoginContent = () => {
     <div style={{ maxWidth: '450px', margin: '60px auto', padding: '20px', fontFamily: 'sans-serif' }}>
       
       <div style={{ textAlign: 'center', marginBottom: '30px' }}>
-        <h1 style={{ fontSize: '26px', fontWeight: 'bold' }}>Dealer Login</h1>
-        <p style={{ color: '#666' }}>Access your portal</p>
+        <h1 style={{ fontSize: '26px', fontWeight: 'bold' }}>
+          {view === 'login' && "Dealer Login"}
+          {view === 'forgot' && "Reset Password"}
+          {view === 'reset' && "Enter New Password"}
+        </h1>
+        <p style={{ color: '#666' }}>
+          {view === 'login' && "Access your portal"}
+          {view === 'forgot' && "We'll send you a recovery link"}
+          {view === 'reset' && "Choose a new password for your account"}
+        </p>
       </div>
 
       {/* Success Message from Registration */}
-      {justRegistered && (
+      {justRegistered && view === 'login' && (
         <div style={{ background: '#ecfdf5', color: '#047857', padding: '15px', borderRadius: '6px', marginBottom: '20px', border: '1px solid #a7f3d0' }}>
           ✅ Application received! Please log in to continue.
         </div>
@@ -149,54 +215,156 @@ const DealerLoginContent = () => {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-        <div>
-          <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>Email</label>
-          <input 
-            type="email" 
-            value={formData.email}
-            onChange={(e) => setFormData({...formData, email: e.target.value})} 
-            required 
-            style={{ width: '100%', padding: '12px', border: '1px solid #ccc', borderRadius: '4px' }}
-          />
-        </div>
+      {view === 'login' && (
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+          <div>
+            <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>Email</label>
+            <input 
+              type="email" 
+              value={formData.email}
+              onChange={(e) => setFormData({...formData, email: e.target.value})} 
+              required 
+              style={{ width: '100%', padding: '12px', border: '1px solid #ccc', borderRadius: '4px' }}
+            />
+          </div>
 
-        <div>
-          <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>Password</label>
-          <input 
-            type="password" 
-            value={formData.password}
-            onChange={(e) => setFormData({...formData, password: e.target.value})} 
-            required 
-            style={{ width: '100%', padding: '12px', border: '1px solid #ccc', borderRadius: '4px' }}
-          />
-        </div>
+          <div>
+            <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>Password</label>
+            <input 
+              type="password" 
+              value={formData.password}
+              onChange={(e) => setFormData({...formData, password: e.target.value})} 
+              required 
+              style={{ width: '100%', padding: '12px', border: '1px solid #ccc', borderRadius: '4px' }}
+            />
+          </div>
 
-        <button 
-          type="submit" 
-          disabled={loading}
-          style={{ 
-            marginTop: '10px',
-            padding: '14px', 
-            background: '#000', 
-            color: '#fff', 
-            border: 'none', 
-            borderRadius: '4px',
-            cursor: 'pointer',
-            fontWeight: 'bold',
-            fontSize: '16px',
-            opacity: loading ? 0.7 : 1
-          }}
-        >
-          {loading ? "Signing In..." : "Log In"}
-        </button>
+          <button 
+            type="submit" 
+            disabled={loading}
+            style={{ 
+              marginTop: '10px',
+              padding: '14px', 
+              background: '#000', 
+              color: '#fff', 
+              border: 'none', 
+              borderRadius: '4px',
+              cursor: 'pointer',
+              fontWeight: 'bold',
+              fontSize: '16px',
+              opacity: loading ? 0.7 : 1
+            }}
+          >
+            {loading ? "Signing In..." : "Log In"}
+          </button>
 
-        <div style={{ textAlign: 'center', marginTop: '10px', fontSize: '14px' }}>
-          <Link href="/dealer-register" style={{ color: '#666', textDecoration: 'underline' }}>
-            Need an account? Apply here.
-          </Link>
-        </div>
-      </form>
+          <div style={{ textAlign: 'center', marginTop: '10px', fontSize: '14px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            <button 
+              type="button"
+              onClick={() => setView('forgot')}
+              style={{ background: 'none', border: 'none', color: '#666', textDecoration: 'underline', cursor: 'pointer' }}
+            >
+              Forgot password?
+            </button>
+            <Link href="/dealer-register" style={{ color: '#666', textDecoration: 'underline' }}>
+              Need an account? Apply here.
+            </Link>
+          </div>
+        </form>
+      )}
+
+      {view === 'forgot' && (
+        <form onSubmit={handleForgotPassword} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+          {resetEmailSent ? (
+            <div style={{ textAlign: 'center' }}>
+              <p style={{ marginBottom: '20px' }}>Check your email for the password reset link.</p>
+              <button 
+                type="button" 
+                onClick={() => {
+                  setView('login');
+                  setResetEmailSent(false);
+                  setDebugMsg("");
+                }} 
+                style={{ background: 'none', border: 'none', color: '#666', textDecoration: 'underline', cursor: 'pointer' }}
+              >
+                Back to Login
+              </button>
+            </div>
+          ) : (
+            <>
+              <div>
+                <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>Email Address</label>
+                <input 
+                  type="email" 
+                  value={formData.email}
+                  onChange={(e) => setFormData({...formData, email: e.target.value})} 
+                  required 
+                  style={{ width: '100%', padding: '12px', border: '1px solid #ccc', borderRadius: '4px' }}
+                />
+              </div>
+              <button 
+                type="submit" 
+                disabled={loading} 
+                style={{ 
+                  marginTop: '10px',
+                  padding: '14px', 
+                  background: '#000', 
+                  color: '#fff', 
+                  border: 'none', 
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                  fontWeight: 'bold',
+                  fontSize: '16px',
+                  opacity: loading ? 0.7 : 1
+                }}
+              >
+                {loading ? "Sending..." : "Send Reset Link"}
+              </button>
+              <button 
+                type="button" 
+                onClick={() => setView('login')} 
+                style={{ background: 'none', border: 'none', color: '#666', textDecoration: 'underline', cursor: 'pointer', marginTop: '10px' }}
+              >
+                Cancel
+              </button>
+            </>
+          )}
+        </form>
+      )}
+
+      {view === 'reset' && (
+        <form onSubmit={handleUpdatePassword} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+          <div>
+            <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>New Password</label>
+            <input 
+              type="password" 
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)} 
+              required 
+              minLength={6}
+              style={{ width: '100%', padding: '12px', border: '1px solid #ccc', borderRadius: '4px' }}
+            />
+          </div>
+          <button 
+            type="submit" 
+            disabled={loading} 
+            style={{ 
+              marginTop: '10px',
+              padding: '14px', 
+              background: '#000', 
+              color: '#fff', 
+              border: 'none', 
+              borderRadius: '4px',
+              cursor: 'pointer',
+              fontWeight: 'bold',
+              fontSize: '16px',
+              opacity: loading ? 0.7 : 1
+            }}
+          >
+            {loading ? "Updating..." : "Update Password"}
+          </button>
+        </form>
+      )}
     </div>
   );
 };

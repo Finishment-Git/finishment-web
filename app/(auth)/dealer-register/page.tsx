@@ -96,7 +96,7 @@ const DealerRegister = () => {
         <div>
           <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px' }}>Business Type</label>
           <select value={formData.businessType} onChange={(e) => setFormData({...formData, businessType: e.target.value})} style={{ width: '100%', padding: '12px', backgroundColor: '#000', border: '1px solid #444', borderRadius: '4px', color: '#fff' }}>
-            <option value="Retailer">Retail Store</option>
+            <option value="Retailer">Flooring Dealer</option>
             <option value="Contractor">Contractor/Installer</option>
             <option value="Designer">Interior Designer</option>
           </select>
