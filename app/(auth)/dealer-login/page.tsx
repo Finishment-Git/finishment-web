@@ -4,6 +4,7 @@ import React, { useState, Suspense, useEffect } from 'react';
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/utils/supabase/client"; 
 import Link from "next/link";
+import Navbar from "@/components/navbar";
 
 // Prevent static generation - this page requires authentication
 export const dynamic = 'force-dynamic';
@@ -179,6 +180,8 @@ const DealerLoginContent = () => {
   };
 
   return (
+    <>
+    <Navbar />
     <div style={{ maxWidth: '450px', margin: '60px auto', padding: '20px', fontFamily: 'sans-serif' }}>
       
       <div style={{ textAlign: 'center', marginBottom: '30px' }}>
@@ -366,6 +369,7 @@ const DealerLoginContent = () => {
         </form>
       )}
     </div>
+    </>
   );
 };
 
