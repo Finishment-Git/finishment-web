@@ -28,48 +28,66 @@ const DealerLoginContent = () => {
     setErrorMsg("");
 
     const supabase = createClient();
-    // 1. Log the user in
-    const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
-      email: formData.email,
-      password: formData.password,
-    });
+    
+    try {
+      // 1. Log the user in
+      const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+        email: formData.email,
+        password: formData.password,
+      });
 
-    if (authError) {
-      setErrorMsg("Invalid email or password");
-      setLoading(false);
-      return;
-    }
+      if (authError) {
+        setErrorMsg("Invalid email or password");
+        setLoading(false);
+        return;
+      }
 
-    // 2. Check their Dealer Status and Permissions
-    if (authData.user) {
-      const { data: profile } = await supabase
+      if (!authData.user) {
+        setErrorMsg("Login failed. Please try again.");
+        setLoading(false);
+        return;
+      }
+
+      // 2. Wait for session to be established and refresh it
+      await new Promise(resolve => setTimeout(resolve, 100));
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      
+      if (sessionError || !session) {
+        setErrorMsg("Session not established. Please try again.");
+        setLoading(false);
+        return;
+      }
+
+      // 3. Check their Dealer Status and Permissions
+      const { data: profile, error: profileError } = await supabase
         .from('profiles')
         .select('status, is_primary, can_order')
         .eq('id', authData.user.id)
         .single();
 
-      if (!profile) {
+      if (profileError || !profile) {
         setErrorMsg("Profile not found. Please contact support.");
         setLoading(false);
         return;
       }
 
-      // 3. Route them based on Status
+      // 4. Route them based on Status - use window.location for reliable redirect after auth
       if (profile.status === 'PENDING') {
-        // They need training -> Send to Education Page
-        router.push("/dealer/education");
+        window.location.href = "/dealer/education";
       } else if (profile.status === 'ACTIVE') {
-        // Check if they can order (primary always can, others need permission)
         if (profile.is_primary || profile.can_order) {
-          router.push("/dealer/ordering");
+          window.location.href = "/dealer/ordering";
         } else {
-          // Active but not authorized to order
-          router.push("/dealer/dashboard");
+          window.location.href = "/dealer/dashboard";
         }
       } else {
         setErrorMsg("Your account status is pending review.");
         setLoading(false);
       }
+    } catch (error: any) {
+      console.error("Login error:", error);
+      setErrorMsg("An error occurred during login. Please try again.");
+      setLoading(false);
     }
   };
 
