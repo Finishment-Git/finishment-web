@@ -4,12 +4,15 @@ import React, { useState } from 'react';
 import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client"; 
 import Navbar from "@/components/navbar";
+import { Eye, EyeOff } from "lucide-react";
 
 export const dynamic = 'force-dynamic';
 
 const DealerRegister = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formData, setFormData] = useState({
     companyName: '',
     taxId: '',
@@ -121,12 +124,66 @@ const DealerRegister = () => {
 
         <div>
           <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px' }}>Password</label>
-          <input type="password" required value={formData.password} onChange={(e) => setFormData({...formData, password: e.target.value})} style={{ width: '100%', padding: '12px', backgroundColor: '#000', border: '1px solid #444', borderRadius: '4px', color: '#fff' }} />
+          <div style={{ position: 'relative' }}>
+            <input 
+              type={showPassword ? "text" : "password"} 
+              required 
+              value={formData.password} 
+              onChange={(e) => setFormData({...formData, password: e.target.value})} 
+              style={{ width: '100%', padding: '12px', paddingRight: '45px', backgroundColor: '#000', border: '1px solid #444', borderRadius: '4px', color: '#fff' }} 
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              style={{
+                position: 'absolute',
+                right: '10px',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                color: '#aaa',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+            >
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
+          </div>
         </div>
 
         <div>
           <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px' }}>Confirm Password</label>
-          <input type="password" required value={formData.confirmPassword} onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})} style={{ width: '100%', padding: '12px', backgroundColor: '#000', border: '1px solid #444', borderRadius: '4px', color: '#fff' }} />
+          <div style={{ position: 'relative' }}>
+            <input 
+              type={showConfirmPassword ? "text" : "password"} 
+              required 
+              value={formData.confirmPassword} 
+              onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})} 
+              style={{ width: '100%', padding: '12px', paddingRight: '45px', backgroundColor: '#000', border: '1px solid #444', borderRadius: '4px', color: '#fff' }} 
+            />
+            <button
+              type="button"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              style={{
+                position: 'absolute',
+                right: '10px',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                color: '#aaa',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+            >
+              {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
+          </div>
         </div>
 
         <button type="submit" disabled={loading} style={{ marginTop: '10px', padding: '15px', background: loading ? '#444' : '#fff', color: '#000', border: 'none', borderRadius: '4px', cursor: loading ? 'not-allowed' : 'pointer', fontWeight: 'bold', fontSize: '16px' }}>

@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/utils/supabase/client"; 
 import Link from "next/link";
 import Navbar from "@/components/navbar";
+import { Eye, EyeOff } from "lucide-react";
 
 // Prevent static generation - this page requires authentication
 export const dynamic = 'force-dynamic';
@@ -19,6 +20,8 @@ const DealerLoginContent = () => {
   const [view, setView] = useState<'login' | 'forgot' | 'reset'>('login');
   const [resetEmailSent, setResetEmailSent] = useState(false);
   const [newPassword, setNewPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [debugMsg, setDebugMsg] = useState("");
@@ -233,13 +236,34 @@ const DealerLoginContent = () => {
 
           <div>
             <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>Password</label>
-            <input 
-              type="password" 
-              value={formData.password}
-              onChange={(e) => setFormData({...formData, password: e.target.value})} 
-              required 
-              style={{ width: '100%', padding: '12px', border: '1px solid #ccc', borderRadius: '4px' }}
-            />
+            <div style={{ position: 'relative' }}>
+              <input 
+                type={showPassword ? "text" : "password"} 
+                value={formData.password}
+                onChange={(e) => setFormData({...formData, password: e.target.value})} 
+                required 
+                style={{ width: '100%', padding: '12px', paddingRight: '45px', border: '1px solid #ccc', borderRadius: '4px' }}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                style={{
+                  position: 'absolute',
+                  right: '10px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  color: '#666',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
           </div>
 
           <button 
@@ -339,14 +363,35 @@ const DealerLoginContent = () => {
         <form onSubmit={handleUpdatePassword} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
           <div>
             <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>New Password</label>
-            <input 
-              type="password" 
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)} 
-              required 
-              minLength={6}
-              style={{ width: '100%', padding: '12px', border: '1px solid #ccc', borderRadius: '4px' }}
-            />
+            <div style={{ position: 'relative' }}>
+              <input 
+                type={showNewPassword ? "text" : "password"} 
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)} 
+                required 
+                minLength={6}
+                style={{ width: '100%', padding: '12px', paddingRight: '45px', border: '1px solid #ccc', borderRadius: '4px' }}
+              />
+              <button
+                type="button"
+                onClick={() => setShowNewPassword(!showNewPassword)}
+                style={{
+                  position: 'absolute',
+                  right: '10px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  color: '#666',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
+                {showNewPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
           </div>
           <button 
             type="submit" 
