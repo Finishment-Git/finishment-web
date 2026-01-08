@@ -22,9 +22,9 @@ export default function Navbar() {
       </div>
       
       <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
-        <a href="#how" style={{ color: '#d1d5db', textDecoration: 'none', fontSize: '0.9rem' }}>How it Works</a>
-        <a href="#why" style={{ color: '#d1d5db', textDecoration: 'none', fontSize: '0.9rem' }}>Why Us</a>
-        <a href="#contact" style={{ color: '#d1d5db', textDecoration: 'none', fontSize: '0.9rem' }}>Contact</a>
+        <a href="/#how" style={{ color: '#d1d5db', textDecoration: 'none', fontSize: '0.9rem' }}>How it Works</a>
+        <a href="/#why" style={{ color: '#d1d5db', textDecoration: 'none', fontSize: '0.9rem' }}>Why Us</a>
+        <a href="/#contact" style={{ color: '#d1d5db', textDecoration: 'none', fontSize: '0.9rem' }}>Contact</a>
         <button style={{ backgroundColor: '#2563eb', color: 'white', padding: '8px 16px', borderRadius: '6px', fontSize: '0.875rem', border: 'none' }}>
           Get Started
         </button>
