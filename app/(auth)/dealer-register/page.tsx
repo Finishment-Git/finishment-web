@@ -98,17 +98,17 @@ const DealerRegister = () => {
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
         <div>
           <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px' }}>Company Legal Name</label>
-          <input type="text" required value={formData.companyName} onChange={(e) => setFormData({...formData, companyName: e.target.value})} style={{ width: '100%', padding: '12px', backgroundColor: '#000', border: '1px solid #444', borderRadius: '4px', color: '#fff' }} />
+          <input type="text" required value={formData.companyName} onChange={(e) => setFormData({...formData, companyName: e.target.value})} style={{ width: '100%', padding: '12px', backgroundColor: '#000', border: '1px solid #444', borderRadius: '4px', color: '#fff', boxSizing: 'border-box' }} />
         </div>
 
         <div>
           <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px' }}>Tax ID / Reseller #</label>
-          <input type="text" required value={formData.taxId} onChange={(e) => setFormData({...formData, taxId: e.target.value})} style={{ width: '100%', padding: '12px', backgroundColor: '#000', border: '1px solid #444', borderRadius: '4px', color: '#fff' }} />
+          <input type="text" required value={formData.taxId} onChange={(e) => setFormData({...formData, taxId: e.target.value})} style={{ width: '100%', padding: '12px', backgroundColor: '#000', border: '1px solid #444', borderRadius: '4px', color: '#fff', boxSizing: 'border-box' }} />
         </div>
 
         <div>
           <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px' }}>Business Type</label>
-          <select value={formData.businessType} onChange={(e) => setFormData({...formData, businessType: e.target.value})} style={{ width: '100%', padding: '12px', backgroundColor: '#000', border: '1px solid #444', borderRadius: '4px', color: '#fff' }}>
+          <select value={formData.businessType} onChange={(e) => setFormData({...formData, businessType: e.target.value})} style={{ width: '100%', padding: '12px', backgroundColor: '#000', border: '1px solid #444', borderRadius: '4px', color: '#fff', boxSizing: 'border-box' }}>
             <option value="Retailer">Flooring Dealer</option>
             <option value="Contractor">Contractor/Installer</option>
             <option value="Designer">Interior Designer</option>
@@ -119,18 +119,18 @@ const DealerRegister = () => {
 
         <div>
           <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px' }}>Email Address</label>
-          <input type="email" required value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} style={{ width: '100%', padding: '12px', backgroundColor: '#000', border: '1px solid #444', borderRadius: '4px', color: '#fff' }} />
+          <input type="email" required value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} style={{ width: '100%', padding: '12px', backgroundColor: '#000', border: '1px solid #444', borderRadius: '4px', color: '#fff', boxSizing: 'border-box' }} />
         </div>
 
         <div>
           <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px' }}>Password</label>
-          <div style={{ position: 'relative' }}>
+          <div style={{ position: 'relative', width: '100%' }}>
             <input 
               type={showPassword ? "text" : "password"} 
               required 
               value={formData.password} 
               onChange={(e) => setFormData({...formData, password: e.target.value})} 
-              style={{ width: '100%', padding: '12px', paddingRight: '45px', backgroundColor: '#000', border: '1px solid #444', borderRadius: '4px', color: '#fff' }} 
+              style={{ width: '100%', padding: '12px', paddingRight: '45px', backgroundColor: '#000', border: '1px solid #444', borderRadius: '4px', color: '#fff', boxSizing: 'border-box' }} 
             />
             <button
               type="button"
@@ -146,7 +146,9 @@ const DealerRegister = () => {
                 color: '#aaa',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center'
+                justifyContent: 'center',
+                padding: '0',
+                height: '100%'
               }}
             >
               {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
@@ -156,13 +158,13 @@ const DealerRegister = () => {
 
         <div>
           <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px' }}>Confirm Password</label>
-          <div style={{ position: 'relative' }}>
+          <div style={{ position: 'relative', width: '100%' }}>
             <input 
               type={showConfirmPassword ? "text" : "password"} 
               required 
               value={formData.confirmPassword} 
               onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})} 
-              style={{ width: '100%', padding: '12px', paddingRight: '45px', backgroundColor: '#000', border: '1px solid #444', borderRadius: '4px', color: '#fff' }} 
+              style={{ width: '100%', padding: '12px', paddingRight: '45px', backgroundColor: '#000', border: '1px solid #444', borderRadius: '4px', color: '#fff', boxSizing: 'border-box' }} 
             />
             <button
               type="button"
@@ -178,7 +180,9 @@ const DealerRegister = () => {
                 color: '#aaa',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center'
+                justifyContent: 'center',
+                padding: '0',
+                height: '100%'
               }}
             >
               {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}

@@ -129,7 +129,7 @@ const DealerJoinContent = () => {
               value={formData.taxId}
               onChange={(e) => setFormData({...formData, taxId: e.target.value})}
               required
-              style={{ width: '100%', padding: '12px', border: '1px solid #ccc', borderRadius: '4px' }}
+              style={{ width: '100%', padding: '12px', border: '1px solid #ccc', borderRadius: '4px', boxSizing: 'border-box' }}
             />
             <p style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>
               Ask your primary account holder for the Tax ID
@@ -189,20 +189,20 @@ const DealerJoinContent = () => {
             value={formData.email}
             onChange={(e) => setFormData({...formData, email: e.target.value})}
             required
-            style={{ width: '100%', padding: '12px', border: '1px solid #ccc', borderRadius: '4px' }}
+            style={{ width: '100%', padding: '12px', border: '1px solid #ccc', borderRadius: '4px', boxSizing: 'border-box' }}
           />
         </div>
 
         <div>
           <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>Create Password</label>
-          <div style={{ position: 'relative' }}>
+          <div style={{ position: 'relative', width: '100%' }}>
             <input
               type={showPassword ? "text" : "password"}
               placeholder="********"
               value={formData.password}
               onChange={(e) => setFormData({...formData, password: e.target.value})}
               required
-              style={{ width: '100%', padding: '12px', paddingRight: '45px', border: '1px solid #ccc', borderRadius: '4px' }}
+              style={{ width: '100%', padding: '12px', paddingRight: '45px', border: '1px solid #ccc', borderRadius: '4px', boxSizing: 'border-box' }}
             />
             <button
               type="button"
@@ -218,7 +218,9 @@ const DealerJoinContent = () => {
                 color: '#666',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center'
+                justifyContent: 'center',
+                padding: '0',
+                height: '100%'
               }}
             >
               {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}

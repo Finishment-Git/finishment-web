@@ -230,19 +230,19 @@ const DealerLoginContent = () => {
               value={formData.email}
               onChange={(e) => setFormData({...formData, email: e.target.value})} 
               required 
-              style={{ width: '100%', padding: '12px', border: '1px solid #ccc', borderRadius: '4px' }}
+              style={{ width: '100%', padding: '12px', border: '1px solid #ccc', borderRadius: '4px', boxSizing: 'border-box' }}
             />
           </div>
 
           <div>
             <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>Password</label>
-            <div style={{ position: 'relative' }}>
+            <div style={{ position: 'relative', width: '100%' }}>
               <input 
                 type={showPassword ? "text" : "password"} 
                 value={formData.password}
                 onChange={(e) => setFormData({...formData, password: e.target.value})} 
                 required 
-                style={{ width: '100%', padding: '12px', paddingRight: '45px', border: '1px solid #ccc', borderRadius: '4px' }}
+                style={{ width: '100%', padding: '12px', paddingRight: '45px', border: '1px solid #ccc', borderRadius: '4px', boxSizing: 'border-box' }}
               />
               <button
                 type="button"
@@ -258,7 +258,9 @@ const DealerLoginContent = () => {
                   color: '#666',
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center'
+                  justifyContent: 'center',
+                  padding: '0',
+                  height: '100%'
                 }}
               >
                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
@@ -363,14 +365,14 @@ const DealerLoginContent = () => {
         <form onSubmit={handleUpdatePassword} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
           <div>
             <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>New Password</label>
-            <div style={{ position: 'relative' }}>
+            <div style={{ position: 'relative', width: '100%' }}>
               <input 
                 type={showNewPassword ? "text" : "password"} 
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)} 
                 required 
                 minLength={6}
-                style={{ width: '100%', padding: '12px', paddingRight: '45px', border: '1px solid #ccc', borderRadius: '4px' }}
+                style={{ width: '100%', padding: '12px', paddingRight: '45px', border: '1px solid #ccc', borderRadius: '4px', boxSizing: 'border-box' }}
               />
               <button
                 type="button"
@@ -386,7 +388,9 @@ const DealerLoginContent = () => {
                   color: '#666',
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center'
+                  justifyContent: 'center',
+                  padding: '0',
+                  height: '100%'
                 }}
               >
                 {showNewPassword ? <EyeOff size={20} /> : <Eye size={20} />}
