@@ -119,7 +119,6 @@ export default function DealerEducation() {
           {/* 1. Understanding the Problem */}
           <section className="p-6 rounded-2xl">
             <h2 className="text-2xl font-bold mb-6 flex items-center gap-3" style={{ color: '#000000' }}>
-              <span className="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">1</span>
               Understanding the Problem
             </h2>
             <div className="grid md:grid-cols-2 gap-8">
@@ -145,7 +144,6 @@ export default function DealerEducation() {
           {/* 2. Finishment’s Solution */}
           <section className="p-8 rounded-2xl" style={{ backgroundColor: '#f8f9fa' }}>
             <h2 className="text-2xl font-bold mb-6 flex items-center gap-3" style={{ color: '#000000' }}>
-              <span className="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">2</span>
               Finishment’s Solution
             </h2>
             <div className="bg-white p-8 rounded-2xl shadow-md border border-gray-200">
@@ -170,7 +168,6 @@ export default function DealerEducation() {
           {/* 3. Why Choose Finishment? */}
           <section className="p-6 rounded-2xl">
             <h2 className="text-2xl font-bold mb-6 flex items-center gap-3" style={{ color: '#000000' }}>
-              <span className="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">3</span>
               Why Choose Finishment?
             </h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -196,7 +193,6 @@ export default function DealerEducation() {
           {/* 4 & 5. Key Selling Points & Positioning */}
           <div className="p-8 rounded-2xl space-y-8" style={{ backgroundColor: '#f8f9fa' }}>
             <h2 className="text-2xl font-bold flex items-center gap-3" style={{ color: '#000000' }}>
-              <span className="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">4</span>
               Key Selling Points & Positioning
             </h2>
             <div className="grid md:grid-cols-2 gap-8">
@@ -234,7 +230,6 @@ export default function DealerEducation() {
           {/* 6. Overcoming Common Objections */}
           <section className="p-6 rounded-2xl">
             <h2 className="text-2xl font-bold mb-6 flex items-center gap-3" style={{ color: '#000000' }}>
-              <span className="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">5</span>
               Overcoming Common Objections
             </h2>
             <div className="bg-white p-8 rounded-2xl border border-gray-200 shadow-sm">
