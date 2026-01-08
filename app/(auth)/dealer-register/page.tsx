@@ -15,11 +15,18 @@ const DealerRegister = () => {
     taxId: '',
     email: '',
     password: '',
+    confirmPassword: '',
     businessType: 'Retailer'
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
+
     setLoading(true);
     const supabase = createClient();
 
@@ -115,6 +122,11 @@ const DealerRegister = () => {
         <div>
           <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px' }}>Password</label>
           <input type="password" required value={formData.password} onChange={(e) => setFormData({...formData, password: e.target.value})} style={{ width: '100%', padding: '12px', backgroundColor: '#000', border: '1px solid #444', borderRadius: '4px', color: '#fff' }} />
+        </div>
+
+        <div>
+          <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px' }}>Confirm Password</label>
+          <input type="password" required value={formData.confirmPassword} onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})} style={{ width: '100%', padding: '12px', backgroundColor: '#000', border: '1px solid #444', borderRadius: '4px', color: '#fff' }} />
         </div>
 
         <button type="submit" disabled={loading} style={{ marginTop: '10px', padding: '15px', background: loading ? '#444' : '#fff', color: '#000', border: 'none', borderRadius: '4px', cursor: loading ? 'not-allowed' : 'pointer', fontWeight: 'bold', fontSize: '16px' }}>
