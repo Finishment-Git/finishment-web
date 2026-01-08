@@ -17,6 +17,7 @@ const DealerLoginContent = () => {
 
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [debugMsg, setDebugMsg] = useState("");
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -26,37 +27,53 @@ const DealerLoginContent = () => {
     e.preventDefault();
     setLoading(true);
     setErrorMsg("");
+    setDebugMsg("Starting login...");
 
     const supabase = createClient();
     
     try {
       // 1. Log the user in
+      setDebugMsg("Authenticating...");
       const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
         email: formData.email,
         password: formData.password,
       });
 
       if (authError) {
-        setErrorMsg("Invalid email or password");
+        setErrorMsg("Invalid email or password: " + authError.message);
+        setDebugMsg("");
         setLoading(false);
         return;
       }
 
       if (!authData.user) {
         setErrorMsg("Login failed. Please try again.");
+        setDebugMsg("");
         setLoading(false);
         return;
       }
+
+      setDebugMsg("Auth successful, checking session...");
 
       // 2. Wait for session to be established and refresh it
       await new Promise(resolve => setTimeout(resolve, 100));
       const { data: { session }, error: sessionError } = await supabase.auth.getSession();
       
-      if (sessionError || !session) {
-        setErrorMsg("Session not established. Please try again.");
+      if (sessionError) {
+        setErrorMsg("Session error: " + sessionError.message);
+        setDebugMsg("");
         setLoading(false);
         return;
       }
+      
+      if (!session) {
+        setErrorMsg("Session not established. Please try again.");
+        setDebugMsg("");
+        setLoading(false);
+        return;
+      }
+
+      setDebugMsg("Session OK, fetching profile...");
 
       // 3. Check their Dealer Status and Permissions
       const { data: profile, error: profileError } = await supabase
@@ -65,11 +82,21 @@ const DealerLoginContent = () => {
         .eq('id', authData.user.id)
         .single();
 
-      if (profileError || !profile) {
-        setErrorMsg("Profile not found. Please contact support.");
+      if (profileError) {
+        setErrorMsg("Profile error: " + profileError.message);
+        setDebugMsg("");
         setLoading(false);
         return;
       }
+      
+      if (!profile) {
+        setErrorMsg("Profile not found. Please contact support.");
+        setDebugMsg("");
+        setLoading(false);
+        return;
+      }
+
+      setDebugMsg("Profile found: " + profile.status + ", redirecting...");
 
       // 4. Route them based on Status - use window.location for reliable redirect after auth
       if (profile.status === 'PENDING') {
@@ -81,12 +108,14 @@ const DealerLoginContent = () => {
           window.location.href = "/dealer/dashboard";
         }
       } else {
-        setErrorMsg("Your account status is pending review.");
+        setErrorMsg("Your account status is: " + profile.status);
+        setDebugMsg("");
         setLoading(false);
       }
     } catch (error: any) {
       console.error("Login error:", error);
-      setErrorMsg("An error occurred during login. Please try again.");
+      setErrorMsg("Error: " + (error.message || "Unknown error"));
+      setDebugMsg("");
       setLoading(false);
     }
   };
@@ -103,6 +132,13 @@ const DealerLoginContent = () => {
       {justRegistered && (
         <div style={{ background: '#ecfdf5', color: '#047857', padding: '15px', borderRadius: '6px', marginBottom: '20px', border: '1px solid #a7f3d0' }}>
           ✅ Application received! Please log in to continue.
+        </div>
+      )}
+
+      {/* Debug Message */}
+      {debugMsg && (
+        <div style={{ background: '#eff6ff', color: '#1e40af', padding: '15px', borderRadius: '6px', marginBottom: '20px', border: '1px solid #93c5fd' }}>
+          🔄 {debugMsg}
         </div>
       )}
 
