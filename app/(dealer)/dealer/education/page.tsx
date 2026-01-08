@@ -89,26 +89,26 @@ export default function DealerEducation() {
   return (
     <div className="min-h-screen p-4 md:p-8 font-sans" style={{ backgroundColor: '#ffffff' }}>
       {/* Header Section */}
-      <header className="max-w-5xl mx-auto bg-slate-900 text-white p-8 rounded-t-2xl shadow-lg">
+      <header className="max-w-5xl mx-auto bg-white text-black p-8 rounded-t-2xl border-t border-x border-gray-200">
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <div>
             <h1 className="text-3xl font-bold tracking-tight">Finishment Dealer Education</h1>
-            <p className="text-slate-400 mt-2">Elevating the Standard for Staircase Installation</p>
+            <p className="text-gray-600 mt-2">Elevating the Standard for Staircase Installation</p>
           </div>
-          <div className="bg-blue-600 px-4 py-2 rounded-full text-sm font-semibold">
+          <div className="bg-black text-white px-4 py-2 rounded-full text-sm font-semibold">
             Dealer Sales Toolkit 2026
           </div>
         </div>
       </header>
 
       {/* Main Content Container */}
-      <main className="max-w-5xl mx-auto shadow-xl rounded-b-2xl overflow-hidden border-x border-b" style={{ backgroundColor: '#ffffff', borderColor: '#e2e8f0' }}>
+      <main className="max-w-5xl mx-auto border-x border-b border-gray-200 overflow-hidden" style={{ backgroundColor: '#ffffff' }}>
         
         {/* Status Banner for Active Dealers */}
         {profile?.status === 'ACTIVE' && (
-          <div className="bg-green-50 border-b border-green-200 p-4 text-center">
-            <p className="text-green-800 font-semibold flex items-center justify-center gap-2">
-              <CheckCircle size={20} />
+          <div className="bg-gray-50 border-b border-gray-200 p-4 text-center">
+            <p className="text-black font-semibold flex items-center justify-center gap-2">
+              <CheckCircle className="text-black" size={20} />
               Your organization is trained and able to order.
             </p>
           </div>
@@ -118,22 +118,22 @@ export default function DealerEducation() {
           
           {/* 1. Understanding the Problem */}
           <section>
-            <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-3">
-              <span className="bg-slate-900 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">1</span>
+            <h2 className="text-2xl font-bold text-black mb-6 flex items-center gap-3">
+              <span className="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">1</span>
               Understanding the Problem
             </h2>
             <div className="grid md:grid-cols-2 gap-8">
-              <div className="bg-red-50 p-6 rounded-xl border border-red-100">
-                <p className="font-semibold text-red-900 mb-3 text-lg">Standard stair nosings are:</p>
-                <ul className="space-y-2 text-red-800">
+              <div className="bg-white p-6 rounded-xl border border-gray-200">
+                <p className="font-semibold text-black mb-3 text-lg">Standard stair nosings are:</p>
+                <ul className="space-y-2 text-black">
                   <li className="flex items-center gap-2">• Hard to source.</li>
                   <li className="flex items-center gap-2">• Often brittle and overpriced.</li>
                   <li className="flex items-center gap-2">• Rarely match the flooring material.</li>
                 </ul>
               </div>
-              <div className="bg-orange-50 p-6 rounded-xl border border-orange-100">
-                <p className="font-semibold text-orange-900 mb-3 text-lg">These issues lead to:</p>
-                <ul className="space-y-2 text-orange-800">
+              <div className="bg-white p-6 rounded-xl border border-gray-200">
+                <p className="font-semibold text-black mb-3 text-lg">These issues lead to:</p>
+                <ul className="space-y-2 text-black">
                   <li className="flex items-center gap-2">• Delays in project completion.</li>
                   <li className="flex items-center gap-2">• Increased costs.</li>
                   <li className="flex items-center gap-2">• Poor aesthetics and dissatisfied customers.</li>
@@ -144,22 +144,22 @@ export default function DealerEducation() {
 
           {/* 2. Finishment’s Solution */}
           <section>
-            <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-3">
-              <span className="bg-slate-900 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">2</span>
+            <h2 className="text-2xl font-bold text-black mb-6 flex items-center gap-3">
+              <span className="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">2</span>
               Finishment’s Solution
             </h2>
-            <div className="bg-blue-600 text-white p-8 rounded-2xl shadow-md">
+            <div className="bg-white text-black p-8 rounded-2xl shadow-md border border-gray-200">
               <h3 className="text-xl font-bold mb-4 italic">Custom Stair Nosings Made From YOUR Material</h3>
               <div className="grid md:grid-cols-3 gap-6">
-                <div className="bg-blue-500/30 p-4 rounded-lg border border-blue-400/30">
+                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
                   <h4 className="font-bold mb-2">Perfect Color</h4>
                   <p className="text-sm">Same dye lot for perfect color consistency across the entire project.</p>
                 </div>
-                <div className="bg-blue-500/30 p-4 rounded-lg border border-blue-400/30">
+                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
                   <h4 className="font-bold mb-2">Superior Strength</h4>
                   <p className="text-sm">Same durable material for superior strength and longevity.</p>
                 </div>
-                <div className="bg-blue-500/30 p-4 rounded-lg border border-blue-400/30">
+                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
                   <h4 className="font-bold mb-2">Seamless Finish</h4>
                   <p className="text-sm">A seamless finish that elevates the entire project's aesthetic.</p>
                 </div>
@@ -169,25 +169,25 @@ export default function DealerEducation() {
 
           {/* 3. Why Choose Finishment? */}
           <section>
-            <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-3">
-              <span className="bg-slate-900 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">3</span>
+            <h2 className="text-2xl font-bold text-black mb-6 flex items-center gap-3">
+              <span className="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">3</span>
               Why Choose Finishment?
             </h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="border border-slate-200 p-5 rounded-xl hover:border-blue-500 transition-colors">
-                <h3 className="font-bold text-blue-600 mb-2">Speed</h3>
+              <div className="border border-gray-200 p-5 rounded-xl hover:border-black transition-colors">
+                <h3 className="font-bold text-black mb-2">Speed</h3>
                 <p className="text-sm">Delivery within 24–72 hours.</p>
               </div>
-              <div className="border border-slate-200 p-5 rounded-xl hover:border-blue-500 transition-colors">
-                <h3 className="font-bold text-blue-600 mb-2">Logistics</h3>
+              <div className="border border-gray-200 p-5 rounded-xl hover:border-black transition-colors">
+                <h3 className="font-bold text-black mb-2">Logistics</h3>
                 <p className="text-sm">Local drop-off/pick-up & shipping options.</p>
               </div>
-              <div className="border border-slate-200 p-5 rounded-xl hover:border-blue-500 transition-colors">
-                <h3 className="font-bold text-blue-600 mb-2">Pricing</h3>
+              <div className="border border-gray-200 p-5 rounded-xl hover:border-black transition-colors">
+                <h3 className="font-bold text-black mb-2">Pricing</h3>
                 <p className="text-sm">Comparable or better than standard options.</p>
               </div>
-              <div className="border border-slate-200 p-5 rounded-xl hover:border-blue-500 transition-colors">
-                <h3 className="font-bold text-blue-600 mb-2">Prep Work</h3>
+              <div className="border border-gray-200 p-5 rounded-xl hover:border-black transition-colors">
+                <h3 className="font-bold text-black mb-2">Prep Work</h3>
                 <p className="text-sm">No need to restructure staircases.</p>
               </div>
             </div>
@@ -195,51 +195,51 @@ export default function DealerEducation() {
 
           {/* 4 & 5. Key Selling Points & Positioning */}
           <div className="grid md:grid-cols-2 gap-8">
-            <section className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-              <h2 className="text-xl font-bold text-slate-900 mb-4">Key Selling Points</h2>
+            <section className="bg-white p-6 rounded-2xl border border-gray-200">
+              <h2 className="text-xl font-bold text-black mb-4">Key Selling Points</h2>
               <ul className="space-y-3">
                 {['Perfect color match', 'Durable and long-lasting', 'Fast turnaround', 'Competitive pricing', 'Hassle-free process'].map((item) => (
-                  <li key={item} className="flex items-center gap-2 text-slate-700">
-                    <CheckCircle className="text-green-500" size={18} />
+                  <li key={item} className="flex items-center gap-2 text-black">
+                    <CheckCircle className="text-black" size={18} />
                     {item}
                   </li>
                 ))}
               </ul>
             </section>
-            <section className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-              <h2 className="text-xl font-bold text-slate-900 mb-4">Positioning to Customers</h2>
+            <section className="bg-white p-6 rounded-2xl border border-gray-200">
+              <h2 className="text-xl font-bold text-black mb-4">Positioning to Customers</h2>
               <div className="space-y-4">
                 <div>
-                  <p className="font-bold text-sm text-blue-700 uppercase tracking-wider">Time Savings</p>
-                  <p className="text-slate-700">Faster project completion.</p>
+                  <p className="font-bold text-sm text-black uppercase tracking-wider border-b border-black inline-block mb-1">Time Savings</p>
+                  <p className="text-black">Faster project completion.</p>
                 </div>
                 <div>
-                  <p className="font-bold text-sm text-blue-700 uppercase tracking-wider">Profitability</p>
-                  <p className="text-slate-700">Reduced labor and material waste.</p>
+                  <p className="font-bold text-sm text-black uppercase tracking-wider border-b border-black inline-block mb-1">Profitability</p>
+                  <p className="text-black">Reduced labor and material waste.</p>
                 </div>
                 <div>
-                  <p className="font-bold text-sm text-blue-700 uppercase tracking-wider">Quality</p>
-                  <p className="text-slate-700">Seamless look that impresses clients.</p>
+                  <p className="font-bold text-sm text-black uppercase tracking-wider border-b border-black inline-block mb-1">Quality</p>
+                  <p className="text-black">Seamless look that impresses clients.</p>
                 </div>
               </div>
             </section>
           </div>
 
           {/* 6. Overcoming Common Objections */}
-          <section className="bg-slate-900 text-white p-8 rounded-2xl">
+          <section className="bg-white text-black p-8 rounded-2xl border border-gray-200">
             <h2 className="text-2xl font-bold mb-6">Overcoming Common Objections</h2>
             <div className="space-y-6">
-              <div className="border-l-2 border-blue-500 pl-4">
-                <p className="italic text-slate-400 mb-1">“Standard nosings are cheaper.”</p>
-                <p className="font-semibold">Response: Finishment pricing is competitive and saves on labor costs.</p>
+              <div className="border-l-2 border-black pl-4">
+                <p className="italic text-gray-600 mb-1">“Standard nosings are cheaper.”</p>
+                <p className="font-semibold text-black">Response: Finishment pricing is competitive and saves on labor costs.</p>
               </div>
-              <div className="border-l-2 border-blue-500 pl-4">
-                <p className="italic text-slate-400 mb-1">“Custom sounds complicated.”</p>
-                <p className="font-semibold">Response: Process is simple—just send material, and we handle the rest.</p>
+              <div className="border-l-2 border-black pl-4">
+                <p className="italic text-gray-600 mb-1">“Custom sounds complicated.”</p>
+                <p className="font-semibold text-black">Response: Process is simple—just send material, and we handle the rest.</p>
               </div>
-              <div className="border-l-2 border-blue-500 pl-4">
-                <p className="italic text-slate-400 mb-1">“Will it delay my project?”</p>
-                <p className="font-semibold">Response: Delivery in 24–72 hours keeps projects on schedule.</p>
+              <div className="border-l-2 border-black pl-4">
+                <p className="italic text-gray-600 mb-1">“Will it delay my project?”</p>
+                <p className="font-semibold text-black">Response: Delivery in 24–72 hours keeps projects on schedule.</p>
               </div>
             </div>
           </section>
@@ -247,26 +247,26 @@ export default function DealerEducation() {
         </div>
 
         {/* Footer / CTA */}
-        <footer className="p-6 border-t bg-slate-50 border-slate-200">
-          <div className="bg-white p-8 rounded-2xl text-center border border-slate-200 shadow-sm max-w-2xl mx-auto">
+        <footer className="p-6 border-t bg-gray-50 border-gray-200">
+          <div className="bg-white p-8 rounded-2xl text-center border border-gray-200 max-w-2xl mx-auto">
             {profile?.status === 'ACTIVE' ? (
               <>
-                <h3 className="text-2xl font-bold text-slate-900 mb-2">Training Complete</h3>
-                <p className="text-slate-600 mb-8">
+                <h3 className="text-2xl font-bold text-black mb-2">Training Complete</h3>
+                <p className="text-gray-600 mb-8">
                   You have already completed the dealer training and your account is active.
                 </p>
                 
                 <button 
                   onClick={() => router.push('/dealer/ordering')}
-                  className="w-full md:w-auto px-10 py-4 rounded-xl font-bold text-lg shadow-lg bg-blue-600 hover:bg-blue-700 text-white transition-all transform hover:scale-[1.02] active:scale-[0.98]"
+                  className="w-full md:w-auto px-10 py-4 rounded-xl font-bold text-lg shadow-lg bg-black hover:bg-gray-800 text-white transition-all transform hover:scale-[1.02] active:scale-[0.98]"
                 >
                   Go to Ordering
                 </button>
               </>
             ) : (
               <>
-                <h3 className="text-2xl font-bold text-slate-900 mb-2">Ready to start?</h3>
-                <p className="text-slate-600 mb-8">
+                <h3 className="text-2xl font-bold text-black mb-2">Ready to start?</h3>
+                <p className="text-gray-600 mb-8">
                   By clicking below, you confirm you've reviewed the training material and are ready to offer custom stair nosings to your clients.
                 </p>
                 
@@ -274,7 +274,7 @@ export default function DealerEducation() {
                   onClick={handleCompleteTraining}
                   disabled={loading}
                   className={`w-full md:w-auto px-10 py-4 rounded-xl font-bold text-lg shadow-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] ${
-                    loading ? 'bg-slate-400 cursor-not-allowed' : 'bg-green-600 hover:bg-green-700 text-white'
+                    loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-black hover:bg-gray-800 text-white'
                   }`}
                 >
                   {loading ? "Activating Account..." : "I've Read the Training - Unlock My Account"}
