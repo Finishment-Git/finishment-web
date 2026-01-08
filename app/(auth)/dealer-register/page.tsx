@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client"; 
+import Navbar from "@/components/navbar";
 
 export const dynamic = 'force-dynamic';
 
@@ -76,6 +77,8 @@ const DealerRegister = () => {
   };
 
   return (
+    <>
+    <Navbar />
     <div style={{ maxWidth: '500px', margin: '60px auto', padding: '30px', fontFamily: 'system-ui, sans-serif', backgroundColor: '#111', color: '#fff', borderRadius: '8px', border: '1px solid #333' }}>
       <div style={{ textAlign: 'center', marginBottom: '30px' }}>
         <h1 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '10px' }}>Dealer Registration</h1>
@@ -119,6 +122,7 @@ const DealerRegister = () => {
         </button>
       </form>
     </div>
+    </>
   );
 };
 
