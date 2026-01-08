@@ -13,48 +13,23 @@ export async function middleware(request: NextRequest) {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        get(name: string) {
-          return request.cookies.get(name)?.value
+        getAll() {
+          return request.cookies.getAll()
         },
-        set(name: string, value: string, options: any) {
-          request.cookies.set({
-            name,
-            value,
-            ...options,
-          })
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value, options }) => request.cookies.set(name, value))
           response = NextResponse.next({
-            request: {
-              headers: request.headers,
-            },
+            request,
           })
-          response.cookies.set({
-            name,
-            value,
-            ...options,
-          })
-        },
-        remove(name: string, options: any) {
-          request.cookies.set({
-            name,
-            value: '',
-            ...options,
-          })
-          response = NextResponse.next({
-            request: {
-              headers: request.headers,
-            },
-          })
-          response.cookies.set({
-            name,
-            value: '',
-            ...options,
-          })
+          cookiesToSet.forEach(({ name, value, options }) =>
+            response.cookies.set(name, value, options)
+          )
         },
       },
     }
   )
 
-  // Refresh session if expired
+  // This line triggers the cookie refresh logic
   const { data: { user } } = await supabase.auth.getUser()
 
   // Protect dealer routes - redirect to login if not authenticated
@@ -65,7 +40,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(redirectUrl)
   }
 
-  // Redirect authenticated users away from login/register pages
+  // Redirect authenticated users away from auth pages
   if (user && (request.nextUrl.pathname === '/dealer-login' || request.nextUrl.pathname === '/dealer-register')) {
     return NextResponse.redirect(new URL('/dealer/dashboard', request.url))
   }
@@ -75,10 +50,12 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/dealer/:path*',
-    '/dealer-login',
-    '/dealer-register',
-    '/dealer-join',
+    /*
+     * Match all request paths except for the ones starting with:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     */
+    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 }
-
