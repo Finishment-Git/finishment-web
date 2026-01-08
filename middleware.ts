@@ -2,6 +2,7 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 export async function middleware(request: NextRequest) {
+  // 1. Create the initial response
   let response = NextResponse.next({
     request: {
       headers: request.headers,
@@ -19,53 +20,34 @@ export async function middleware(request: NextRequest) {
   }
 
   try {
+    // 2. Initialize Supabase with the modernized cookie pattern
     const supabase = createServerClient(
       supabaseUrl,
       supabaseAnonKey,
       {
         cookies: {
-          get(name: string) {
-            return request.cookies.get(name)?.value
+          getAll() {
+            return request.cookies.getAll()
           },
-          set(name: string, value: string, options: any) {
-            request.cookies.set({
-              name,
-              value,
-              ...options,
-            })
+          setAll(cookiesToSet) {
+            // Update request cookies so the rest of the middleware can see them
+            cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
+            
+            // Create a new response to carry the new cookies
             response = NextResponse.next({
-              request: {
-                headers: request.headers,
-              },
+              request,
             })
-            response.cookies.set({
-              name,
-              value,
-              ...options,
-            })
-          },
-          remove(name: string, options: any) {
-            request.cookies.set({
-              name,
-              value: '',
-              ...options,
-            })
-            response = NextResponse.next({
-              request: {
-                headers: request.headers,
-              },
-            })
-            response.cookies.set({
-              name,
-              value: '',
-              ...options,
-            })
+            
+            // Set the cookies on the response so they reach the browser
+            cookiesToSet.forEach(({ name, value, options }) =>
+              response.cookies.set(name, value, options)
+            )
           },
         },
       }
     )
 
-    // Refresh session if expired
+    // 3. Refresh session if expired - this triggers the cookie logic above
     const { data: { user }, error } = await supabase.auth.getUser()
 
     if (error) {
@@ -73,7 +55,7 @@ export async function middleware(request: NextRequest) {
       console.error('Middleware auth error:', error.message)
     }
 
-    // Protect dealer routes - redirect to login if not authenticated
+    // 4. Protect dealer routes - redirect to login if not authenticated
     if (request.nextUrl.pathname.startsWith('/dealer/') && !user) {
       const redirectUrl = request.nextUrl.clone()
       redirectUrl.pathname = '/dealer-login'
@@ -81,7 +63,7 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(redirectUrl)
     }
 
-    // Redirect authenticated users away from login/register pages
+    // 5. Redirect authenticated users away from login/register pages
     if (user && (request.nextUrl.pathname === '/dealer-login' || request.nextUrl.pathname === '/dealer-register')) {
       return NextResponse.redirect(new URL('/dealer/dashboard', request.url))
     }
@@ -96,10 +78,13 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/dealer/:path*',
-    '/dealer-login',
-    '/dealer-register',
-    '/dealer-join',
+    /*
+     * Match all request paths except for the ones starting with:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * - Any image extensions
+     */
+    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 }
-
