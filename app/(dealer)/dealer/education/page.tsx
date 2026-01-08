@@ -117,7 +117,7 @@ export default function DealerEducation() {
         <div className="p-6 md:p-10 space-y-12">
           
           {/* 1. Understanding the Problem */}
-          <section>
+          <section className="p-6 rounded-2xl">
             <h2 className="text-2xl font-bold mb-6 flex items-center gap-3" style={{ color: '#000000' }}>
               <span className="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">1</span>
               Understanding the Problem
@@ -125,25 +125,25 @@ export default function DealerEducation() {
             <div className="grid md:grid-cols-2 gap-8">
               <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
                 <p className="font-bold mb-3 text-lg" style={{ color: '#000000' }}>Standard stair nosings are:</p>
-                <ul className="space-y-2" style={{ color: '#000000', fontWeight: '500' }}>
-                  <li>• Hard to source.</li>
-                  <li>• Often brittle and overpriced.</li>
-                  <li>• Rarely match the flooring material.</li>
+                <ul className="space-y-2 list-none" style={{ color: '#000000', fontWeight: '500' }}>
+                  <li>Hard to source.</li>
+                  <li>Often brittle and overpriced.</li>
+                  <li>Rarely match the flooring material.</li>
                 </ul>
               </div>
               <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
                 <p className="font-bold mb-3 text-lg" style={{ color: '#000000' }}>These issues lead to:</p>
-                <ul className="space-y-2" style={{ color: '#000000', fontWeight: '500' }}>
-                  <li>• Delays in project completion.</li>
-                  <li>• Increased costs.</li>
-                  <li>• Poor aesthetics and dissatisfied customers.</li>
+                <ul className="space-y-2 list-none" style={{ color: '#000000', fontWeight: '500' }}>
+                  <li>Delays in project completion.</li>
+                  <li>Increased costs.</li>
+                  <li>Poor aesthetics and dissatisfied customers.</li>
                 </ul>
               </div>
             </div>
           </section>
 
           {/* 2. Finishment’s Solution */}
-          <section>
+          <section className="p-8 rounded-2xl" style={{ backgroundColor: '#f8f9fa' }}>
             <h2 className="text-2xl font-bold mb-6 flex items-center gap-3" style={{ color: '#000000' }}>
               <span className="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">2</span>
               Finishment’s Solution
@@ -168,25 +168,25 @@ export default function DealerEducation() {
           </section>
 
           {/* 3. Why Choose Finishment? */}
-          <section>
+          <section className="p-6 rounded-2xl">
             <h2 className="text-2xl font-bold mb-6 flex items-center gap-3" style={{ color: '#000000' }}>
               <span className="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">3</span>
               Why Choose Finishment?
             </h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="border border-gray-200 p-5 rounded-xl hover:border-black transition-colors">
+              <div className="bg-white border border-gray-200 p-5 rounded-xl hover:border-black transition-colors">
                 <h3 className="font-bold mb-2" style={{ color: '#000000' }}>Speed</h3>
                 <p className="text-sm" style={{ color: '#333333' }}>Delivery within 24–72 hours.</p>
               </div>
-              <div className="border border-gray-200 p-5 rounded-xl hover:border-black transition-colors">
+              <div className="bg-white border border-gray-200 p-5 rounded-xl hover:border-black transition-colors">
                 <h3 className="font-bold mb-2" style={{ color: '#000000' }}>Logistics</h3>
                 <p className="text-sm" style={{ color: '#333333' }}>Local drop-off/pick-up & shipping options.</p>
               </div>
-              <div className="border border-gray-200 p-5 rounded-xl hover:border-black transition-colors">
+              <div className="bg-white border border-gray-200 p-5 rounded-xl hover:border-black transition-colors">
                 <h3 className="font-bold mb-2" style={{ color: '#000000' }}>Pricing</h3>
                 <p className="text-sm" style={{ color: '#333333' }}>Comparable or better than standard options.</p>
               </div>
-              <div className="border border-gray-200 p-5 rounded-xl hover:border-black transition-colors">
+              <div className="bg-white border border-gray-200 p-5 rounded-xl hover:border-black transition-colors">
                 <h3 className="font-bold mb-2" style={{ color: '#000000' }}>Prep Work</h3>
                 <p className="text-sm" style={{ color: '#333333' }}>No need to restructure staircases.</p>
               </div>
@@ -194,52 +194,63 @@ export default function DealerEducation() {
           </section>
 
           {/* 4 & 5. Key Selling Points & Positioning */}
-          <div className="grid md:grid-cols-2 gap-8">
-            <section className="bg-white p-6 rounded-2xl border border-gray-200">
-              <h2 className="text-xl font-bold mb-4" style={{ color: '#000000' }}>Key Selling Points</h2>
-              <ul className="space-y-3">
-                {['Perfect color match', 'Durable and long-lasting', 'Fast turnaround', 'Competitive pricing', 'Hassle-free process'].map((item) => (
-                  <li key={item} className="flex items-center gap-2" style={{ color: '#000000' }}>
-                    <CheckCircle style={{ color: '#000000' }} size={18} />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </section>
-            <section className="bg-white p-6 rounded-2xl border border-gray-200">
-              <h2 className="text-xl font-bold mb-4" style={{ color: '#000000' }}>Positioning to Customers</h2>
-              <div className="space-y-4">
-                <div>
-                  <p className="font-bold text-sm uppercase tracking-wider border-b border-black inline-block mb-1" style={{ color: '#000000' }}>Time Savings</p>
-                  <p style={{ color: '#333333' }}>Faster project completion.</p>
+          <div className="p-8 rounded-2xl space-y-8" style={{ backgroundColor: '#f8f9fa' }}>
+            <h2 className="text-2xl font-bold flex items-center gap-3" style={{ color: '#000000' }}>
+              <span className="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">4</span>
+              Key Selling Points & Positioning
+            </h2>
+            <div className="grid md:grid-cols-2 gap-8">
+              <section className="bg-white p-6 rounded-2xl border border-gray-200">
+                <h2 className="text-xl font-bold mb-4" style={{ color: '#000000' }}>Key Selling Points</h2>
+                <ul className="space-y-3">
+                  {['Perfect color match', 'Durable and long-lasting', 'Fast turnaround', 'Competitive pricing', 'Hassle-free process'].map((item) => (
+                    <li key={item} className="flex items-center gap-2" style={{ color: '#000000' }}>
+                      <CheckCircle style={{ color: '#000000' }} size={18} />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </section>
+              <section className="bg-white p-6 rounded-2xl border border-gray-200">
+                <h2 className="text-xl font-bold mb-4" style={{ color: '#000000' }}>Positioning to Customers</h2>
+                <div className="space-y-4">
+                  <div>
+                    <p className="font-bold text-sm uppercase tracking-wider border-b border-black inline-block mb-1" style={{ color: '#000000' }}>Time Savings</p>
+                    <p style={{ color: '#333333' }}>Faster project completion.</p>
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm uppercase tracking-wider border-b border-black inline-block mb-1" style={{ color: '#000000' }}>Profitability</p>
+                    <p style={{ color: '#333333' }}>Reduced labor and material waste.</p>
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm uppercase tracking-wider border-b border-black inline-block mb-1" style={{ color: '#000000' }}>Quality</p>
+                    <p style={{ color: '#333333' }}>Seamless look that impresses clients.</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="font-bold text-sm uppercase tracking-wider border-b border-black inline-block mb-1" style={{ color: '#000000' }}>Profitability</p>
-                  <p style={{ color: '#333333' }}>Reduced labor and material waste.</p>
-                </div>
-                <div>
-                  <p className="font-bold text-sm uppercase tracking-wider border-b border-black inline-block mb-1" style={{ color: '#000000' }}>Quality</p>
-                  <p style={{ color: '#333333' }}>Seamless look that impresses clients.</p>
-                </div>
-              </div>
-            </section>
+              </section>
+            </div>
           </div>
 
           {/* 6. Overcoming Common Objections */}
-          <section className="bg-white p-8 rounded-2xl border border-gray-200">
-            <h2 className="text-2xl font-bold mb-6" style={{ color: '#000000' }}>Overcoming Common Objections</h2>
-            <div className="space-y-6">
-              <div className="border-l-2 border-black pl-4">
-                <p className="italic mb-1" style={{ color: '#666666' }}>“Standard nosings are cheaper.”</p>
-                <p className="font-semibold" style={{ color: '#000000' }}>Response: Finishment pricing is competitive and saves on labor costs.</p>
-              </div>
-              <div className="border-l-2 border-black pl-4">
-                <p className="italic mb-1" style={{ color: '#666666' }}>“Custom sounds complicated.”</p>
-                <p className="font-semibold" style={{ color: '#000000' }}>Response: Process is simple—just send material, and we handle the rest.</p>
-              </div>
-              <div className="border-l-2 border-black pl-4">
-                <p className="italic mb-1" style={{ color: '#666666' }}>“Will it delay my project?”</p>
-                <p className="font-semibold" style={{ color: '#000000' }}>Response: Delivery in 24–72 hours keeps projects on schedule.</p>
+          <section className="p-6 rounded-2xl">
+            <h2 className="text-2xl font-bold mb-6 flex items-center gap-3" style={{ color: '#000000' }}>
+              <span className="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">5</span>
+              Overcoming Common Objections
+            </h2>
+            <div className="bg-white p-8 rounded-2xl border border-gray-200 shadow-sm">
+              <div className="space-y-6">
+                <div className="border-l-2 border-black pl-4">
+                  <p className="italic mb-1" style={{ color: '#666666' }}>“Standard nosings are cheaper.”</p>
+                  <p className="font-semibold" style={{ color: '#000000' }}>Response: Finishment pricing is competitive and saves on labor costs.</p>
+                </div>
+                <div className="border-l-2 border-black pl-4">
+                  <p className="italic mb-1" style={{ color: '#666666' }}>“Custom sounds complicated.”</p>
+                  <p className="font-semibold" style={{ color: '#000000' }}>Response: Process is simple—just send material, and we handle the rest.</p>
+                </div>
+                <div className="border-l-2 border-black pl-4">
+                  <p className="italic mb-1" style={{ color: '#666666' }}>“Will it delay my project?”</p>
+                  <p className="font-semibold" style={{ color: '#000000' }}>Response: Delivery in 24–72 hours keeps projects on schedule.</p>
+                </div>
               </div>
             </div>
           </section>
