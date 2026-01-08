@@ -95,9 +95,6 @@ export default function DealerEducation() {
             <h1 className="text-3xl font-bold tracking-tight" style={{ color: '#000000' }}>Finishment Dealer Education</h1>
             <p className="mt-2" style={{ color: '#333333' }}>Elevating the Standard for Staircase Installation</p>
           </div>
-          <div className="bg-black text-white px-4 py-2 rounded-full text-sm font-semibold">
-            Dealer Sales Toolkit 2026
-          </div>
         </div>
       </header>
 
