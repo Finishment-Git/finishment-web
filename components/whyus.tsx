@@ -25,7 +25,7 @@ export default function WhyUs() {
   ];
 
   return (
-    <section style={{ 
+    <section id="why" style={{ 
       position: 'relative', 
       padding: '100px 20px', 
       backgroundColor: '#f8fafc', 
@@ -45,6 +45,16 @@ export default function WhyUs() {
 
       <div style={{ position: 'relative', zIndex: 10, maxWidth: '1200px', margin: '0 auto' }}>
         <div style={{ textAlign: 'center', marginBottom: '60px' }}>
+          <div style={{ 
+            fontSize: '14px', 
+            fontWeight: '800', 
+            color: '#ea580c', 
+            textTransform: 'uppercase', 
+            letterSpacing: '2px',
+            marginBottom: '12px'
+          }}>
+            Why Us
+          </div>
           <h2 style={{ 
             fontSize: '42px', 
             fontWeight: 'bold', 
