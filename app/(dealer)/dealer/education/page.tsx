@@ -89,11 +89,11 @@ export default function DealerEducation() {
   return (
     <div className="min-h-screen p-4 md:p-8 font-sans" style={{ backgroundColor: '#ffffff' }}>
       {/* Header Section */}
-      <header className="max-w-5xl mx-auto bg-white text-black p-8 rounded-t-2xl border-t border-x border-gray-200">
+      <header className="max-w-5xl mx-auto bg-white p-8 rounded-t-2xl border-t border-x border-gray-200">
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">Finishment Dealer Education</h1>
-            <p className="text-gray-600 mt-2">Elevating the Standard for Staircase Installation</p>
+            <h1 className="text-3xl font-bold tracking-tight" style={{ color: '#000000' }}>Finishment Dealer Education</h1>
+            <p className="mt-2" style={{ color: '#333333' }}>Elevating the Standard for Staircase Installation</p>
           </div>
           <div className="bg-black text-white px-4 py-2 rounded-full text-sm font-semibold">
             Dealer Sales Toolkit 2026
@@ -107,36 +107,36 @@ export default function DealerEducation() {
         {/* Status Banner for Active Dealers */}
         {profile?.status === 'ACTIVE' && (
           <div className="bg-gray-50 border-b border-gray-200 p-4 text-center">
-            <p className="text-black font-semibold flex items-center justify-center gap-2">
-              <CheckCircle className="text-black" size={20} />
+            <p className="font-semibold flex items-center justify-center gap-2" style={{ color: '#000000' }}>
+              <CheckCircle size={20} style={{ color: '#000000' }} />
               Your organization is trained and able to order.
             </p>
           </div>
         )}
 
-        <div className="p-6 md:p-10 space-y-12 text-gray-800">
+        <div className="p-6 md:p-10 space-y-12">
           
           {/* 1. Understanding the Problem */}
           <section>
-            <h2 className="text-2xl font-bold text-black mb-6 flex items-center gap-3">
+            <h2 className="text-2xl font-bold mb-6 flex items-center gap-3" style={{ color: '#000000' }}>
               <span className="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">1</span>
               Understanding the Problem
             </h2>
             <div className="grid md:grid-cols-2 gap-8">
-              <div className="bg-white p-6 rounded-xl border border-gray-200">
-                <p className="font-semibold text-black mb-3 text-lg">Standard stair nosings are:</p>
-                <ul className="space-y-2 text-black">
-                  <li className="flex items-center gap-2">• Hard to source.</li>
-                  <li className="flex items-center gap-2">• Often brittle and overpriced.</li>
-                  <li className="flex items-center gap-2">• Rarely match the flooring material.</li>
+              <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                <p className="font-bold mb-3 text-lg" style={{ color: '#000000' }}>Standard stair nosings are:</p>
+                <ul className="space-y-2" style={{ color: '#000000', fontWeight: '500' }}>
+                  <li>• Hard to source.</li>
+                  <li>• Often brittle and overpriced.</li>
+                  <li>• Rarely match the flooring material.</li>
                 </ul>
               </div>
-              <div className="bg-white p-6 rounded-xl border border-gray-200">
-                <p className="font-semibold text-black mb-3 text-lg">These issues lead to:</p>
-                <ul className="space-y-2 text-black">
-                  <li className="flex items-center gap-2">• Delays in project completion.</li>
-                  <li className="flex items-center gap-2">• Increased costs.</li>
-                  <li className="flex items-center gap-2">• Poor aesthetics and dissatisfied customers.</li>
+              <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                <p className="font-bold mb-3 text-lg" style={{ color: '#000000' }}>These issues lead to:</p>
+                <ul className="space-y-2" style={{ color: '#000000', fontWeight: '500' }}>
+                  <li>• Delays in project completion.</li>
+                  <li>• Increased costs.</li>
+                  <li>• Poor aesthetics and dissatisfied customers.</li>
                 </ul>
               </div>
             </div>
@@ -144,24 +144,24 @@ export default function DealerEducation() {
 
           {/* 2. Finishment’s Solution */}
           <section>
-            <h2 className="text-2xl font-bold text-black mb-6 flex items-center gap-3">
+            <h2 className="text-2xl font-bold mb-6 flex items-center gap-3" style={{ color: '#000000' }}>
               <span className="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">2</span>
               Finishment’s Solution
             </h2>
-            <div className="bg-white text-black p-8 rounded-2xl shadow-md border border-gray-200">
-              <h3 className="text-xl font-bold mb-4 italic">Custom Stair Nosings Made From YOUR Material</h3>
+            <div className="bg-white p-8 rounded-2xl shadow-md border border-gray-200">
+              <h3 className="text-xl font-bold mb-4 italic" style={{ color: '#000000' }}>Custom Stair Nosings Made From YOUR Material</h3>
               <div className="grid md:grid-cols-3 gap-6">
                 <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                  <h4 className="font-bold mb-2">Perfect Color</h4>
-                  <p className="text-sm">Same dye lot for perfect color consistency across the entire project.</p>
+                  <h4 className="font-bold mb-2" style={{ color: '#000000' }}>Perfect Color</h4>
+                  <p className="text-sm" style={{ color: '#333333' }}>Same dye lot for perfect color consistency across the entire project.</p>
                 </div>
                 <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                  <h4 className="font-bold mb-2">Superior Strength</h4>
-                  <p className="text-sm">Same durable material for superior strength and longevity.</p>
+                  <h4 className="font-bold mb-2" style={{ color: '#000000' }}>Superior Strength</h4>
+                  <p className="text-sm" style={{ color: '#333333' }}>Same durable material for superior strength and longevity.</p>
                 </div>
                 <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                  <h4 className="font-bold mb-2">Seamless Finish</h4>
-                  <p className="text-sm">A seamless finish that elevates the entire project's aesthetic.</p>
+                  <h4 className="font-bold mb-2" style={{ color: '#000000' }}>Seamless Finish</h4>
+                  <p className="text-sm" style={{ color: '#333333' }}>A seamless finish that elevates the entire project's aesthetic.</p>
                 </div>
               </div>
             </div>
@@ -169,26 +169,26 @@ export default function DealerEducation() {
 
           {/* 3. Why Choose Finishment? */}
           <section>
-            <h2 className="text-2xl font-bold text-black mb-6 flex items-center gap-3">
+            <h2 className="text-2xl font-bold mb-6 flex items-center gap-3" style={{ color: '#000000' }}>
               <span className="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">3</span>
               Why Choose Finishment?
             </h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="border border-gray-200 p-5 rounded-xl hover:border-black transition-colors">
-                <h3 className="font-bold text-black mb-2">Speed</h3>
-                <p className="text-sm">Delivery within 24–72 hours.</p>
+                <h3 className="font-bold mb-2" style={{ color: '#000000' }}>Speed</h3>
+                <p className="text-sm" style={{ color: '#333333' }}>Delivery within 24–72 hours.</p>
               </div>
               <div className="border border-gray-200 p-5 rounded-xl hover:border-black transition-colors">
-                <h3 className="font-bold text-black mb-2">Logistics</h3>
-                <p className="text-sm">Local drop-off/pick-up & shipping options.</p>
+                <h3 className="font-bold mb-2" style={{ color: '#000000' }}>Logistics</h3>
+                <p className="text-sm" style={{ color: '#333333' }}>Local drop-off/pick-up & shipping options.</p>
               </div>
               <div className="border border-gray-200 p-5 rounded-xl hover:border-black transition-colors">
-                <h3 className="font-bold text-black mb-2">Pricing</h3>
-                <p className="text-sm">Comparable or better than standard options.</p>
+                <h3 className="font-bold mb-2" style={{ color: '#000000' }}>Pricing</h3>
+                <p className="text-sm" style={{ color: '#333333' }}>Comparable or better than standard options.</p>
               </div>
               <div className="border border-gray-200 p-5 rounded-xl hover:border-black transition-colors">
-                <h3 className="font-bold text-black mb-2">Prep Work</h3>
-                <p className="text-sm">No need to restructure staircases.</p>
+                <h3 className="font-bold mb-2" style={{ color: '#000000' }}>Prep Work</h3>
+                <p className="text-sm" style={{ color: '#333333' }}>No need to restructure staircases.</p>
               </div>
             </div>
           </section>
@@ -196,50 +196,50 @@ export default function DealerEducation() {
           {/* 4 & 5. Key Selling Points & Positioning */}
           <div className="grid md:grid-cols-2 gap-8">
             <section className="bg-white p-6 rounded-2xl border border-gray-200">
-              <h2 className="text-xl font-bold text-black mb-4">Key Selling Points</h2>
+              <h2 className="text-xl font-bold mb-4" style={{ color: '#000000' }}>Key Selling Points</h2>
               <ul className="space-y-3">
                 {['Perfect color match', 'Durable and long-lasting', 'Fast turnaround', 'Competitive pricing', 'Hassle-free process'].map((item) => (
-                  <li key={item} className="flex items-center gap-2 text-black">
-                    <CheckCircle className="text-black" size={18} />
+                  <li key={item} className="flex items-center gap-2" style={{ color: '#000000' }}>
+                    <CheckCircle style={{ color: '#000000' }} size={18} />
                     {item}
                   </li>
                 ))}
               </ul>
             </section>
             <section className="bg-white p-6 rounded-2xl border border-gray-200">
-              <h2 className="text-xl font-bold text-black mb-4">Positioning to Customers</h2>
+              <h2 className="text-xl font-bold mb-4" style={{ color: '#000000' }}>Positioning to Customers</h2>
               <div className="space-y-4">
                 <div>
-                  <p className="font-bold text-sm text-black uppercase tracking-wider border-b border-black inline-block mb-1">Time Savings</p>
-                  <p className="text-black">Faster project completion.</p>
+                  <p className="font-bold text-sm uppercase tracking-wider border-b border-black inline-block mb-1" style={{ color: '#000000' }}>Time Savings</p>
+                  <p style={{ color: '#333333' }}>Faster project completion.</p>
                 </div>
                 <div>
-                  <p className="font-bold text-sm text-black uppercase tracking-wider border-b border-black inline-block mb-1">Profitability</p>
-                  <p className="text-black">Reduced labor and material waste.</p>
+                  <p className="font-bold text-sm uppercase tracking-wider border-b border-black inline-block mb-1" style={{ color: '#000000' }}>Profitability</p>
+                  <p style={{ color: '#333333' }}>Reduced labor and material waste.</p>
                 </div>
                 <div>
-                  <p className="font-bold text-sm text-black uppercase tracking-wider border-b border-black inline-block mb-1">Quality</p>
-                  <p className="text-black">Seamless look that impresses clients.</p>
+                  <p className="font-bold text-sm uppercase tracking-wider border-b border-black inline-block mb-1" style={{ color: '#000000' }}>Quality</p>
+                  <p style={{ color: '#333333' }}>Seamless look that impresses clients.</p>
                 </div>
               </div>
             </section>
           </div>
 
           {/* 6. Overcoming Common Objections */}
-          <section className="bg-white text-black p-8 rounded-2xl border border-gray-200">
-            <h2 className="text-2xl font-bold mb-6">Overcoming Common Objections</h2>
+          <section className="bg-white p-8 rounded-2xl border border-gray-200">
+            <h2 className="text-2xl font-bold mb-6" style={{ color: '#000000' }}>Overcoming Common Objections</h2>
             <div className="space-y-6">
               <div className="border-l-2 border-black pl-4">
-                <p className="italic text-gray-600 mb-1">“Standard nosings are cheaper.”</p>
-                <p className="font-semibold text-black">Response: Finishment pricing is competitive and saves on labor costs.</p>
+                <p className="italic mb-1" style={{ color: '#666666' }}>“Standard nosings are cheaper.”</p>
+                <p className="font-semibold" style={{ color: '#000000' }}>Response: Finishment pricing is competitive and saves on labor costs.</p>
               </div>
               <div className="border-l-2 border-black pl-4">
-                <p className="italic text-gray-600 mb-1">“Custom sounds complicated.”</p>
-                <p className="font-semibold text-black">Response: Process is simple—just send material, and we handle the rest.</p>
+                <p className="italic mb-1" style={{ color: '#666666' }}>“Custom sounds complicated.”</p>
+                <p className="font-semibold" style={{ color: '#000000' }}>Response: Process is simple—just send material, and we handle the rest.</p>
               </div>
               <div className="border-l-2 border-black pl-4">
-                <p className="italic text-gray-600 mb-1">“Will it delay my project?”</p>
-                <p className="font-semibold text-black">Response: Delivery in 24–72 hours keeps projects on schedule.</p>
+                <p className="italic mb-1" style={{ color: '#666666' }}>“Will it delay my project?”</p>
+                <p className="font-semibold" style={{ color: '#000000' }}>Response: Delivery in 24–72 hours keeps projects on schedule.</p>
               </div>
             </div>
           </section>
@@ -251,8 +251,8 @@ export default function DealerEducation() {
           <div className="bg-white p-8 rounded-2xl text-center border border-gray-200 max-w-2xl mx-auto">
             {profile?.status === 'ACTIVE' ? (
               <>
-                <h3 className="text-2xl font-bold text-black mb-2">Training Complete</h3>
-                <p className="text-gray-600 mb-8">
+                <h3 className="text-2xl font-bold mb-2" style={{ color: '#000000' }}>Training Complete</h3>
+                <p className="mb-8" style={{ color: '#333333' }}>
                   You have already completed the dealer training and your account is active.
                 </p>
                 
@@ -265,8 +265,8 @@ export default function DealerEducation() {
               </>
             ) : (
               <>
-                <h3 className="text-2xl font-bold text-black mb-2">Ready to start?</h3>
-                <p className="text-gray-600 mb-8">
+                <h3 className="text-2xl font-bold mb-2" style={{ color: '#000000' }}>Ready to start?</h3>
+                <p className="mb-8" style={{ color: '#333333' }}>
                   By clicking below, you confirm you've reviewed the training material and are ready to offer custom stair nosings to your clients.
                 </p>
                 
