@@ -36,11 +36,6 @@ export default function DealerEducation() {
       
       if (profileData) {
         setProfile(profileData);
-        
-        // If already active, redirect to ordering
-        if (profileData.status === 'ACTIVE') {
-          router.push('/dealer/ordering');
-        }
       }
     };
     getUser();
@@ -109,6 +104,16 @@ export default function DealerEducation() {
       {/* Main Content Container */}
       <main className="max-w-5xl mx-auto shadow-xl rounded-b-2xl overflow-hidden border-x border-b" style={{ backgroundColor: '#ffffff', borderColor: '#e2e8f0' }}>
         
+        {/* Status Banner for Active Dealers */}
+        {profile?.status === 'ACTIVE' && (
+          <div className="bg-green-50 border-b border-green-200 p-4 text-center">
+            <p className="text-green-800 font-semibold flex items-center justify-center gap-2">
+              <CheckCircle size={20} />
+              Your organization is trained and able to order.
+            </p>
+          </div>
+        )}
+
         <div className="p-6 md:p-10 space-y-12 text-gray-800">
           
           {/* 1. Understanding the Problem */}
@@ -244,20 +249,38 @@ export default function DealerEducation() {
         {/* Footer / CTA */}
         <footer className="p-6 border-t bg-slate-50 border-slate-200">
           <div className="bg-white p-8 rounded-2xl text-center border border-slate-200 shadow-sm max-w-2xl mx-auto">
-            <h3 className="text-2xl font-bold text-slate-900 mb-2">Ready to start?</h3>
-            <p className="text-slate-600 mb-8">
-              By clicking below, you confirm you've reviewed the training material and are ready to offer custom stair nosings to your clients.
-            </p>
-            
-            <button 
-              onClick={handleCompleteTraining}
-              disabled={loading}
-              className={`w-full md:w-auto px-10 py-4 rounded-xl font-bold text-lg shadow-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] ${
-                loading ? 'bg-slate-400 cursor-not-allowed' : 'bg-green-600 hover:bg-green-700 text-white'
-              }`}
-            >
-              {loading ? "Activating Account..." : "I've Read the Training - Unlock My Account"}
-            </button>
+            {profile?.status === 'ACTIVE' ? (
+              <>
+                <h3 className="text-2xl font-bold text-slate-900 mb-2">Training Complete</h3>
+                <p className="text-slate-600 mb-8">
+                  You have already completed the dealer training and your account is active.
+                </p>
+                
+                <button 
+                  onClick={() => router.push('/dealer/ordering')}
+                  className="w-full md:w-auto px-10 py-4 rounded-xl font-bold text-lg shadow-lg bg-blue-600 hover:bg-blue-700 text-white transition-all transform hover:scale-[1.02] active:scale-[0.98]"
+                >
+                  Go to Ordering
+                </button>
+              </>
+            ) : (
+              <>
+                <h3 className="text-2xl font-bold text-slate-900 mb-2">Ready to start?</h3>
+                <p className="text-slate-600 mb-8">
+                  By clicking below, you confirm you've reviewed the training material and are ready to offer custom stair nosings to your clients.
+                </p>
+                
+                <button 
+                  onClick={handleCompleteTraining}
+                  disabled={loading}
+                  className={`w-full md:w-auto px-10 py-4 rounded-xl font-bold text-lg shadow-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] ${
+                    loading ? 'bg-slate-400 cursor-not-allowed' : 'bg-green-600 hover:bg-green-700 text-white'
+                  }`}
+                >
+                  {loading ? "Activating Account..." : "I've Read the Training - Unlock My Account"}
+                </button>
+              </>
+            )}
           </div>
         </footer>
       </main>
