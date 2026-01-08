@@ -25,7 +25,7 @@ export default function WhyUs() {
   ];
 
   return (
-    <section style={{ 
+    <section id="why" style={{ 
       position: 'relative', 
       padding: '100px 20px', 
       backgroundColor: '#f8fafc', 
@@ -52,7 +52,7 @@ export default function WhyUs() {
             letterSpacing: '-1px',
             textShadow: '0 2px 4px rgba(255,255,255,0.5)' // Added slight shadow to help text pop
           }}>
-            Why Contractors & Homeowners <br /> Choose Finishment
+            Why Flooring Dealers, Installers, <br /> and Homeowners Choose Finishment
           </h2>
         </div>
 

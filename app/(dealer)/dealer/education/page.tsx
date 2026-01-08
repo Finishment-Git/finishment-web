@@ -36,11 +36,6 @@ export default function DealerEducation() {
       
       if (profileData) {
         setProfile(profileData);
-        
-        // If already active, redirect to ordering
-        if (profileData.status === 'ACTIVE') {
-          router.push('/dealer/ordering');
-        }
       }
     };
     getUser();
@@ -85,180 +80,210 @@ export default function DealerEducation() {
 
   if (!user || !profile) {
     return (
-      <div style={{ textAlign: 'center', padding: '40px' }}>
-        <p>Loading...</p>
+      <div style={{ textAlign: 'center', padding: '40px', backgroundColor: '#ffffff', color: '#000000' }}>
+        <p style={{ color: '#000000' }}>Loading...</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 md:p-8 font-sans">
+    <div className="min-h-screen p-4 md:p-8 font-sans" style={{ backgroundColor: '#ffffff' }}>
       {/* Header Section */}
-      <header className="max-w-5xl mx-auto bg-slate-900 text-white p-8 rounded-t-2xl shadow-lg">
+      <header className="max-w-5xl mx-auto bg-white p-8 rounded-t-2xl border-t border-x border-gray-200">
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">Finishment Dealer Portal</h1>
-            <p className="text-slate-400 mt-2">Elevating the Standard for Staircase Installation</p>
-          </div>
-          <div className="bg-blue-600 px-4 py-2 rounded-full text-sm font-semibold">
-            Retail Sales Toolkit 2026
+            <h1 className="text-3xl font-bold tracking-tight" style={{ color: '#000000' }}>Finishment Dealer Education</h1>
+            <p className="mt-2" style={{ color: '#333333' }}>Elevating the Standard for Staircase Installation</p>
           </div>
         </div>
       </header>
 
       {/* Main Content Container */}
-      <main className="max-w-5xl mx-auto bg-white shadow-xl rounded-b-2xl overflow-hidden border-x border-b">
+      <main className="max-w-5xl mx-auto border-x border-b border-gray-200 overflow-hidden" style={{ backgroundColor: '#ffffff' }}>
         
-        {/* Navigation Tabs */}
-        <div className="flex border-b">
-          <button 
-            onClick={() => setActiveTab('pitch')}
-            className={`flex-1 py-4 text-center font-medium transition-colors ${activeTab === 'pitch' ? 'border-b-4 border-blue-600 text-blue-600' : 'text-gray-500 hover:bg-gray-50'}`}
-          >
-            The Sales Pitch
-          </button>
-          <button 
-            onClick={() => setActiveTab('compare')}
-            className={`flex-1 py-4 text-center font-medium transition-colors ${activeTab === 'compare' ? 'border-b-4 border-blue-600 text-blue-600' : 'text-gray-500 hover:bg-gray-50'}`}
-          >
-            Comparison Guide
-          </button>
-          <button 
-            onClick={() => setActiveTab('process')}
-            className={`flex-1 py-4 text-center font-medium transition-colors ${activeTab === 'process' ? 'border-b-4 border-blue-600 text-blue-600' : 'text-gray-500 hover:bg-gray-50'}`}
-          >
-            Dealer Checklist
-          </button>
-        </div>
+        {/* Status Banner for Active Dealers */}
+        {profile?.status === 'ACTIVE' && (
+          <div className="bg-gray-50 border-b border-gray-200 p-4 text-center">
+            <p className="font-semibold flex items-center justify-center gap-2" style={{ color: '#000000' }}>
+              <CheckCircle size={20} style={{ color: '#000000' }} />
+              Your organization is trained and able to order.
+            </p>
+          </div>
+        )}
 
-        <div className="p-6 md:p-10">
+        <div className="p-6 md:p-10 space-y-12">
           
-          {/* TAB 1: THE PITCH */}
-          {activeTab === 'pitch' && (
-            <div className="space-y-8 animate-in fade-in duration-500">
-              <section className="bg-blue-50 border-l-4 border-blue-500 p-6">
-                <h2 className="text-xl font-bold text-blue-900 mb-2">The "Invisible" Solution</h2>
-                <p className="text-blue-800 leading-relaxed">
-                  Stop settling for "close enough." With Finishment, we use the customer's <strong>actual flooring planks</strong> to create a custom stair nose that is 100% color-matched and sits perfectly flush.
-                </p>
-              </section>
+          {/* 1. Understanding the Problem */}
+          <section className="p-6 rounded-2xl">
+            <h2 className="text-2xl font-bold mb-6 flex items-center gap-3" style={{ color: '#000000' }}>
+              Understanding the Problem
+            </h2>
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                <p className="font-bold mb-3 text-lg" style={{ color: '#000000' }}>Standard stair nosings are:</p>
+                <ul className="space-y-2 list-none" style={{ color: '#000000', fontWeight: '500' }}>
+                  <li>Hard to source.</li>
+                  <li>Often brittle and overpriced.</li>
+                  <li>Rarely match the flooring material.</li>
+                </ul>
+              </div>
+              <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                <p className="font-bold mb-3 text-lg" style={{ color: '#000000' }}>These issues lead to:</p>
+                <ul className="space-y-2 list-none" style={{ color: '#000000', fontWeight: '500' }}>
+                  <li>Delays in project completion.</li>
+                  <li>Increased costs.</li>
+                  <li>Poor aesthetics and dissatisfied customers.</li>
+                </ul>
+              </div>
+            </div>
+          </section>
 
+          {/* 2. Finishment’s Solution */}
+          <section className="p-8 rounded-2xl" style={{ backgroundColor: '#f8f9fa' }}>
+            <h2 className="text-2xl font-bold mb-6 flex items-center gap-3" style={{ color: '#000000' }}>
+              Finishment’s Solution
+            </h2>
+            <div className="bg-white p-8 rounded-2xl shadow-md border border-gray-200">
+              <h3 className="text-xl font-bold mb-4 italic" style={{ color: '#000000' }}>Custom Stair Nosings Made From YOUR Material</h3>
               <div className="grid md:grid-cols-3 gap-6">
-                <div className="p-4 border rounded-xl hover:shadow-md transition-shadow">
-                  <ShieldCheck className="text-blue-600 mb-3" size={32} />
-                  <h3 className="font-bold text-lg mb-2">Safety First</h3>
-                  <p className="text-sm text-gray-600">Zero-trip hazard. Flush mount means no raised edges for heels to catch on.</p>
+                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                  <h4 className="font-bold mb-2" style={{ color: '#000000' }}>Perfect Color</h4>
+                  <p className="text-sm" style={{ color: '#333333' }}>Same dye lot for perfect color consistency across the entire project.</p>
                 </div>
-                <div className="p-4 border rounded-xl hover:shadow-md transition-shadow">
-                  <Ruler className="text-blue-600 mb-3" size={32} />
-                  <h3 className="font-bold text-lg mb-2">Perfect Grain</h3>
-                  <p className="text-sm text-gray-600">Continuous visual flow from the landing over the step. No plastic transitions.</p>
+                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                  <h4 className="font-bold mb-2" style={{ color: '#000000' }}>Superior Strength</h4>
+                  <p className="text-sm" style={{ color: '#333333' }}>Same durable material for superior strength and longevity.</p>
                 </div>
-                <div className="p-4 border rounded-xl hover:shadow-md transition-shadow">
-                  <Package className="text-blue-600 mb-3" size={32} />
-                  <h3 className="font-bold text-lg mb-2">System Based</h3>
-                  <p className="text-sm text-gray-600">Compatible with LVP, Laminate, and Engineered Wood from any manufacturer.</p>
+                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                  <h4 className="font-bold mb-2" style={{ color: '#000000' }}>Seamless Finish</h4>
+                  <p className="text-sm" style={{ color: '#333333' }}>A seamless finish that elevates the entire project's aesthetic.</p>
                 </div>
               </div>
             </div>
-          )}
+          </section>
 
-          {/* TAB 2: COMPARISON */}
-          {activeTab === 'compare' && (
-            <div className="overflow-x-auto animate-in slide-in-from-right duration-500">
-              <table className="w-full border-collapse">
-                <thead>
-                  <tr className="bg-gray-100">
-                    <th className="p-4 text-left border">Feature</th>
-                    <th className="p-4 text-left border">Standard Overlap</th>
-                    <th className="p-4 text-left border bg-blue-50">Finishment Flush-Mount</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td className="p-4 border font-semibold">Visual Profile</td>
-                    <td className="p-4 border text-red-600 flex items-center gap-2"><AlertTriangle size={16}/> Bulky 1/4" Bump</td>
-                    <td className="p-4 border bg-blue-50 text-green-700 font-bold flex items-center gap-2"><CheckCircle size={16}/> Seamless & Level</td>
-                  </tr>
-                  <tr>
-                    <td className="p-4 border font-semibold">Color Match</td>
-                    <td className="p-4 border text-gray-600">"Coordinated" Wrap</td>
-                    <td className="p-4 border bg-blue-50 text-green-700 font-bold">100% Identical</td>
-                  </tr>
-                  <tr>
-                    <td className="p-4 border font-semibold">Durability</td>
-                    <td className="p-4 border text-gray-600">Glue/Track Dependent</td>
-                    <td className="p-4 border bg-blue-50 text-green-700 font-bold">Structurally Bonded</td>
-                  </tr>
-                  <tr>
-                    <td className="p-4 border font-semibold">Home Value</td>
-                    <td className="p-4 border text-gray-600">Builder Grade</td>
-                    <td className="p-4 border bg-blue-50 text-green-700 font-bold">Architectural Grade</td>
-                  </tr>
-                </tbody>
-              </table>
+          {/* 3. Why Choose Finishment? */}
+          <section className="p-6 rounded-2xl">
+            <h2 className="text-2xl font-bold mb-6 flex items-center gap-3" style={{ color: '#000000' }}>
+              Why Choose Finishment?
+            </h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="bg-white border border-gray-200 p-5 rounded-xl hover:border-black transition-colors">
+                <h3 className="font-bold mb-2" style={{ color: '#000000' }}>Speed</h3>
+                <p className="text-sm" style={{ color: '#333333' }}>Delivery within 24–72 hours.</p>
+              </div>
+              <div className="bg-white border border-gray-200 p-5 rounded-xl hover:border-black transition-colors">
+                <h3 className="font-bold mb-2" style={{ color: '#000000' }}>Logistics</h3>
+                <p className="text-sm" style={{ color: '#333333' }}>Local drop-off/pick-up & shipping options.</p>
+              </div>
+              <div className="bg-white border border-gray-200 p-5 rounded-xl hover:border-black transition-colors">
+                <h3 className="font-bold mb-2" style={{ color: '#000000' }}>Pricing</h3>
+                <p className="text-sm" style={{ color: '#333333' }}>Comparable or better than standard options.</p>
+              </div>
+              <div className="bg-white border border-gray-200 p-5 rounded-xl hover:border-black transition-colors">
+                <h3 className="font-bold mb-2" style={{ color: '#000000' }}>Prep Work</h3>
+                <p className="text-sm" style={{ color: '#333333' }}>No need to restructure staircases.</p>
+              </div>
             </div>
-          )}
+          </section>
 
-          {/* TAB 3: DEALER CHECKLIST */}
-          {activeTab === 'process' && (
-            <div className="space-y-6 animate-in fade-in duration-500">
-              <h2 className="text-2xl font-bold">Success Checklist</h2>
-              <ul className="space-y-4">
-                <li className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg">
-                  <input type="checkbox" className="mt-1.5 h-5 w-5 rounded border-gray-300 text-blue-600" />
+          {/* 4 & 5. Key Selling Points & Positioning */}
+          <div className="p-8 rounded-2xl space-y-8" style={{ backgroundColor: '#f8f9fa' }}>
+            <h2 className="text-2xl font-bold flex items-center gap-3" style={{ color: '#000000' }}>
+              Key Selling Points & Positioning
+            </h2>
+            <div className="grid md:grid-cols-2 gap-8">
+              <section className="bg-white p-6 rounded-2xl border border-gray-200">
+                <h2 className="text-xl font-bold mb-4" style={{ color: '#000000' }}>Key Selling Points</h2>
+                <ul className="space-y-3">
+                  {['Perfect color match', 'Durable and long-lasting', 'Fast turnaround', 'Competitive pricing', 'Hassle-free process'].map((item) => (
+                    <li key={item} className="flex items-center gap-2" style={{ color: '#000000' }}>
+                      <CheckCircle style={{ color: '#000000' }} size={18} />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </section>
+              <section className="bg-white p-6 rounded-2xl border border-gray-200">
+                <h2 className="text-xl font-bold mb-4" style={{ color: '#000000' }}>Positioning to Customers</h2>
+                <div className="space-y-4">
                   <div>
-                    <p className="font-bold">The "One Extra Box" Rule</p>
-                    <p className="text-sm text-gray-600">Did you add one full box of flooring to the order for fabrication material?</p>
+                    <p className="font-bold text-sm uppercase tracking-wider border-b border-black inline-block mb-1" style={{ color: '#000000' }}>Time Savings</p>
+                    <p style={{ color: '#333333' }}>Faster project completion.</p>
                   </div>
-                </li>
-                <li className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg">
-                  <input type="checkbox" className="mt-1.5 h-5 w-5 rounded border-gray-300 text-blue-600" />
                   <div>
-                    <p className="font-bold">Lead Time Alignment</p>
-                    <p className="text-sm text-gray-600">Did you inform the customer of the 10-14 day custom fabrication window?</p>
+                    <p className="font-bold text-sm uppercase tracking-wider border-b border-black inline-block mb-1" style={{ color: '#000000' }}>Profitability</p>
+                    <p style={{ color: '#333333' }}>Reduced labor and material waste.</p>
                   </div>
-                </li>
-                <li className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg">
-                  <input type="checkbox" className="mt-1.5 h-5 w-5 rounded border-gray-300 text-blue-600" />
                   <div>
-                    <p className="font-bold">Subfloor Check</p>
-                    <p className="text-sm text-gray-600">Confirm the installer knows this is a flush-mount system requiring a clean stair subfloor.</p>
+                    <p className="font-bold text-sm uppercase tracking-wider border-b border-black inline-block mb-1" style={{ color: '#000000' }}>Quality</p>
+                    <p style={{ color: '#333333' }}>Seamless look that impresses clients.</p>
                   </div>
-                </li>
-              </ul>
+                </div>
+              </section>
             </div>
-          )}
+          </div>
+
+          {/* 6. Overcoming Common Objections */}
+          <section className="p-6 rounded-2xl">
+            <h2 className="text-2xl font-bold mb-6 flex items-center gap-3" style={{ color: '#000000' }}>
+              Overcoming Common Objections
+            </h2>
+            <div className="bg-white p-8 rounded-2xl border border-gray-200 shadow-sm">
+              <div className="space-y-6">
+                <div className="border-l-2 border-black pl-4">
+                  <p className="italic mb-1" style={{ color: '#666666' }}>“Standard nosings are cheaper.”</p>
+                  <p className="font-semibold" style={{ color: '#000000' }}>Response: Finishment pricing is competitive and saves on labor costs.</p>
+                </div>
+                <div className="border-l-2 border-black pl-4">
+                  <p className="italic mb-1" style={{ color: '#666666' }}>“Custom sounds complicated.”</p>
+                  <p className="font-semibold" style={{ color: '#000000' }}>Response: Process is simple—just send material, and we handle the rest.</p>
+                </div>
+                <div className="border-l-2 border-black pl-4">
+                  <p className="italic mb-1" style={{ color: '#666666' }}>“Will it delay my project?”</p>
+                  <p className="font-semibold" style={{ color: '#000000' }}>Response: Delivery in 24–72 hours keeps projects on schedule.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
         </div>
 
         {/* Footer / CTA */}
-        <footer className="bg-gray-100 p-6 border-t">
-          <div style={{ background: '#f3f4f6', padding: '30px', borderRadius: '12px', textAlign: 'center' }}>
-            <h3 style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '10px' }}>
-              Ready to order?
-            </h3>
-            <p style={{ marginBottom: '20px', color: '#4b5563' }}>
-              By clicking the button below, you acknowledge that you have viewed the training material.
-            </p>
-            
-            <button 
-              onClick={handleCompleteTraining}
-              disabled={loading}
-              style={{ 
-                padding: '16px 32px', 
-                background: '#059669',
-                color: '#fff', 
-                border: 'none', 
-                borderRadius: '8px',
-                fontSize: '18px',
-                fontWeight: 'bold',
-                cursor: loading ? 'not-allowed' : 'pointer',
-                transition: 'background 0.2s',
-                opacity: loading ? 0.7 : 1
-              }}
-            >
-              {loading ? "Unlocking Account..." : "Complete Training & Unlock Pricing"}
-            </button>
+        <footer className="p-6 border-t bg-gray-50 border-gray-200">
+          <div className="bg-white p-8 rounded-2xl text-center border border-gray-200 max-w-2xl mx-auto">
+            {profile?.status === 'ACTIVE' ? (
+              <>
+                <h3 className="text-2xl font-bold mb-2" style={{ color: '#000000' }}>Training Complete</h3>
+                <p className="mb-8" style={{ color: '#333333' }}>
+                  You have already completed the dealer training and your account is active.
+                </p>
+                
+                <button 
+                  onClick={() => router.push('/dealer/ordering')}
+                  className="w-full md:w-auto px-10 py-4 rounded-xl font-bold text-lg shadow-lg bg-black hover:bg-gray-800 text-white transition-all transform hover:scale-[1.02] active:scale-[0.98]"
+                >
+                  Go to Ordering
+                </button>
+              </>
+            ) : (
+              <>
+                <h3 className="text-2xl font-bold mb-2" style={{ color: '#000000' }}>Ready to start?</h3>
+                <p className="mb-8" style={{ color: '#333333' }}>
+                  By clicking below, you confirm you've reviewed the training material and are ready to offer custom stair nosings to your clients.
+                </p>
+                
+                <button 
+                  onClick={handleCompleteTraining}
+                  disabled={loading}
+                  className={`w-full md:w-auto px-10 py-4 rounded-xl font-bold text-lg shadow-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] ${
+                    loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-black hover:bg-gray-800 text-white'
+                  }`}
+                >
+                  {loading ? "Activating Account..." : "I've Read the Training - Unlock My Account"}
+                </button>
+              </>
+            )}
           </div>
         </footer>
       </main>
