@@ -4,9 +4,10 @@ import { NextResponse } from 'next/server';
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { orderId: string } }
+  { params }: { params: Promise<{ orderId: string }> }
 ) {
   try {
+    const { orderId } = await params;
     const adminUser = await requireAuth(['admin']);
     
     if (!canManageUsers(adminUser)) {
@@ -22,7 +23,7 @@ export async function DELETE(
     const { data: order, error: orderError } = await supabase
       .from('orders')
       .select('*')
-      .eq('id', params.orderId)
+      .eq('id', orderId)
       .single();
 
     if (orderError || !order) {
@@ -36,7 +37,7 @@ export async function DELETE(
     await supabase
       .from('order_audit_log')
       .insert({
-        order_id: params.orderId,
+        order_id: orderId,
         admin_user_id: adminUser.id,
         action: 'order_deleted',
         old_value: order,
@@ -47,7 +48,7 @@ export async function DELETE(
     const { error: deleteError } = await supabase
       .from('orders')
       .delete()
-      .eq('id', params.orderId);
+      .eq('id', orderId);
 
     if (deleteError) {
       return NextResponse.json(

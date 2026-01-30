@@ -5,9 +5,10 @@ import { NextResponse } from 'next/server';
 
 export async function POST(
   request: Request,
-  { params }: { params: { orderId: string } }
+  { params }: { params: Promise<{ orderId: string }> }
 ) {
   try {
+    const { orderId } = await params;
     const adminUser = await requireAuth(['admin', 'customer_service']);
     
     if (!canManagePayments(adminUser)) {
@@ -25,7 +26,7 @@ export async function POST(
     const { data: order, error: orderError } = await supabase
       .from('orders')
       .select('*, order_payments(*)')
-      .eq('id', params.orderId)
+      .eq('id', orderId)
       .single();
 
     if (orderError || !order) {
@@ -71,7 +72,7 @@ export async function POST(
       const { error: statusError } = await supabase
         .from('orders')
         .update({ status: newStatus })
-        .eq('id', params.orderId);
+        .eq('id', orderId);
 
       if (statusError) {
         console.error('Failed to update order status:', statusError);
@@ -82,7 +83,7 @@ export async function POST(
     await supabase
       .from('order_audit_log')
       .insert({
-        order_id: params.orderId,
+        order_id: orderId,
         admin_user_id: adminUser.id,
         action: 'payment_received',
         old_value: { payment_received: false },

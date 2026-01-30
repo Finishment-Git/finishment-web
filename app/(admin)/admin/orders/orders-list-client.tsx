@@ -12,9 +12,25 @@ interface Order {
   total_amount_cents: number;
   payment_method: string;
   created_at: string;
-  dealers: { company_name: string };
-  profiles: { email: string };
+  dealers: { company_name: string } | { company_name: string }[];
+  profiles: { email: string } | { email: string }[];
 }
+
+// Helper to safely get company name
+const getCompanyName = (dealers: Order['dealers']): string => {
+  if (Array.isArray(dealers)) {
+    return dealers[0]?.company_name || 'N/A';
+  }
+  return dealers?.company_name || 'N/A';
+};
+
+// Helper to safely get email
+const getEmail = (profiles: Order['profiles']): string => {
+  if (Array.isArray(profiles)) {
+    return profiles[0]?.email || 'N/A';
+  }
+  return profiles?.email || 'N/A';
+};
 
 interface OrdersListClientProps {
   initialOrders: Order[];
@@ -243,7 +259,7 @@ export default function OrdersListClient({
                       </Link>
                     </td>
                     <td style={{ padding: '12px 16px', fontSize: '14px' }}>
-                      {order.dealers?.company_name || 'N/A'}
+                      {getCompanyName(order.dealers)}
                     </td>
                     <td style={{ padding: '12px 16px' }}>
                       <span style={{

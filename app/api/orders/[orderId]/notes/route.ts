@@ -4,9 +4,10 @@ import { NextResponse } from 'next/server';
 
 export async function POST(
   request: Request,
-  { params }: { params: { orderId: string } }
+  { params }: { params: Promise<{ orderId: string }> }
 ) {
   try {
+    const { orderId } = await params;
     const adminUser = await requireAuth();
     const supabase = await createClient();
     const body = await request.json();
@@ -16,7 +17,7 @@ export async function POST(
     const { data: order, error: orderError } = await supabase
       .from('orders')
       .select('notes')
-      .eq('id', params.orderId)
+      .eq('id', orderId)
       .single();
 
     if (orderError || !order) {
@@ -34,7 +35,7 @@ export async function POST(
     const { error: updateError } = await supabase
       .from('orders')
       .update({ notes: updatedNotes })
-      .eq('id', params.orderId);
+      .eq('id', orderId);
 
     if (updateError) {
       return NextResponse.json(
@@ -47,7 +48,7 @@ export async function POST(
     await supabase
       .from('order_audit_log')
       .insert({
-        order_id: params.orderId,
+        order_id: orderId,
         admin_user_id: adminUser.id,
         action: 'note_added',
         new_value: { notes },

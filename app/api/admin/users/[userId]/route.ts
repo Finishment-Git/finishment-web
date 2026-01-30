@@ -4,9 +4,10 @@ import { NextResponse } from 'next/server';
 
 export async function PATCH(
   request: Request,
-  { params }: { params: { userId: string } }
+  { params }: { params: Promise<{ userId: string }> }
 ) {
   try {
+    const { userId } = await params;
     const adminUser = await requireAuth(['admin']);
     const supabase = await createClient();
     const body = await request.json();
@@ -20,7 +21,7 @@ export async function PATCH(
     }
 
     // Prevent self-role change
-    if (params.userId === adminUser.id) {
+    if (userId === adminUser.id) {
       return NextResponse.json(
         { error: 'You cannot change your own role' },
         { status: 400 }
@@ -30,7 +31,7 @@ export async function PATCH(
     const { error: updateError } = await supabase
       .from('admin_users')
       .update({ role })
-      .eq('id', params.userId);
+      .eq('id', userId);
 
     if (updateError) {
       return NextResponse.json(
@@ -51,14 +52,15 @@ export async function PATCH(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { userId: string } }
+  { params }: { params: Promise<{ userId: string }> }
 ) {
   try {
+    const { userId } = await params;
     const adminUser = await requireAuth(['admin']);
     const supabase = await createClient();
 
     // Prevent self-deletion
-    if (params.userId === adminUser.id) {
+    if (userId === adminUser.id) {
       return NextResponse.json(
         { error: 'You cannot deactivate yourself' },
         { status: 400 }
@@ -69,7 +71,7 @@ export async function DELETE(
     const { error: deleteError } = await supabase
       .from('admin_users')
       .delete()
-      .eq('id', params.userId);
+      .eq('id', userId);
 
     if (deleteError) {
       return NextResponse.json(
@@ -79,7 +81,7 @@ export async function DELETE(
     }
 
     // Also delete auth user
-    await supabase.auth.admin.deleteUser(params.userId);
+    await supabase.auth.admin.deleteUser(userId);
 
     return NextResponse.json({ success: true });
   } catch (error: any) {
