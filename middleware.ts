@@ -55,7 +55,54 @@ export async function middleware(request: NextRequest) {
       console.error('Middleware auth error:', error.message)
     }
 
-    // 4. Protect dealer routes - redirect to login if not authenticated
+    // 4. Protect admin routes
+    if (request.nextUrl.pathname.startsWith('/admin')) {
+      // Allow access to login page
+      if (request.nextUrl.pathname === '/admin/login') {
+        // If already authenticated as admin, redirect to dashboard
+        if (user) {
+          const { data: adminUser } = await supabase
+            .from('admin_users')
+            .select('id')
+            .eq('id', user.id)
+            .single()
+          
+          if (adminUser) {
+            return NextResponse.redirect(new URL('/admin/dashboard', request.url))
+          }
+        }
+        return response
+      }
+      
+      // For all other admin routes, require authentication
+      if (!user) {
+        return NextResponse.redirect(new URL('/admin/login', request.url))
+      }
+      
+      // Check if user exists in admin_users table
+      const { data: adminUser, error: adminError } = await supabase
+        .from('admin_users')
+        .select('role')
+        .eq('id', user.id)
+        .single()
+      
+      if (adminError || !adminUser) {
+        // User is authenticated but not an admin user
+        return NextResponse.redirect(new URL('/unauthorized', request.url))
+      }
+      
+      // Check role-based access for admin-only routes
+      const adminOnlyRoutes = ['/admin/users', '/admin/settings']
+      const isAdminOnlyRoute = adminOnlyRoutes.some(route => 
+        request.nextUrl.pathname.startsWith(route)
+      )
+      
+      if (isAdminOnlyRoute && adminUser.role !== 'admin') {
+        return NextResponse.redirect(new URL('/admin/dashboard', request.url))
+      }
+    }
+
+    // 5. Protect dealer routes - redirect to login if not authenticated
     if (request.nextUrl.pathname.startsWith('/dealer/') && !user) {
       const redirectUrl = request.nextUrl.clone()
       redirectUrl.pathname = '/dealer-login'
@@ -63,7 +110,7 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(redirectUrl)
     }
 
-    // 5. Redirect authenticated users away from login/register pages
+    // 6. Redirect authenticated users away from login/register pages
     if (user && (request.nextUrl.pathname === '/dealer-login' || request.nextUrl.pathname === '/dealer-register')) {
       return NextResponse.redirect(new URL('/dealer/dashboard', request.url))
     }
