@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
-import { CheckCircle, AlertTriangle, ShieldCheck, Ruler, Package } from 'lucide-react';
+import { CheckCircle, AlertTriangle, ShieldCheck, Ruler, Package, Zap, Truck, DollarSign, Wrench, Clock, Award, TrendingUp, X, MapPin, Sparkles, Settings } from 'lucide-react';
 
 // Prevent static generation - this page requires authentication
 export const dynamic = 'force-dynamic';
@@ -13,9 +13,8 @@ export default function DealerEducation() {
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [profile, setProfile] = useState<any>(null);
-  const [activeTab, setActiveTab] = useState('pitch');
 
-  // 1. Check if they are actually logged in and get profile
+  // Check if they are actually logged in and get profile
   useEffect(() => {
     const getUser = async () => {
       const supabase = createClient();
@@ -41,7 +40,7 @@ export default function DealerEducation() {
     getUser();
   }, [router]);
 
-  // 2. The "Unlock" Logic
+  // The "Unlock" Logic
   const handleCompleteTraining = async () => {
     if (!user || !profile) return;
     setLoading(true);
@@ -80,213 +79,766 @@ export default function DealerEducation() {
 
   if (!user || !profile) {
     return (
-      <div style={{ textAlign: 'center', padding: '40px', backgroundColor: '#ffffff', color: '#000000' }}>
-        <p style={{ color: '#000000' }}>Loading...</p>
+      <div style={{ 
+        textAlign: 'center', 
+        padding: '60px',
+        backgroundColor: '#ffffff',
+        color: '#000000'
+      }}>
+        <p style={{ fontSize: '18px', color: '#000000' }}>Loading...</p>
       </div>
     );
   }
 
+  const isActive = profile?.status === 'ACTIVE';
+
   return (
-    <div className="min-h-screen p-4 md:p-8 font-sans" style={{ backgroundColor: '#ffffff' }}>
-      {/* Header Section */}
-      <header className="max-w-5xl mx-auto bg-white p-8 rounded-t-2xl border-t border-x border-gray-200">
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight" style={{ color: '#000000' }}>Finishment Dealer Education</h1>
-            <p className="mt-2" style={{ color: '#333333' }}>Elevating the Standard for Staircase Installation</p>
-          </div>
-        </div>
-      </header>
-
-      {/* Main Content Container */}
-      <main className="max-w-5xl mx-auto border-x border-b border-gray-200 overflow-hidden" style={{ backgroundColor: '#ffffff' }}>
-        
-        {/* Status Banner for Active Dealers */}
-        {profile?.status === 'ACTIVE' && (
-          <div className="bg-gray-50 border-b border-gray-200 p-4 text-center">
-            <p className="font-semibold flex items-center justify-center gap-2" style={{ color: '#000000' }}>
-              <CheckCircle size={20} style={{ color: '#000000' }} />
-              Your organization is trained and able to order.
-            </p>
-          </div>
-        )}
-
-        <div className="p-6 md:p-10 space-y-12">
+    <div style={{ 
+      backgroundColor: '#faf8f3',
+      minHeight: '100vh',
+      padding: '0'
+    }}>
+      {/* Hero Section */}
+      <div style={{
+        position: 'relative',
+        minHeight: '90vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        textAlign: 'center',
+        padding: '80px 20px',
+        backgroundColor: '#f5f0e8',
+        background: 'linear-gradient(to bottom, #faf8f3, #f5f0e8)'
+      }}>
+        <div style={{ maxWidth: '1000px', width: '100%' }}>
           
-          {/* 1. Understanding the Problem */}
-          <section className="p-6 rounded-2xl">
-            <h2 className="text-2xl font-bold mb-6 flex items-center gap-3" style={{ color: '#000000' }}>
-              Understanding the Problem
-            </h2>
-            <div className="grid md:grid-cols-2 gap-8">
-              <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
-                <p className="font-bold mb-3 text-lg" style={{ color: '#000000' }}>Standard stair nosings are:</p>
-                <ul className="space-y-2 list-none" style={{ color: '#000000', fontWeight: '500' }}>
-                  <li>Hard to source.</li>
-                  <li>Often brittle and overpriced.</li>
-                  <li>Rarely match the flooring material.</li>
-                </ul>
-              </div>
-              <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
-                <p className="font-bold mb-3 text-lg" style={{ color: '#000000' }}>These issues lead to:</p>
-                <ul className="space-y-2 list-none" style={{ color: '#000000', fontWeight: '500' }}>
-                  <li>Delays in project completion.</li>
-                  <li>Increased costs.</li>
-                  <li>Poor aesthetics and dissatisfied customers.</li>
-                </ul>
-              </div>
-            </div>
-          </section>
+          {/* Orange Banner */}
+          <div style={{
+            display: 'inline-block',
+            backgroundColor: '#ff8c42',
+            border: '1px solid #e67e22',
+            borderRadius: '20px',
+            padding: '8px 20px',
+            marginBottom: '32px',
+            fontSize: '14px',
+            fontWeight: '600',
+            color: '#3d2817'
+          }}>
+            Custom Stair Nosings Made From YOUR Material
+          </div>
 
-          {/* 2. Finishment’s Solution */}
-          <section className="p-8 rounded-2xl" style={{ backgroundColor: '#f8f9fa' }}>
-            <h2 className="text-2xl font-bold mb-6 flex items-center gap-3" style={{ color: '#000000' }}>
-              Finishment’s Solution
-            </h2>
-            <div className="bg-white p-8 rounded-2xl shadow-md border border-gray-200">
-              <h3 className="text-xl font-bold mb-4 italic" style={{ color: '#000000' }}>Custom Stair Nosings Made From YOUR Material</h3>
-              <div className="grid md:grid-cols-3 gap-6">
-                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                  <h4 className="font-bold mb-2" style={{ color: '#000000' }}>Perfect Color</h4>
-                  <p className="text-sm" style={{ color: '#333333' }}>Same dye lot for perfect color consistency across the entire project.</p>
-                </div>
-                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                  <h4 className="font-bold mb-2" style={{ color: '#000000' }}>Superior Strength</h4>
-                  <p className="text-sm" style={{ color: '#333333' }}>Same durable material for superior strength and longevity.</p>
-                </div>
-                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                  <h4 className="font-bold mb-2" style={{ color: '#000000' }}>Seamless Finish</h4>
-                  <p className="text-sm" style={{ color: '#333333' }}>A seamless finish that elevates the entire project's aesthetic.</p>
-                </div>
-              </div>
-            </div>
-          </section>
+          {/* Main Heading */}
+          <h1 style={{ 
+            marginBottom: '24px',
+            lineHeight: '1.1'
+          }}>
+            <span style={{ 
+              display: 'block',
+              fontSize: 'clamp(48px, 8vw, 72px)',
+              fontWeight: '700',
+              fontFamily: 'Georgia, serif',
+              color: '#3d2817',
+              letterSpacing: '-0.02em',
+              marginBottom: '8px'
+            }}>
+              Perfect Match.
+            </span>
+            <span style={{ 
+              display: 'block',
+              fontSize: 'clamp(48px, 8vw, 72px)',
+              fontWeight: '700',
+              color: '#ff8c42',
+              letterSpacing: '-0.02em'
+            }}>
+              Superior Finish.
+            </span>
+          </h1>
+          
+          {/* Body Text */}
+          <p style={{ 
+            fontSize: 'clamp(16px, 2vw, 18px)', 
+            lineHeight: '1.7',
+            fontWeight: '400',
+            marginBottom: '48px', 
+            maxWidth: '700px',
+            margin: '0 auto 48px',
+            color: '#4a4a4a',
+            textAlign: 'center'
+          }}>
+            Stop settling for generic stair nosings that never quite match. We craft custom nosings from your exact flooring material for a seamless, professional finish.
+          </p>
 
-          {/* 3. Why Choose Finishment? */}
-          <section className="p-6 rounded-2xl">
-            <h2 className="text-2xl font-bold mb-6 flex items-center gap-3" style={{ color: '#000000' }}>
-              Why Choose Finishment?
-            </h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="bg-white border border-gray-200 p-5 rounded-xl hover:border-black transition-colors">
-                <h3 className="font-bold mb-2" style={{ color: '#000000' }}>Speed</h3>
-                <p className="text-sm" style={{ color: '#333333' }}>Delivery within 24–72 hours.</p>
-              </div>
-              <div className="bg-white border border-gray-200 p-5 rounded-xl hover:border-black transition-colors">
-                <h3 className="font-bold mb-2" style={{ color: '#000000' }}>Logistics</h3>
-                <p className="text-sm" style={{ color: '#333333' }}>Local drop-off/pick-up & shipping options.</p>
-              </div>
-              <div className="bg-white border border-gray-200 p-5 rounded-xl hover:border-black transition-colors">
-                <h3 className="font-bold mb-2" style={{ color: '#000000' }}>Pricing</h3>
-                <p className="text-sm" style={{ color: '#333333' }}>Comparable or better than standard options.</p>
-              </div>
-              <div className="bg-white border border-gray-200 p-5 rounded-xl hover:border-black transition-colors">
-                <h3 className="font-bold mb-2" style={{ color: '#000000' }}>Prep Work</h3>
-                <p className="text-sm" style={{ color: '#333333' }}>No need to restructure staircases.</p>
-              </div>
+          {/* Training Status */}
+          {isActive && (
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              background: '#10b981',
+              color: '#ffffff',
+              padding: '12px 24px',
+              borderRadius: '8px',
+              fontWeight: '600',
+              fontSize: '16px',
+              marginTop: '16px'
+            }}>
+              <CheckCircle size={20} />
+              Training Complete - Account Active
             </div>
-          </section>
+          )}
+        </div>
+      </div>
 
-          {/* 4 & 5. Key Selling Points & Positioning */}
-          <div className="p-8 rounded-2xl space-y-8" style={{ backgroundColor: '#f8f9fa' }}>
-            <h2 className="text-2xl font-bold flex items-center gap-3" style={{ color: '#000000' }}>
-              Key Selling Points & Positioning
-            </h2>
-            <div className="grid md:grid-cols-2 gap-8">
-              <section className="bg-white p-6 rounded-2xl border border-gray-200">
-                <h2 className="text-xl font-bold mb-4" style={{ color: '#000000' }}>Key Selling Points</h2>
-                <ul className="space-y-3">
-                  {['Perfect color match', 'Durable and long-lasting', 'Fast turnaround', 'Competitive pricing', 'Hassle-free process'].map((item) => (
-                    <li key={item} className="flex items-center gap-2" style={{ color: '#000000' }}>
-                      <CheckCircle style={{ color: '#000000' }} size={18} />
-                      {item}
+      {/* Main Content */}
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '100px 20px' }}>
+        
+        {/* Problem Section */}
+        <section style={{ 
+          marginBottom: '100px',
+          backgroundColor: '#faf8f3',
+          padding: '80px 20px',
+          borderRadius: '0'
+        }}>
+          <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
+            <div style={{ textAlign: 'center', marginBottom: '60px' }}>
+              <h2 style={{ 
+                fontSize: 'clamp(36px, 6vw, 48px)', 
+                fontWeight: '700', 
+                fontFamily: 'Georgia, serif',
+                color: '#3d2817',
+                marginBottom: '16px'
+              }}>
+                Understanding the <span style={{ color: '#ff8c42' }}>Problem</span>
+              </h2>
+              <p style={{ 
+                fontSize: '18px', 
+                color: '#6b5d4f',
+                maxWidth: '600px',
+                margin: '0 auto'
+              }}>
+                Standard stair nosings create more problems than they solve.
+              </p>
+            </div>
+
+            <div style={{ 
+              display: 'grid', 
+              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
+              gap: '32px',
+              maxWidth: '1000px',
+              margin: '0 auto'
+            }}>
+              {/* Left Card - Standard Stair Nosings */}
+              <div style={{
+                backgroundColor: '#ffffff',
+                padding: '40px',
+                borderRadius: '16px',
+                border: '1px solid #e5ddd4',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.08)'
+              }}>
+                <div style={{ 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  gap: '12px', 
+                  marginBottom: '24px' 
+                }}>
+                  <div style={{
+                    width: '48px',
+                    height: '48px',
+                    borderRadius: '50%',
+                    backgroundColor: '#fee2e2',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0
+                  }}>
+                    <X size={24} color="#dc2626" />
+                  </div>
+                  <h3 style={{
+                    fontSize: '22px',
+                    fontWeight: '600',
+                    color: '#3d2817',
+                    margin: 0
+                  }}>
+                    Standard Stair Nosings
+                  </h3>
+                </div>
+                <ul style={{
+                  listStyle: 'none',
+                  padding: 0,
+                  margin: 0,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '16px'
+                }}>
+                  {['Hard to source', 'Often brittle and overpriced', 'Rarely match flooring material'].map((item, idx) => (
+                    <li key={idx} style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '12px',
+                      color: '#3d2817',
+                      fontSize: '16px'
+                    }}>
+                      <div style={{
+                        width: '24px',
+                        height: '24px',
+                        borderRadius: '50%',
+                        backgroundColor: '#fee2e2',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0
+                      }}>
+                        <X size={14} color="#dc2626" />
+                      </div>
+                      <span>{item}</span>
                     </li>
                   ))}
                 </ul>
-              </section>
-              <section className="bg-white p-6 rounded-2xl border border-gray-200">
-                <h2 className="text-xl font-bold mb-4" style={{ color: '#000000' }}>Positioning to Customers</h2>
-                <div className="space-y-4">
-                  <div>
-                    <p className="font-bold text-sm uppercase tracking-wider border-b border-black inline-block mb-1" style={{ color: '#000000' }}>Time Savings</p>
-                    <p style={{ color: '#333333' }}>Faster project completion.</p>
+              </div>
+
+              {/* Right Card - These Issues Lead To */}
+              <div style={{
+                backgroundColor: '#ffffff',
+                padding: '40px',
+                borderRadius: '16px',
+                border: '1px solid #e5ddd4',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.08)'
+              }}>
+                <div style={{ 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  gap: '12px', 
+                  marginBottom: '24px' 
+                }}>
+                  <div style={{
+                    width: '48px',
+                    height: '48px',
+                    borderRadius: '50%',
+                    backgroundColor: '#f3f4f6',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0
+                  }}>
+                    <AlertTriangle size={24} color="#6b7280" />
                   </div>
-                  <div>
-                    <p className="font-bold text-sm uppercase tracking-wider border-b border-black inline-block mb-1" style={{ color: '#000000' }}>Profitability</p>
-                    <p style={{ color: '#333333' }}>Reduced labor and material waste.</p>
-                  </div>
-                  <div>
-                    <p className="font-bold text-sm uppercase tracking-wider border-b border-black inline-block mb-1" style={{ color: '#000000' }}>Quality</p>
-                    <p style={{ color: '#333333' }}>Seamless look that impresses clients.</p>
-                  </div>
+                  <h3 style={{
+                    fontSize: '22px',
+                    fontWeight: '600',
+                    color: '#3d2817',
+                    margin: 0
+                  }}>
+                    These Issues Lead To
+                  </h3>
                 </div>
-              </section>
+                <ul style={{
+                  listStyle: 'none',
+                  padding: 0,
+                  margin: 0,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '16px'
+                }}>
+                  {['Delays in project completion', 'Increased costs', 'Poor aesthetics and dissatisfied customers'].map((item, idx) => (
+                    <li key={idx} style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '12px',
+                      color: '#3d2817',
+                      fontSize: '16px'
+                    }}>
+                      <div style={{
+                        width: '24px',
+                        height: '24px',
+                        borderRadius: '50%',
+                        backgroundColor: '#f3f4f6',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0
+                      }}>
+                        <X size={14} color="#6b7280" />
+                      </div>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </div>
+        </section>
 
-          {/* 6. Overcoming Common Objections */}
-          <section className="p-6 rounded-2xl">
-            <h2 className="text-2xl font-bold mb-6 flex items-center gap-3" style={{ color: '#000000' }}>
-              Overcoming Common Objections
-            </h2>
-            <div className="bg-white p-8 rounded-2xl border border-gray-200 shadow-sm">
-              <div className="space-y-6">
-                <div className="border-l-2 border-black pl-4">
-                  <p className="italic mb-1" style={{ color: '#666666' }}>“Standard nosings are cheaper.”</p>
-                  <p className="font-semibold" style={{ color: '#000000' }}>Response: Finishment pricing is competitive and saves on labor costs.</p>
+        {/* Solution Section */}
+        <section style={{
+          backgroundColor: '#ffffff',
+          padding: '100px 20px',
+          marginBottom: '100px'
+        }}>
+          <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+            {/* Orange Tag */}
+            <div style={{
+              display: 'inline-block',
+              backgroundColor: '#ff8c42',
+              borderRadius: '20px',
+              padding: '6px 16px',
+              marginBottom: '20px',
+              fontSize: '12px',
+              fontWeight: '600',
+              color: '#ffffff'
+            }}>
+              The Solution
+            </div>
+
+            <div style={{ marginBottom: '60px' }}>
+              <h2 style={{ 
+                fontSize: 'clamp(36px, 6vw, 48px)', 
+                fontWeight: '700', 
+                fontFamily: 'Georgia, serif',
+                color: '#3d2817',
+                marginBottom: '16px'
+              }}>
+                Finishment's <span style={{ color: '#ff8c42' }}>Solution</span>
+              </h2>
+              <p style={{ 
+                fontSize: '18px', 
+                color: '#6b5d4f',
+                maxWidth: '600px'
+              }}>
+                Custom Stair Nosings Made From YOUR Material
+              </p>
+            </div>
+
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+              gap: '32px'
+            }}>
+              {[
+                { icon: <Ruler size={32} />, title: 'Perfect Color', desc: 'Same dye lot for perfect color consistency across the entire project.' },
+                { icon: <ShieldCheck size={32} />, title: 'Superior Strength', desc: 'Same durable material for superior strength and longevity.' },
+                { icon: <Settings size={32} />, title: 'Premium Quality', desc: 'Crafted with precision for a flawless, professional finish every time.' }
+              ].map((feature, idx) => (
+                <div key={idx} style={{
+                  backgroundColor: '#ffffff',
+                  border: '1px solid #e5ddd4',
+                  borderRadius: '16px',
+                  padding: '40px',
+                  textAlign: 'center',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.08)'
+                }}>
+                  <div style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '64px',
+                    height: '64px',
+                    backgroundColor: '#ff8c42',
+                    borderRadius: '12px',
+                    marginBottom: '24px',
+                    color: '#ffffff'
+                  }}>
+                    {feature.icon}
+                  </div>
+                  <h3 style={{
+                    fontSize: '22px',
+                    fontWeight: '600',
+                    marginBottom: '12px',
+                    color: '#3d2817'
+                  }}>
+                    {feature.title}
+                  </h3>
+                  <p style={{
+                    fontSize: '16px',
+                    color: '#6b5d4f',
+                    lineHeight: '1.6',
+                    margin: 0
+                  }}>
+                    {feature.desc}
+                  </p>
                 </div>
-                <div className="border-l-2 border-black pl-4">
-                  <p className="italic mb-1" style={{ color: '#666666' }}>“Custom sounds complicated.”</p>
-                  <p className="font-semibold" style={{ color: '#000000' }}>Response: Process is simple—just send material, and we handle the rest.</p>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Why Choose Finishment */}
+        <section style={{ 
+          marginBottom: '100px',
+          backgroundColor: '#faf8f3',
+          padding: '100px 20px'
+        }}>
+          <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+            <div style={{ textAlign: 'center', marginBottom: '60px' }}>
+              <h2 style={{ 
+                fontSize: 'clamp(36px, 6vw, 48px)', 
+                fontWeight: '700', 
+                fontFamily: 'Georgia, serif',
+                color: '#3d2817',
+                marginBottom: '16px'
+              }}>
+                Why Choose <span style={{ color: '#ff8c42' }}>Finishment?</span>
+              </h2>
+              <p style={{ 
+                fontSize: '18px', 
+                color: '#6b5d4f',
+                maxWidth: '600px',
+                margin: '0 auto'
+              }}>
+                We make custom stair nosings simple, fast, and affordable
+              </p>
+            </div>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+              gap: '32px'
+            }}>
+              {[
+                { icon: <Zap size={24} />, title: 'Speed', desc: 'Delivery within 24-72 hours' },
+                { icon: <MapPin size={24} />, title: 'Logistics', desc: 'Local drop-off/pick-up & shipping options' },
+                { icon: <DollarSign size={24} />, title: 'Pricing', desc: 'Comparable or better than standard options' },
+                { icon: <Wrench size={24} />, title: 'Prep Work', desc: 'We handle all the precision cutting and finishing' }
+              ].map((benefit, idx) => (
+                <div key={idx} style={{
+                  backgroundColor: '#ffffff',
+                  border: '1px solid #e5ddd4',
+                  borderRadius: '16px',
+                  padding: '40px',
+                  textAlign: 'center',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
+                  transition: 'transform 0.2s, box-shadow 0.2s'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-4px)';
+                  e.currentTarget.style.boxShadow = '0 8px 16px rgba(0,0,0,0.12)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.08)';
+                }}
+                >
+                  <div style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '56px',
+                    height: '56px',
+                    backgroundColor: '#3d2817',
+                    borderRadius: '12px',
+                    marginBottom: '20px',
+                    color: '#ffffff'
+                  }}>
+                    {benefit.icon}
+                  </div>
+                  <h3 style={{
+                    fontSize: '22px',
+                    fontWeight: '600',
+                    marginBottom: '12px',
+                    color: '#3d2817'
+                  }}>
+                    {benefit.title}
+                  </h3>
+                  <p style={{
+                    fontSize: '16px',
+                    color: '#6b5d4f',
+                    lineHeight: '1.6',
+                    margin: 0
+                  }}>
+                    {benefit.desc}
+                  </p>
                 </div>
-                <div className="border-l-2 border-black pl-4">
-                  <p className="italic mb-1" style={{ color: '#666666' }}>“Will it delay my project?”</p>
-                  <p className="font-semibold" style={{ color: '#000000' }}>Response: Delivery in 24–72 hours keeps projects on schedule.</p>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Key Points & Positioning */}
+        <section style={{
+          backgroundColor: '#ffffff',
+          padding: '100px 20px',
+          marginBottom: '100px'
+        }}>
+          <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+            <div style={{ textAlign: 'center', marginBottom: '60px' }}>
+              <h2 style={{ 
+                fontSize: 'clamp(36px, 6vw, 48px)', 
+                fontWeight: '700', 
+                fontFamily: 'Georgia, serif',
+                color: '#3d2817',
+                marginBottom: '16px'
+              }}>
+                Key Selling Points & <span style={{ color: '#ff8c42' }}>Positioning</span>
+              </h2>
+            </div>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
+              gap: '40px'
+            }}>
+              <div style={{
+                backgroundColor: '#ffffff',
+                border: '1px solid #e5ddd4',
+                borderRadius: '16px',
+                padding: '40px',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.08)'
+              }}>
+                <h3 style={{
+                  fontSize: '24px',
+                  fontWeight: '600',
+                  marginBottom: '24px',
+                  color: '#3d2817'
+                }}>
+                  Key Selling Points
+                </h3>
+                <ul style={{
+                  listStyle: 'none',
+                  padding: 0,
+                  margin: 0,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '16px'
+                }}>
+                  {['Perfect color match', 'Durable and long-lasting', 'Fast turnaround', 'Competitive pricing', 'Hassle-free process'].map((item) => (
+                    <li key={item} style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '12px',
+                      color: '#3d2817',
+                      fontSize: '16px'
+                    }}>
+                      <CheckCircle size={20} color="#ff8c42" style={{ flexShrink: 0 }} />
+                      <span style={{ fontWeight: '500' }}>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div style={{
+                backgroundColor: '#ffffff',
+                border: '1px solid #e5ddd4',
+                borderRadius: '16px',
+                padding: '40px',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.08)'
+              }}>
+                <h3 style={{
+                  fontSize: '24px',
+                  fontWeight: '600',
+                  marginBottom: '24px',
+                  color: '#3d2817'
+                }}>
+                  Positioning to Customers
+                </h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+                  {[
+                    { icon: <Clock size={20} />, label: 'TIME SAVINGS', text: 'Faster project completion' },
+                    { icon: <DollarSign size={20} />, label: 'PROFITABILITY', text: 'Reduced labor and material waste' },
+                    { icon: <Sparkles size={20} />, label: 'QUALITY', text: 'Seamless look that impresses clients' }
+                  ].map((item, idx) => (
+                    <div key={idx} style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+                      <div style={{
+                        width: '40px',
+                        height: '40px',
+                        borderRadius: '8px',
+                        backgroundColor: '#ff8c42',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: '#ffffff',
+                        flexShrink: 0
+                      }}>
+                        {item.icon}
+                      </div>
+                      <div style={{ flex: 1 }}>
+                        <div style={{
+                          fontSize: '12px',
+                          fontWeight: '700',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.05em',
+                          color: '#3d2817',
+                          marginBottom: '8px'
+                        }}>
+                          {item.label}
+                        </div>
+                        <p style={{
+                          fontSize: '16px',
+                          color: '#6b5d4f',
+                          margin: 0,
+                          lineHeight: '1.5'
+                        }}>
+                          {item.text}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
-          </section>
-
-        </div>
-
-        {/* Footer / CTA */}
-        <footer className="p-6 border-t bg-gray-50 border-gray-200">
-          <div className="bg-white p-8 rounded-2xl text-center border border-gray-200 max-w-2xl mx-auto">
-            {profile?.status === 'ACTIVE' ? (
-              <>
-                <h3 className="text-2xl font-bold mb-2" style={{ color: '#000000' }}>Training Complete</h3>
-                <p className="mb-8" style={{ color: '#333333' }}>
-                  You have already completed the dealer training and your account is active.
-                </p>
-                
-                <button 
-                  onClick={() => router.push('/dealer/ordering')}
-                  className="w-full md:w-auto px-10 py-4 rounded-xl font-bold text-lg shadow-lg bg-black hover:bg-gray-800 text-white transition-all transform hover:scale-[1.02] active:scale-[0.98]"
-                >
-                  Go to Ordering
-                </button>
-              </>
-            ) : (
-              <>
-                <h3 className="text-2xl font-bold mb-2" style={{ color: '#000000' }}>Ready to start?</h3>
-                <p className="mb-8" style={{ color: '#333333' }}>
-                  By clicking below, you confirm you've reviewed the training material and are ready to offer custom stair nosings to your clients.
-                </p>
-                
-                <button 
-                  onClick={handleCompleteTraining}
-                  disabled={loading}
-                  className={`w-full md:w-auto px-10 py-4 rounded-xl font-bold text-lg shadow-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] ${
-                    loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-black hover:bg-gray-800 text-white'
-                  }`}
-                >
-                  {loading ? "Activating Account..." : "I've Read the Training - Unlock My Account"}
-                </button>
-              </>
-            )}
           </div>
-        </footer>
-      </main>
+        </section>
+
+        {/* Objections Section */}
+        <section style={{ 
+          marginBottom: '100px',
+          backgroundColor: '#faf8f3',
+          padding: '100px 20px'
+        }}>
+          <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
+            <div style={{ textAlign: 'center', marginBottom: '60px' }}>
+              <h2 style={{ 
+                fontSize: 'clamp(36px, 6vw, 48px)', 
+                fontWeight: '700', 
+                fontFamily: 'Georgia, serif',
+                color: '#3d2817',
+                marginBottom: '16px'
+              }}>
+                Overcoming Common <span style={{ color: '#ff8c42' }}>Objections</span>
+              </h2>
+              <p style={{ 
+                fontSize: '18px', 
+                color: '#6b5d4f',
+                maxWidth: '600px',
+                margin: '0 auto'
+              }}>
+                We've heard the concerns—here's why they shouldn't hold you back
+              </p>
+            </div>
+            <div style={{
+              backgroundColor: '#ffffff',
+              border: '1px solid #e5ddd4',
+              borderRadius: '16px',
+              padding: '48px',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.08)'
+            }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+                {[
+                  { objection: 'Standard nosings are cheaper.', response: 'Finishment pricing is competitive and saves on labor costs.' },
+                  { objection: 'Custom sounds complicated.', response: 'Process is simple—just send material, and we handle the rest.' },
+                  { objection: 'Will it delay my project?', response: 'Delivery in 24–72 hours keeps projects on schedule.' }
+                ].map((item, idx) => (
+                  <div key={idx} style={{
+                    borderLeft: '4px solid #ff8c42',
+                    paddingLeft: '24px'
+                  }}>
+                    <p style={{
+                      fontStyle: 'italic',
+                      fontSize: '18px',
+                      color: '#6b5d4f',
+                      marginBottom: '8px',
+                      fontWeight: '500'
+                    }}>
+                      "{item.objection}"
+                    </p>
+                    <p style={{
+                      fontSize: '16px',
+                      color: '#3d2817',
+                      fontWeight: '600',
+                      margin: 0
+                    }}>
+                      Response: {item.response}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <div style={{
+          backgroundColor: '#3d2817',
+          borderRadius: '24px',
+          padding: '80px 40px',
+          textAlign: 'center',
+          color: '#ffffff',
+          maxWidth: '1000px',
+          margin: '0 auto',
+          boxShadow: '0 8px 24px rgba(0,0,0,0.15)'
+        }}>
+          {isActive ? (
+            <>
+              <CheckCircle size={48} style={{ marginBottom: '24px', color: '#10b981' }} />
+              <h3 style={{
+                fontSize: '32px',
+                fontWeight: 'bold',
+                marginBottom: '16px'
+              }}>
+                Training Complete
+              </h3>
+              <p style={{
+                fontSize: '18px',
+                color: '#e5e5e5',
+                marginBottom: '32px',
+                maxWidth: '600px',
+                margin: '0 auto 32px'
+              }}>
+                You have already completed the dealer training and your account is active.
+              </p>
+              <button
+                onClick={() => router.push('/dealer/ordering')}
+                style={{
+                  padding: '16px 48px',
+                  background: '#ffffff',
+                  color: '#000000',
+                  border: 'none',
+                  borderRadius: '12px',
+                  fontSize: '18px',
+                  fontWeight: 'bold',
+                  cursor: 'pointer',
+                  transition: 'transform 0.2s',
+                  boxShadow: '0 4px 6px rgba(0,0,0,0.2)'
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+                onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+              >
+                Go to Ordering →
+              </button>
+            </>
+          ) : (
+            <>
+              <h3 style={{
+                fontSize: '32px',
+                fontWeight: 'bold',
+                marginBottom: '16px'
+              }}>
+                Ready to Start?
+              </h3>
+              <p style={{
+                fontSize: '18px',
+                color: '#e5e5e5',
+                marginBottom: '32px',
+                maxWidth: '600px',
+                margin: '0 auto 32px'
+              }}>
+                By clicking below, you confirm you've reviewed the training material and are ready to offer custom stair nosings to your clients.
+              </p>
+              <button
+                onClick={handleCompleteTraining}
+                disabled={loading}
+                style={{
+                  padding: '16px 48px',
+                  background: loading ? '#6b7280' : '#ffffff',
+                  color: '#000000',
+                  border: 'none',
+                  borderRadius: '12px',
+                  fontSize: '18px',
+                  fontWeight: 'bold',
+                  cursor: loading ? 'not-allowed' : 'pointer',
+                  transition: 'transform 0.2s',
+                  boxShadow: '0 4px 6px rgba(0,0,0,0.2)',
+                  opacity: loading ? 0.7 : 1
+                }}
+                onMouseEnter={(e) => {
+                  if (!loading) e.currentTarget.style.transform = 'scale(1.05)';
+                }}
+                onMouseLeave={(e) => {
+                  if (!loading) e.currentTarget.style.transform = 'scale(1)';
+                }}
+              >
+                {loading ? 'Activating Account...' : "I've Read the Training - Unlock My Account"}
+              </button>
+            </>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

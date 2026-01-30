@@ -145,21 +145,53 @@ export default function TeamManagement() {
 
   if (loading) {
     return (
-      <div style={{ textAlign: 'center', padding: '40px' }}>
-        <p>Loading...</p>
+      <div style={{ 
+        textAlign: 'center', 
+        padding: '40px',
+        backgroundColor: '#ffffff',
+        color: '#000000'
+      }}>
+        <p style={{ fontSize: '16px', color: '#000000' }}>Loading...</p>
       </div>
     );
   }
 
   return (
-    <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '20px', fontFamily: 'sans-serif' }}>
-      <h1 style={{ fontSize: '28px', fontWeight: 'bold', marginBottom: '30px' }}>
+    <div style={{ 
+      maxWidth: '1000px', 
+      margin: '0 auto', 
+      padding: '20px', 
+      fontFamily: 'sans-serif',
+      backgroundColor: '#ffffff',
+      color: '#000000',
+      minHeight: '100vh'
+    }}>
+      <h1 style={{ 
+        fontSize: '28px', 
+        fontWeight: 'bold', 
+        marginBottom: '30px',
+        color: '#000000'
+      }}>
         Team Management
       </h1>
 
       {/* Invite Section */}
-      <div style={{ background: '#f9fafb', padding: '24px', borderRadius: '8px', border: '1px solid #e5e7eb', marginBottom: '30px' }}>
-        <h2 style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '16px' }}>Invite Team Member</h2>
+      <div style={{ 
+        background: '#ffffff', 
+        padding: '24px', 
+        borderRadius: '8px', 
+        border: '2px solid #000000', 
+        marginBottom: '30px',
+        boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+      }}>
+        <h2 style={{ 
+          fontSize: '20px', 
+          fontWeight: 'bold', 
+          marginBottom: '16px',
+          color: '#000000'
+        }}>
+          Invite Team Member
+        </h2>
         <form onSubmit={handleInvite} style={{ display: 'flex', gap: '12px' }}>
           <input
             type="email"
@@ -169,9 +201,11 @@ export default function TeamManagement() {
             style={{
               flex: 1,
               padding: '12px',
-              border: '1px solid #d1d5db',
+              border: '2px solid #000000',
               borderRadius: '6px',
-              fontSize: '14px'
+              fontSize: '14px',
+              backgroundColor: '#ffffff',
+              color: '#000000'
             }}
           />
           <button
@@ -179,31 +213,63 @@ export default function TeamManagement() {
             disabled={inviting}
             style={{
               padding: '12px 24px',
-              background: '#000',
-              color: '#fff',
+              background: '#000000',
+              color: '#ffffff',
               border: 'none',
               borderRadius: '6px',
               fontWeight: 'bold',
               cursor: inviting ? 'not-allowed' : 'pointer',
-              opacity: inviting ? 0.7 : 1
+              opacity: inviting ? 0.7 : 1,
+              fontSize: '14px'
             }}
           >
             {inviting ? 'Sending...' : 'Get Invite Link'}
           </button>
         </form>
         {error && (
-          <p style={{ color: '#ef4444', fontSize: '14px', marginTop: '8px' }}>{error}</p>
+          <p style={{ 
+            color: '#dc2626', 
+            fontSize: '14px', 
+            marginTop: '12px',
+            fontWeight: '500',
+            backgroundColor: '#fef2f2',
+            padding: '8px 12px',
+            borderRadius: '4px',
+            border: '1px solid #fecaca'
+          }}>
+            {error}
+          </p>
         )}
       </div>
 
       {/* Team Members List */}
-      <div style={{ background: '#fff', padding: '24px', borderRadius: '8px', border: '1px solid #e5e7eb' }}>
-        <h2 style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '20px' }}>Team Members</h2>
+      <div style={{ 
+        background: '#ffffff', 
+        padding: '24px', 
+        borderRadius: '8px', 
+        border: '2px solid #000000',
+        boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+      }}>
+        <h2 style={{ 
+          fontSize: '20px', 
+          fontWeight: 'bold', 
+          marginBottom: '20px',
+          color: '#000000'
+        }}>
+          Team Members
+        </h2>
         
         {teamMembers.length === 0 ? (
-          <p style={{ color: '#6b7280' }}>No team members yet. Invite someone to get started.</p>
+          <p style={{ 
+            color: '#374151', 
+            fontSize: '16px',
+            padding: '20px',
+            textAlign: 'center'
+          }}>
+            No team members yet. Invite someone to get started.
+          </p>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             {teamMembers.map((member) => (
               <div
                 key={member.id}
@@ -211,41 +277,66 @@ export default function TeamManagement() {
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
-                  padding: '16px',
-                  background: member.is_primary ? '#fef3c7' : '#f9fafb',
-                  borderRadius: '6px',
-                  border: '1px solid #e5e7eb'
+                  padding: '20px',
+                  background: member.is_primary ? '#fffbeb' : '#ffffff',
+                  borderRadius: '8px',
+                  border: '2px solid #000000',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
                 }}
               >
                 <div style={{ flex: 1 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '4px' }}>
-                    <p style={{ fontWeight: 'bold' }}>
+                  <div style={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    gap: '12px', 
+                    marginBottom: '8px',
+                    flexWrap: 'wrap'
+                  }}>
+                    <p style={{ 
+                      fontWeight: 'bold',
+                      fontSize: '16px',
+                      color: '#000000',
+                      margin: 0
+                    }}>
                       {member.email || 'N/A'}
                     </p>
                     {member.is_primary && (
                       <span style={{
-                        background: '#fbbf24',
-                        color: '#92400e',
-                        padding: '4px 8px',
+                        background: '#f59e0b',
+                        color: '#ffffff',
+                        padding: '6px 12px',
                         borderRadius: '4px',
                         fontSize: '12px',
-                        fontWeight: 'bold'
+                        fontWeight: 'bold',
+                        textTransform: 'uppercase'
                       }}>
                         PRIMARY
                       </span>
                     )}
                     <span style={{
-                      background: member.status === 'ACTIVE' ? '#d1fae5' : '#fee2e2',
-                      color: member.status === 'ACTIVE' ? '#065f46' : '#991b1b',
-                      padding: '4px 8px',
+                      background: member.status === 'ACTIVE' ? '#10b981' : '#f59e0b',
+                      color: '#ffffff',
+                      padding: '6px 12px',
                       borderRadius: '4px',
-                      fontSize: '12px'
+                      fontSize: '12px',
+                      fontWeight: '600',
+                      textTransform: 'uppercase'
                     }}>
                       {member.status}
                     </span>
                   </div>
-                  <p style={{ fontSize: '14px', color: '#6b7280' }}>
-                    Ordering: {member.can_order ? '✅ Authorized' : '❌ Not Authorized'}
+                  <p style={{ 
+                    fontSize: '14px', 
+                    color: '#374151',
+                    margin: 0,
+                    fontWeight: '500'
+                  }}>
+                    Ordering: <span style={{ 
+                      color: member.can_order ? '#059669' : '#dc2626',
+                      fontWeight: '600'
+                    }}>
+                      {member.can_order ? '✅ Authorized' : '❌ Not Authorized'}
+                    </span>
                   </p>
                 </div>
                 
@@ -253,14 +344,16 @@ export default function TeamManagement() {
                   <button
                     onClick={() => toggleOrderPermission(member.id, member.can_order)}
                     style={{
-                      padding: '8px 16px',
-                      background: member.can_order ? '#ef4444' : '#059669',
-                      color: '#fff',
+                      padding: '10px 20px',
+                      background: member.can_order ? '#dc2626' : '#059669',
+                      color: '#ffffff',
                       border: 'none',
                       borderRadius: '6px',
                       cursor: 'pointer',
-                      fontWeight: '500',
-                      fontSize: '14px'
+                      fontWeight: '600',
+                      fontSize: '14px',
+                      whiteSpace: 'nowrap',
+                      marginLeft: '16px'
                     }}
                   >
                     {member.can_order ? 'Revoke Ordering' : 'Allow Ordering'}
@@ -272,20 +365,21 @@ export default function TeamManagement() {
         )}
       </div>
 
-      <div style={{ marginTop: '20px' }}>
+      <div style={{ marginTop: '30px' }}>
         <button
           onClick={() => router.push('/dealer/dashboard')}
           style={{
             padding: '12px 24px',
-            background: '#f3f4f6',
-            color: '#000',
-            border: '1px solid #e5e7eb',
+            background: '#ffffff',
+            color: '#000000',
+            border: '2px solid #000000',
             borderRadius: '6px',
             cursor: 'pointer',
-            fontWeight: '500'
+            fontWeight: '600',
+            fontSize: '14px'
           }}
         >
-          Back to Dashboard
+          ← Back to Dashboard
         </button>
       </div>
     </div>
