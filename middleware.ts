@@ -50,17 +50,10 @@ export async function middleware(request: NextRequest) {
     // 3. Refresh session if expired - this triggers the cookie logic above
     const { data: { user }, error } = await supabase.auth.getUser()
 
-    if (error) {
-      // Only log errors that aren't expected (like missing session on public routes)
-      // Check if this is a public route where missing session is expected
-      const publicRoutes = ['/dealer-login', '/dealer-register', '/dealer-join', '/']
-      const isPublicRoute = publicRoutes.includes(request.nextUrl.pathname) || 
-                           request.nextUrl.pathname.startsWith('/admin/login')
-      
-      // Only log if it's not a missing session error on a public route
-      if (!isPublicRoute || !error.message.includes('session')) {
-        console.error('Middleware auth error:', error.message)
-      }
+    // Note: "Auth session missing" is expected when no user is logged in - not a real error
+    // Only log unexpected auth errors (not session-related ones)
+    if (error && !error.message?.toLowerCase().includes('session')) {
+      console.error('Middleware auth error:', error.message)
     }
 
     // 4. Protect admin routes
