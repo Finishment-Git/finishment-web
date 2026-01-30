@@ -51,8 +51,16 @@ export async function middleware(request: NextRequest) {
     const { data: { user }, error } = await supabase.auth.getUser()
 
     if (error) {
-      // If there's an auth error, continue without blocking
-      console.error('Middleware auth error:', error.message)
+      // Only log errors that aren't expected (like missing session on public routes)
+      // Check if this is a public route where missing session is expected
+      const publicRoutes = ['/dealer-login', '/dealer-register', '/dealer-join', '/']
+      const isPublicRoute = publicRoutes.includes(request.nextUrl.pathname) || 
+                           request.nextUrl.pathname.startsWith('/admin/login')
+      
+      // Only log if it's not a missing session error on a public route
+      if (!isPublicRoute || !error.message.includes('session')) {
+        console.error('Middleware auth error:', error.message)
+      }
     }
 
     // 4. Protect admin routes
