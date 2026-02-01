@@ -113,7 +113,7 @@ export default function Hero() {
           flexWrap: 'wrap'
         }}>
           <Link href="#contact" style={{ 
-            backgroundColor: '#2563eb', 
+            backgroundColor: '#ea580c', 
             color: 'white',
             padding: '16px 40px',
             borderRadius: '8px',
@@ -121,16 +121,16 @@ export default function Hero() {
             fontSize: '20px',
             fontWeight: '700',
             width: 'fit-content',
-            boxShadow: '0 4px 15px rgba(37, 99, 235, 0.4)',
+            boxShadow: '0 4px 15px rgba(234, 88, 12, 0.4)',
             transition: 'transform 0.2s ease'
           }}>
             Start Your Order
           </Link>
           
           <Link href="#contact" style={{ 
-            backgroundColor: 'rgba(255, 255, 255, 0.1)',
-            border: '2px solid white',
-            color: 'white',
+            backgroundColor: 'rgba(234, 88, 12, 0.1)',
+            border: '2px solid #ea580c',
+            color: '#ea580c',
             padding: '14px 40px',
             borderRadius: '8px',
             textDecoration: 'none',

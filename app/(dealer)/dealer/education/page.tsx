@@ -107,11 +107,35 @@ export default function DealerEducation() {
         alignItems: 'center',
         justifyContent: 'center',
         textAlign: 'center',
-        padding: '80px 20px',
+        padding: '30px 20px',
         backgroundColor: '#f5f0e8',
         background: 'linear-gradient(to bottom, #faf8f3, #f5f0e8)'
       }}>
-        <div style={{ maxWidth: '1000px', width: '100%' }}>
+        {/* Background Image with Transparency */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundImage: 'url("/Finishment_dealer.png")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          opacity: 0.5,
+          zIndex: 0
+        }} />
+        {/* Overlay to ensure text readability */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(245, 240, 232, 0.3)',
+          zIndex: 1
+        }} />
+        <div style={{ maxWidth: '1000px', width: '100%', position: 'relative', zIndex: 2 }}>
           
           {/* Orange Banner */}
           <div style={{
@@ -191,13 +215,13 @@ export default function DealerEducation() {
       </div>
 
       {/* Main Content */}
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '100px 20px' }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '30px 20px' }}>
         
         {/* Problem Section */}
         <section style={{ 
-          marginBottom: '100px',
+          marginBottom: '40px',
           backgroundColor: '#faf8f3',
-          padding: '80px 20px',
+          padding: '30px 20px',
           borderRadius: '0'
         }}>
           <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
@@ -271,7 +295,7 @@ export default function DealerEducation() {
                   flexDirection: 'column',
                   gap: '16px'
                 }}>
-                  {['Hard to source', 'Often brittle and overpriced', 'Rarely match flooring material'].map((item, idx) => (
+                  {['Hard to source', 'Often brittle and overpriced', 'Dye lots rarely match'].map((item, idx) => (
                     <li key={idx} style={{
                       display: 'flex',
                       alignItems: 'center',
@@ -372,8 +396,8 @@ export default function DealerEducation() {
         {/* Solution Section */}
         <section style={{
           backgroundColor: '#ffffff',
-          padding: '100px 20px',
-          marginBottom: '100px'
+          padding: '30px 20px',
+          marginBottom: '60px'
         }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
             {/* Orange Tag */}
@@ -464,9 +488,9 @@ export default function DealerEducation() {
 
         {/* Why Choose Finishment */}
         <section style={{ 
-          marginBottom: '100px',
+          marginBottom: '40px',
           backgroundColor: '#faf8f3',
-          padding: '100px 20px'
+          padding: '60px 20px'
         }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
             <div style={{ textAlign: 'center', marginBottom: '60px' }}>
@@ -555,8 +579,8 @@ export default function DealerEducation() {
         {/* Key Points & Positioning */}
         <section style={{
           backgroundColor: '#ffffff',
-          padding: '100px 20px',
-          marginBottom: '100px'
+          padding: '30px 20px',
+          marginBottom: '60px'
         }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
             <div style={{ textAlign: 'center', marginBottom: '60px' }}>
@@ -677,9 +701,9 @@ export default function DealerEducation() {
 
         {/* Objections Section */}
         <section style={{ 
-          marginBottom: '100px',
+          marginBottom: '40px',
           backgroundColor: '#faf8f3',
-          padding: '100px 20px'
+          padding: '60px 20px'
         }}>
           <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
             <div style={{ textAlign: 'center', marginBottom: '60px' }}>
@@ -746,7 +770,7 @@ export default function DealerEducation() {
         <div style={{
           backgroundColor: '#3d2817',
           borderRadius: '24px',
-          padding: '80px 40px',
+          padding: '30px 40px',
           textAlign: 'center',
           color: '#ffffff',
           maxWidth: '1000px',

@@ -28,7 +28,15 @@ const faqData: FAQItem[] = [
   },
   {
     question: "Can you ship nationwide?",
-    answer: "Yes, 60\" is as long as we can ship. Longer would need to be local drop-off and delivery."
+    answer: "Yes."
+  },
+  {
+    question: "Do you provide dealer pricing?",
+    answer: "Yes, simply click the \"dealer registration\" button above to open an dealer account, follow a short training introduction and you'll be all set to enjoy dealer pricing and support."
+  },
+  {
+    question: "What is the maximum length of material you're able to bend?",
+    answer: "Our equipment can accommodate bends up to 60 inches in length."
   }
 ];
 

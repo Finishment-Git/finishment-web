@@ -10,17 +10,17 @@ export default function WhyUs() {
     {
       icon: <Gem size={32} />,
       title: "The Perfect Match",
-      description: "Generic stair noses never quite match the grain or sheen of your floor. By using your actual planks, we guarantee a flawless transition."
+      description: "Off‑the‑shelf stair noses rarely match the finish, and dye lots are never guaranteed. Using your own planks means a flawless, perfectly matched transition—every time"
     },
     {
       icon: <SlidersHorizontal size={32} />,
       title: "Superior Process",
-      description: "Every step—from material removal to bending temperature—is tightly controlled. The result is a durable stair nose with clean angles."
+      description: "Tight control over material removal and bending temperature ensures a durable stair nose with precise, clean angles while maintaining the color and consistency of the bends."
     },
     {
       icon: <MapPin size={32} />,
       title: "Austin Local & Nationwide",
-      description: "Based in Central Texas. Locals can drop off and pick up. Nationwide customers ship us material, and we ship it back finished."
+      description: "Located in Central Texas, customers can drop off and pick up locally, request pickup and delivery for an added fee, or ship materials to us from anywhere in the country—we'll send them back finished."
     }
   ];
 

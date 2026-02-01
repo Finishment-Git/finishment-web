@@ -50,7 +50,7 @@ export default function Navbar() {
         </div>
 
         <Link href="/dealer-register" style={{ 
-          backgroundColor: '#2563eb', 
+          backgroundColor: '#ea580c', 
           color: 'white', 
           padding: '12px 24px', 
           borderRadius: '8px', 
@@ -65,10 +65,10 @@ export default function Navbar() {
         </Link>
         <Link href="/dealer-login" style={{ 
           backgroundColor: 'transparent', 
-          color: '#2563eb', 
+          color: '#ea580c', 
           padding: '12px 24px', 
           borderRadius: '8px', 
-          border: '2px solid #2563eb', 
+          border: '2px solid #ea580c', 
           fontWeight: '600', 
           fontSize: '1rem',
           cursor: 'pointer',

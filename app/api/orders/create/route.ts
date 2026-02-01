@@ -57,8 +57,8 @@ export async function POST(request: Request) {
       longest_plank_size,
       steps_details,
       // Flooring match information
-      brand_name,
-      collection,
+      manufacturer,
+      style,
       color,
       floor_match_description,
       // Rail cap trim
@@ -77,8 +77,8 @@ export async function POST(request: Request) {
     // Validate required fields
     if (!payment_method || !first_name || !last_name || !purchase_order_number || 
         !email || !sidemark || !phone || !longest_plank_size || 
-        !steps_details || !brand_name || !collection || 
-        !color || !floor_match_description) {
+        !steps_details || !manufacturer || !style || 
+        !color) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
@@ -136,8 +136,8 @@ export async function POST(request: Request) {
         longest_plank_size,
         steps_details,
         // Flooring match information
-        brand_name,
-        collection,
+        manufacturer,
+        style,
         color,
         floor_match_description,
         // Rail cap trim

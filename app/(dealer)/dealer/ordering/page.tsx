@@ -39,8 +39,8 @@ export default function DealerOrderingPage() {
     stepsDetails: '',
     railCapTrimNeeded: false,
     railCapTrimDetails: '',
-    brandName: '',
-    collection: '',
+    manufacturer: '',
+    style: '',
     color: '',
     floorMatchDescription: '',
   });
@@ -166,7 +166,11 @@ export default function DealerOrderingPage() {
 
         if (uploadError) {
           console.error('Upload error:', uploadError);
-          alert(`Failed to upload ${file.name}: ${uploadError.message}`);
+          if (uploadError.message?.includes('bucket') || uploadError.message?.includes('not found')) {
+            alert(`Storage bucket not found. Please contact support to set up the 'order-images' bucket in Supabase Storage.`);
+          } else {
+            alert(`Failed to upload ${file.name}: ${uploadError.message}`);
+          }
           continue;
         }
 
@@ -236,20 +240,16 @@ export default function DealerOrderingPage() {
       setError('Steps details are required (e.g., "18 Steps at 55 inches")');
       return false;
     }
-    if (!formData.brandName.trim()) {
-      setError('Brand Name is required');
+    if (!formData.manufacturer.trim()) {
+      setError('Manufacturer is required');
       return false;
     }
-    if (!formData.collection.trim()) {
-      setError('Collection is required');
+    if (!formData.style.trim()) {
+      setError('Style is required');
       return false;
     }
     if (!formData.color.trim()) {
       setError('Color is required');
-      return false;
-    }
-    if (!formData.floorMatchDescription.trim()) {
-      setError('Please tell us about the floor you are trying to match');
       return false;
     }
     if (needsShipping && (!shippingAddress.name.trim() || !shippingAddress.address1.trim() || 
@@ -293,8 +293,8 @@ export default function DealerOrderingPage() {
         steps_details: formData.stepsDetails,
         
         // Flooring match information
-        brand_name: formData.brandName,
-        collection: formData.collection,
+        manufacturer: formData.manufacturer,
+        style: formData.style,
         color: formData.color,
         floor_match_description: formData.floorMatchDescription,
         
@@ -396,8 +396,8 @@ export default function DealerOrderingPage() {
                 stepsDetails: '',
                 railCapTrimNeeded: false,
                 railCapTrimDetails: '',
-                brandName: '',
-                collection: '',
+                manufacturer: '',
+                style: '',
                 color: '',
                 floorMatchDescription: '',
               });
@@ -772,7 +772,7 @@ export default function DealerOrderingPage() {
           border: '1px solid #e5e7eb'
         }}>
           <h2 style={{ fontSize: '20px', fontWeight: '600', marginBottom: '20px', color: '#000000' }}>
-            Type of Flooring You are Working With <span style={{ color: '#dc2626' }}>*</span>
+            Select type of nosing <span style={{ color: '#dc2626' }}>*</span>
           </h2>
           
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
@@ -796,7 +796,7 @@ export default function DealerOrderingPage() {
                 style={{ marginBottom: '12px' }}
               />
               <div style={{ fontWeight: '600', marginBottom: '12px', textAlign: 'center' }}>
-                Standard Bullnose - Stairnose
+                Standard Bullnose with return
               </div>
               <div style={{ 
                 width: '200px', 
@@ -833,7 +833,7 @@ export default function DealerOrderingPage() {
                 style={{ marginBottom: '12px' }}
               />
               <div style={{ fontWeight: '600', marginBottom: '12px', textAlign: 'center' }}>
-                Other - not floating
+                Single end flush-mount bullnose
               </div>
               <div style={{ 
                 width: '200px', 
@@ -1192,19 +1192,19 @@ export default function DealerOrderingPage() {
             color: '#3d2817',
             fontFamily: 'Georgia, serif'
           }}>
-            Tell Us about the floor we are trying to match
+            Please provide any additional details we might need to know
           </h2>
           
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '16px', marginBottom: '20px' }}>
             <div>
               <label style={{ display: 'block', marginBottom: '4px', fontWeight: '500', fontSize: '14px' }}>
-                Brand Name <span style={{ color: '#dc2626' }}>*</span>
+                Manufacturer <span style={{ color: '#dc2626' }}>*</span>
               </label>
               <input
                 type="text"
-                value={formData.brandName}
-                onChange={(e) => setFormData({...formData, brandName: e.target.value})}
-                placeholder="Brand Name"
+                value={formData.manufacturer}
+                onChange={(e) => setFormData({...formData, manufacturer: e.target.value})}
+                placeholder="Manufacturer"
                 required
                 style={{
                   width: '100%',
@@ -1218,13 +1218,13 @@ export default function DealerOrderingPage() {
             
             <div>
               <label style={{ display: 'block', marginBottom: '4px', fontWeight: '500', fontSize: '14px' }}>
-                Collection <span style={{ color: '#dc2626' }}>*</span>
+                Style <span style={{ color: '#dc2626' }}>*</span>
               </label>
               <input
                 type="text"
-                value={formData.collection}
-                onChange={(e) => setFormData({...formData, collection: e.target.value})}
-                placeholder="Collection"
+                value={formData.style}
+                onChange={(e) => setFormData({...formData, style: e.target.value})}
+                placeholder="Style"
                 required
                 style={{
                   width: '100%',
@@ -1299,14 +1299,13 @@ export default function DealerOrderingPage() {
             
           <div>
             <label style={{ display: 'block', marginBottom: '4px', fontWeight: '500', fontSize: '14px' }}>
-              Tell us about the floor we are trying to match <span style={{ color: '#dc2626' }}>*</span>
+              Please provide any additional details we might need to know
             </label>
             <textarea
               value={formData.floorMatchDescription}
               onChange={(e) => setFormData({...formData, floorMatchDescription: e.target.value})}
-              placeholder="Describe the flooring you're trying to match..."
+              placeholder="Please provide any additional details we might need to know..."
               rows={4}
-              required
               style={{
                 width: '100%',
                 padding: '10px',
@@ -1717,7 +1716,7 @@ export default function DealerOrderingPage() {
         {/* Submit Button */}
         <div style={{ textAlign: 'center', marginBottom: '40px' }}>
           <p style={{ fontSize: '14px', color: '#6b7280', marginBottom: '24px' }}>
-            Thank you for taking the time to complete this form. Once submitted, a member of our staff will reach out and provide a free estimate.
+            Thank you for taking the time to complete this form. Once submitted, a member of our staff will confirm a delivery time or ask any follow-up questions.
           </p>
           <button
             type="submit"
