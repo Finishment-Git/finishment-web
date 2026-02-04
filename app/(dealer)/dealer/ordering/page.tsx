@@ -172,7 +172,7 @@ export default function DealerOrderingPage() {
     if (!files || files.length === 0) return;
 
     setUploadingImages(true);
-    const uploadedUrls: string[] = [];
+    const uploadedUrls: Array<{url: string; fileName: string; fileSize: number; fileType: string}> = [];
 
     try {
       for (const file of Array.from(files)) {
