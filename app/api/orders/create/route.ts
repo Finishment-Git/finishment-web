@@ -64,8 +64,9 @@ export async function POST(request: Request) {
       // Rail cap trim
       rail_cap_trim_needed,
       rail_cap_trim_details,
-      // Images
+      // Images (can be array of URLs or array of objects with metadata)
       project_images,
+      image_metadata, // Optional: array of {url, fileName, fileSize, fileType}
       // Payment and shipping
       payment_method,
       total_amount_cents,
@@ -179,6 +180,35 @@ export async function POST(request: Request) {
 
     if (paymentError) {
       console.error('Failed to create payment record:', paymentError);
+    }
+
+    // Insert images into order_images table if provided
+    if (project_images && project_images.length > 0) {
+      const imageRecords = project_images.map((img: string | { url: string; fileName?: string; fileSize?: number; fileType?: string }) => {
+        // Handle both string URLs and object format
+        const imageUrl = typeof img === 'string' ? img : img.url;
+        const fileName = typeof img === 'object' ? img.fileName : null;
+        const fileSize = typeof img === 'object' ? img.fileSize : null;
+        const fileType = typeof img === 'object' ? img.fileType : null;
+
+        return {
+          order_id: order.id,
+          image_url: imageUrl,
+          file_name: fileName,
+          file_size: fileSize,
+          file_type: fileType,
+          uploaded_by: user.id,
+        };
+      });
+
+      const { error: imageError } = await supabase
+        .from('order_images')
+        .insert(imageRecords);
+
+      if (imageError) {
+        console.error('Failed to create image records:', imageError);
+        // Don't fail the order creation if image records fail
+      }
     }
 
     // Send email notifications (placeholders)

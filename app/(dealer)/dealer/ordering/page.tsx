@@ -21,6 +21,7 @@ export default function DealerOrderingPage() {
   const [success, setSuccess] = useState(false);
   const [orderNumber, setOrderNumber] = useState('');
   const [uploadingImages, setUploadingImages] = useState(false);
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   // Form data - Basic Information
   const [formData, setFormData] = useState({
@@ -59,7 +60,7 @@ export default function DealerOrderingPage() {
 
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'check' | 'ach'>('card');
   const [notes, setNotes] = useState('');
-  const [projectImages, setProjectImages] = useState<string[]>([]);
+  const [projectImages, setProjectImages] = useState<Array<{url: string; fileName: string; fileSize: number; fileType: string}>>([]);
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [needsShipping, setNeedsShipping] = useState(false);
 
@@ -130,6 +131,42 @@ export default function DealerOrderingPage() {
     checkAuthorization();
   }, [router, supabase]);
 
+  // Prevent navigation away from order page if form not submitted
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (!formSubmitted && !success) {
+        e.preventDefault();
+        e.returnValue = 'Order not submitted. You will lose your work if you exit now.';
+        return e.returnValue;
+      }
+    };
+
+    // Intercept all link clicks
+    const handleLinkClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const link = target.closest('a');
+      
+      if (link && !formSubmitted && !success) {
+        const href = link.getAttribute('href');
+        if (href && href !== '/dealer/ordering' && !href.startsWith('#')) {
+          e.preventDefault();
+          const shouldLeave = window.confirm('Order not submitted. You will lose your work if you exit now. Are you sure you want to leave?');
+          if (shouldLeave) {
+            router.push(href);
+          }
+        }
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    document.addEventListener('click', handleLinkClick, true);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      document.removeEventListener('click', handleLinkClick, true);
+    };
+  }, [formSubmitted, success, router]);
+
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
@@ -180,7 +217,12 @@ export default function DealerOrderingPage() {
           .getPublicUrl(filePath);
 
         if (urlData?.publicUrl) {
-          uploadedUrls.push(urlData.publicUrl);
+          uploadedUrls.push({
+            url: urlData.publicUrl,
+            fileName: file.name,
+            fileSize: file.size,
+            fileType: file.type
+          });
           setUploadedFiles(prev => [...prev, file]);
         }
       }
@@ -302,8 +344,9 @@ export default function DealerOrderingPage() {
         rail_cap_trim_needed: formData.railCapTrimNeeded,
         rail_cap_trim_details: formData.railCapTrimDetails || null,
         
-        // Images
-        project_images: projectImages,
+        // Images - send both URL array (for backward compatibility) and metadata
+        project_images: projectImages.map(img => img.url),
+        image_metadata: projectImages,
         
         // Payment and shipping
         payment_method: paymentMethod,
@@ -333,6 +376,7 @@ export default function DealerOrderingPage() {
 
       setOrderNumber(data.order.order_number);
       setSuccess(true);
+      setFormSubmitted(true); // Allow navigation after successful submission
     } catch (err: any) {
       console.error('Order submission error:', err);
       setError(err.message || 'Failed to submit order. Please try again.');
@@ -798,19 +842,16 @@ export default function DealerOrderingPage() {
               <div style={{ fontWeight: '600', marginBottom: '12px', textAlign: 'center' }}>
                 Standard Bullnose with return
               </div>
-              <div style={{ 
-                width: '200px', 
-                height: '150px', 
-                background: '#e5e7eb', 
-                borderRadius: '4px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: '#6b7280',
-                fontSize: '14px'
-              }}>
-                [Stair Image]
-              </div>
+              <img 
+                src="/stnd_return.png" 
+                alt="Standard Bullnose with return"
+                style={{ 
+                  width: '200px', 
+                  height: '150px', 
+                  objectFit: 'contain',
+                  borderRadius: '4px'
+                }}
+              />
             </label>
 
             <label style={{
@@ -835,19 +876,16 @@ export default function DealerOrderingPage() {
               <div style={{ fontWeight: '600', marginBottom: '12px', textAlign: 'center' }}>
                 Single end flush-mount bullnose
               </div>
-              <div style={{ 
-                width: '200px', 
-                height: '150px', 
-                background: '#e5e7eb', 
-                borderRadius: '4px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: '#6b7280',
-                fontSize: '14px'
-              }}>
-                [Other Stair Image]
-              </div>
+              <img 
+                src="/single_flush.png" 
+                alt="Single end flush-mount bullnose"
+                style={{ 
+                  width: '200px', 
+                  height: '150px', 
+                  objectFit: 'contain',
+                  borderRadius: '4px'
+                }}
+              />
             </label>
           </div>
         </div>
@@ -892,7 +930,7 @@ export default function DealerOrderingPage() {
                 justifyContent: 'center'
               }}>
                 <img 
-                  src="/Side Profile SN with Notes.jpg" 
+                  src="/stnd_dimen.png" 
                   alt="Bullnose Profile Diagram"
                   style={{
                     width: '100%',
@@ -903,11 +941,12 @@ export default function DealerOrderingPage() {
                 />
               </div>
               <p style={{ 
-                fontSize: '14px', 
+                fontSize: '20px', 
                 color: '#6b5d4f', 
                 lineHeight: '1.6',
                 textAlign: 'center',
-                margin: 0
+                margin: 0,
+                fontWeight: '500'
               }}>
                 Standard dimensions of a Finishment stairnose
               </p>
@@ -1377,11 +1416,11 @@ export default function DealerOrderingPage() {
 
           {projectImages.length > 0 && (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '12px' }}>
-              {projectImages.map((url, index) => (
+              {projectImages.map((img, index) => (
                 <div key={index} style={{ position: 'relative' }}>
                   <img 
-                    src={url} 
-                    alt={`Project image ${index + 1}`}
+                    src={img.url} 
+                    alt={img.fileName || `Project image ${index + 1}`}
                     style={{
                       width: '100%',
                       height: '150px',
