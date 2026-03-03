@@ -1,360 +1,157 @@
-'use client'; 
-import { useState, useEffect, useRef } from 'react';
-import { useRouter } from 'next/navigation';
-import { createClient } from "@/utils/supabase/client";
-
-// Prevent static generation - this page requires authentication
-export const dynamic = 'force-dynamic';
+'use client'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import { createClient } from '@/utils/supabase/client'
+import { BasicInfoSection } from '@/components/dealer/ordering/basic-info-section'
+import { StairDetailsSection } from '@/components/dealer/ordering/stair-details-section'
+import { FlooringDetailsSection } from '@/components/dealer/ordering/flooring-details-section'
+import { ImageUploadSection } from '@/components/dealer/ordering/image-upload-section'
+import { ShippingSection } from '@/components/dealer/ordering/shipping-section'
+import { PaymentSection } from '@/components/dealer/ordering/payment-section'
+import { OrderConfirmation } from '@/components/dealer/ordering/order-confirmation'
+import {
+  type OrderFormData, type ShippingAddress, type PaymentMethod, type ProjectImage,
+  INITIAL_FORM_DATA, INITIAL_SHIPPING,
+} from '@/components/dealer/ordering/types'
 
 export default function DealerOrderingPage() {
-  const router = useRouter();
-  const supabase = createClient();
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  
-  const [authorized, setAuthorized] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
-  const [userProfile, setUserProfile] = useState<any>(null);
-  const [dealer, setDealer] = useState<any>(null);
-  const [user, setUser] = useState<any>(null);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false);
-  const [orderNumber, setOrderNumber] = useState('');
-  const [uploadingImages, setUploadingImages] = useState(false);
-  const [formSubmitted, setFormSubmitted] = useState(false);
+  const router = useRouter()
+  const supabase = createClient()
 
-  // Form data - Basic Information
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    company: '',
-    purchaseOrderNumber: '',
-    email: '',
-    sidemark: '',
-    phone: '',
-    stairType: '' as 'standard_bullnose' | 'other' | '',
-    stepsNoOpenReturn: 0,
-    stepsOneOpenReturn: 0,
-    stepsTwoOpenReturn: 0,
-    longestPlankSize: '',
-    stepsDetails: '',
-    railCapTrimNeeded: false,
-    railCapTrimDetails: '',
-    manufacturer: '',
-    style: '',
-    color: '',
-    floorMatchDescription: '',
-  });
+  const [authorized, setAuthorized] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [submitting, setSubmitting] = useState(false)
+  const [userProfile, setUserProfile] = useState<Record<string, unknown> | null>(null)
+  const [dealer, setDealer] = useState<Record<string, unknown> | null>(null)
+  const [user, setUser] = useState<Record<string, unknown> | null>(null)
+  const [error, setError] = useState('')
+  const [success, setSuccess] = useState(false)
+  const [orderNumber, setOrderNumber] = useState('')
+  const [formSubmitted, setFormSubmitted] = useState(false)
 
-  // Shipping address
-  const [shippingAddress, setShippingAddress] = useState({
-    name: '',
-    company: '',
-    address1: '',
-    address2: '',
-    city: '',
-    state: '',
-    zip: '',
-    phone: '',
-  });
+  const [formData, setFormData] = useState<OrderFormData>(INITIAL_FORM_DATA)
+  const [shippingAddress, setShippingAddress] = useState<ShippingAddress>(INITIAL_SHIPPING)
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('card')
+  const [notes, setNotes] = useState('')
+  const [projectImages, setProjectImages] = useState<ProjectImage[]>([])
+  const [needsShipping, setNeedsShipping] = useState(false)
 
-  const [paymentMethod, setPaymentMethod] = useState<'card' | 'check' | 'ach'>('card');
-  const [notes, setNotes] = useState('');
-  const [projectImages, setProjectImages] = useState<Array<{url: string; fileName: string; fileSize: number; fileType: string}>>([]);
-  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
-  const [needsShipping, setNeedsShipping] = useState(false);
+  const updateFormData = (updates: Partial<OrderFormData>) =>
+    setFormData(prev => ({ ...prev, ...updates }))
 
-  // Stair quantity: track which fields user has touched (never auto-overwrite these)
-  const [stepsTouchedFields, setStepsTouchedFields] = useState({
-    stepsNoOpenReturn: false,
-    stepsOneOpenReturn: false,
-    stepsTwoOpenReturn: false,
-  });
-  // Track first entry per field for auto-fill (only trigger once per field)
-  const stepsTriggeredAutoFillRef = useRef({
-    stepsNoOpenReturn: false,
-    stepsOneOpenReturn: false,
-    stepsTwoOpenReturn: false,
-  });
-
-  // Check authorization on mount
   useEffect(() => {
     const checkAuthorization = async () => {
-      const { data: { user: authUser } } = await supabase.auth.getUser();
-      
-      if (!authUser) {
-        router.push('/dealer-login');
-        return;
-      }
+      const { data: { user: authUser } } = await supabase.auth.getUser()
+      if (!authUser) return
 
-      setUser(authUser);
+      setUser(authUser)
 
-      // Get user profile with dealer info
       const { data: profileData, error: profileError } = await supabase
         .from('profiles')
-        .select(`
-          *,
-          dealers (*)
-        `)
+        .select('*, dealers (*)')
         .eq('id', authUser.id)
-        .single();
+        .single()
 
       if (profileError || !profileData) {
-        console.error('Profile error:', profileError);
-        alert(`Error loading profile: ${profileError?.message || 'Profile not found'}. Please contact support.`);
-        router.push('/dealer-login');
-        return;
+        console.error('Profile error:', profileError)
+        alert(`Error loading profile: ${profileError?.message || 'Profile not found'}. Please contact support.`)
+        router.push('/dealer-login')
+        return
       }
 
-      setUserProfile(profileData);
-      setDealer(profileData.dealers);
+      setUserProfile(profileData)
+      setDealer(profileData.dealers)
 
-      // Pre-populate form fields from user and dealer data
-      const fullName = authUser.user_metadata?.full_name || '';
-      const nameParts = fullName.split(' ');
-      const firstName = nameParts[0] || '';
-      const lastName = nameParts.slice(1).join(' ') || '';
+      const fullName = authUser.user_metadata?.full_name || ''
+      const nameParts = fullName.split(' ')
 
       setFormData(prev => ({
         ...prev,
-        firstName,
-        lastName,
+        firstName: nameParts[0] || '',
+        lastName: nameParts.slice(1).join(' ') || '',
         company: profileData.dealers?.company_name || '',
         email: authUser.email || '',
         phone: authUser.phone || '',
-      }));
+      }))
 
       setShippingAddress(prev => ({
         ...prev,
         name: fullName,
         company: profileData.dealers?.company_name || '',
         phone: authUser.phone || '',
-      }));
+      }))
 
-      // Check if user can order: must be ACTIVE and (primary OR can_order)
       if (profileData.status === 'ACTIVE' && (profileData.is_primary || profileData.can_order)) {
-        setAuthorized(true);
+        setAuthorized(true)
       } else {
-        router.push('/dealer/dashboard');
+        router.push('/dealer/dashboard')
       }
-      
-      setLoading(false);
-    };
+      setLoading(false)
+    }
 
-    checkAuthorization();
-  }, [router, supabase]);
+    checkAuthorization()
+  }, [router, supabase])
 
-  // Prevent navigation away from order page if form not submitted
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       if (!formSubmitted && !success) {
-        e.preventDefault();
-        e.returnValue = 'Order not submitted. You will lose your work if you exit now.';
-        return e.returnValue;
-      }
-    };
-
-    // Intercept all link clicks
-    const handleLinkClick = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      const link = target.closest('a');
-      
-      if (link && !formSubmitted && !success) {
-        const href = link.getAttribute('href');
-        if (href && href !== '/dealer/ordering' && !href.startsWith('#')) {
-          e.preventDefault();
-          const shouldLeave = window.confirm('Order not submitted. You will lose your work if you exit now. Are you sure you want to leave?');
-          if (shouldLeave) {
-            router.push(href);
-          }
-        }
-      }
-    };
-
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    document.addEventListener('click', handleLinkClick, true);
-
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-      document.removeEventListener('click', handleLinkClick, true);
-    };
-  }, [formSubmitted, success, router]);
-
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (!files || files.length === 0) return;
-
-    setUploadingImages(true);
-    const uploadedUrls: Array<{url: string; fileName: string; fileSize: number; fileType: string}> = [];
-
-    try {
-      for (const file of Array.from(files)) {
-        // Validate file type
-        if (!file.type.startsWith('image/')) {
-          alert(`${file.name} is not an image file. Please upload only images.`);
-          continue;
-        }
-
-        // Validate file size (max 5MB)
-        if (file.size > 5 * 1024 * 1024) {
-          alert(`${file.name} is too large. Please upload images smaller than 5MB.`);
-          continue;
-        }
-
-        // Generate unique filename
-        const fileExt = file.name.split('.').pop();
-        const fileName = `${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
-        const filePath = `${user?.id}/${fileName}`;
-
-        // Upload to Supabase Storage
-        const { data: uploadData, error: uploadError } = await supabase.storage
-          .from('order-images')
-          .upload(filePath, file, {
-            cacheControl: '3600',
-            upsert: false
-          });
-
-        if (uploadError) {
-          console.error('Upload error:', uploadError);
-          if (uploadError.message?.includes('bucket') || uploadError.message?.includes('not found')) {
-            alert(`Storage bucket not found. Please contact support to set up the 'order-images' bucket in Supabase Storage.`);
-          } else {
-            alert(`Failed to upload ${file.name}: ${uploadError.message}`);
-          }
-          continue;
-        }
-
-        // Get signed URL (works with private bucket, expires in 24 hours)
-        const { data: signedData, error: signedError } = await supabase.storage
-          .from('order-images')
-          .createSignedUrl(filePath, 86400); // 86400 seconds = 24 hours
-
-        if (signedError || !signedData?.signedUrl) {
-          console.error('Signed URL error:', signedError);
-          alert(`Failed to get preview URL for ${file.name}. Image uploaded but preview may not display.`);
-          continue;
-        }
-
-        uploadedUrls.push({
-          url: signedData.signedUrl,
-          fileName: file.name,
-          fileSize: file.size,
-          fileType: file.type
-        });
-        setUploadedFiles(prev => [...prev, file]);
-      }
-
-      setProjectImages(prev => [...prev, ...uploadedUrls]);
-    } catch (err: any) {
-      console.error('Image upload error:', err);
-      alert(`Error uploading images: ${err.message}`);
-    } finally {
-      setUploadingImages(false);
-      if (fileInputRef.current) {
-        fileInputRef.current.value = '';
+        e.preventDefault()
+        e.returnValue = 'Order not submitted. You will lose your work if you exit now.'
+        return e.returnValue
       }
     }
-  };
 
-  const removeImage = (index: number) => {
-    setProjectImages(prev => prev.filter((_, i) => i !== index));
-    setUploadedFiles(prev => prev.filter((_, i) => i !== index));
-  };
-
-  type StepsFieldKey = 'stepsNoOpenReturn' | 'stepsOneOpenReturn' | 'stepsTwoOpenReturn';
-  const handleStepsQuantityChange = (field: StepsFieldKey, e: React.ChangeEvent<HTMLInputElement>) => {
-    const raw = e.target.value;
-    const val = raw === '' ? 0 : Math.min(9999, Math.max(0, parseInt(raw, 10) || 0));
-
-    setStepsTouchedFields(prev => ({ ...prev, [field]: true }));
-    setFormData(prev => {
-      const next = { ...prev, [field]: val };
-      // On first entry to this field only, auto-fill untouched others with 0
-      if (!stepsTriggeredAutoFillRef.current[field]) {
-        stepsTriggeredAutoFillRef.current[field] = true;
-        const others: StepsFieldKey[] = ['stepsNoOpenReturn', 'stepsOneOpenReturn', 'stepsTwoOpenReturn'].filter(k => k !== field) as StepsFieldKey[];
-        others.forEach(other => {
-          if (!stepsTouchedFields[other]) next[other] = 0;
-        });
+    const handleLinkClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement
+      const link = target.closest('a')
+      if (link && !formSubmitted && !success) {
+        const href = link.getAttribute('href')
+        if (href && href !== '/dealer/ordering' && !href.startsWith('#')) {
+          e.preventDefault()
+          if (window.confirm('Order not submitted. You will lose your work if you exit now. Are you sure you want to leave?')) {
+            router.push(href)
+          }
+        }
       }
-      return next;
-    });
-  };
+    }
+
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    document.addEventListener('click', handleLinkClick, true)
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload)
+      document.removeEventListener('click', handleLinkClick, true)
+    }
+  }, [formSubmitted, success, router])
 
   const validateForm = (): boolean => {
-    if (!formData.firstName.trim()) {
-      setError('First Name is required');
-      return false;
-    }
-    if (!formData.lastName.trim()) {
-      setError('Last Name is required');
-      return false;
-    }
-    if (!formData.purchaseOrderNumber.trim()) {
-      setError('Purchase Order # is required');
-      return false;
-    }
-    if (!formData.email.trim()) {
-      setError('Email is required');
-      return false;
-    }
-    if (!formData.sidemark.trim()) {
-      setError('Sidemark/Project Name is required');
-      return false;
-    }
-    if (!formData.phone.trim()) {
-      setError('Phone is required');
-      return false;
-    }
-    const totalSteps = formData.stepsNoOpenReturn + formData.stepsOneOpenReturn + formData.stepsTwoOpenReturn;
-    if (totalSteps === 0) {
-      setError('Please enter the number of steps for at least one stair layout option');
-      return false;
-    }
-    if (!formData.longestPlankSize.trim()) {
-      setError('Longest plank size is required');
-      return false;
-    }
-    if (!formData.stepsDetails.trim()) {
-      setError('Steps details are required (e.g., "18 Steps at 55 inches")');
-      return false;
-    }
-    if (!formData.manufacturer.trim()) {
-      setError('Manufacturer is required');
-      return false;
-    }
-    if (!formData.style.trim()) {
-      setError('Style is required');
-      return false;
-    }
-    if (!formData.color.trim()) {
-      setError('Color is required');
-      return false;
-    }
-    if (needsShipping && (!shippingAddress.name.trim() || !shippingAddress.address1.trim() || 
-        !shippingAddress.city.trim() || !shippingAddress.state.trim() || 
+    if (!formData.firstName.trim()) { setError('First Name is required'); return false }
+    if (!formData.lastName.trim()) { setError('Last Name is required'); return false }
+    if (!formData.purchaseOrderNumber.trim()) { setError('Purchase Order # is required'); return false }
+    if (!formData.email.trim()) { setError('Email is required'); return false }
+    if (!formData.sidemark.trim()) { setError('Sidemark/Project Name is required'); return false }
+    if (!formData.phone.trim()) { setError('Phone is required'); return false }
+    const totalSteps = formData.stepsNoOpenReturn + formData.stepsOneOpenReturn + formData.stepsTwoOpenReturn
+    if (totalSteps === 0) { setError('Please enter the number of steps for at least one stair layout option'); return false }
+    if (!formData.longestPlankSize.trim()) { setError('Longest plank size is required'); return false }
+    if (!formData.stepsDetails.trim()) { setError('Steps details are required (e.g., "18 Steps at 55 inches")'); return false }
+    if (!formData.manufacturer.trim()) { setError('Manufacturer is required'); return false }
+    if (!formData.style.trim()) { setError('Style is required'); return false }
+    if (!formData.color.trim()) { setError('Color is required'); return false }
+    if (needsShipping && (!shippingAddress.name.trim() || !shippingAddress.address1.trim() ||
+        !shippingAddress.city.trim() || !shippingAddress.state.trim() ||
         !shippingAddress.zip.trim() || !shippingAddress.phone.trim())) {
-      setError('Please complete all required shipping address fields');
-      return false;
+      setError('Please complete all required shipping address fields'); return false
     }
-    return true;
-  };
+    return true
+  }
 
   const handleSubmit = async () => {
-    if (!validateForm()) {
-      return;
-    }
-
-    setSubmitting(true);
-    setError('');
+    if (!validateForm()) return
+    setSubmitting(true)
+    setError('')
 
     try {
-      // Calculate total (for now, we'll use a placeholder since pricing is TBD)
-      // In the future, this will be calculated based on the order details
-      const totalAmountCents = 0; // Placeholder - will be calculated by admin
-
       const orderData = {
-        // Basic information
         first_name: formData.firstName,
         last_name: formData.lastName,
         company: formData.company,
@@ -362,291 +159,99 @@ export default function DealerOrderingPage() {
         sidemark: formData.sidemark,
         phone: formData.phone,
         email: formData.email,
-        
-        // Stair details
         stair_type: formData.stairType,
         steps_no_open_return: formData.stepsNoOpenReturn,
         steps_one_open_return: formData.stepsOneOpenReturn,
         steps_two_open_return: formData.stepsTwoOpenReturn,
         longest_plank_size: formData.longestPlankSize,
         steps_details: formData.stepsDetails,
-        
-        // Flooring match information
         manufacturer: formData.manufacturer,
         style: formData.style,
         color: formData.color,
         floor_match_description: formData.floorMatchDescription,
-        
-        // Rail cap trim
         rail_cap_trim_needed: formData.railCapTrimNeeded,
         rail_cap_trim_details: formData.railCapTrimDetails || null,
-        
-        // Images - send both URL array (for backward compatibility) and metadata
         project_images: projectImages.map(img => img.url),
         image_metadata: projectImages,
-        
-        // Payment and shipping
         payment_method: paymentMethod,
-        total_amount_cents: totalAmountCents,
+        total_amount_cents: 0,
         shipping_address: needsShipping ? shippingAddress : null,
-        contact_info: {
-          email: formData.email,
-          phone: formData.phone,
-          name: `${formData.firstName} ${formData.lastName}`,
-        },
+        contact_info: { email: formData.email, phone: formData.phone, name: `${formData.firstName} ${formData.lastName}` },
         notes: notes.trim() || null,
-      };
+      }
 
       const response = await fetch('/api/orders/create', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(orderData),
-      });
+      })
 
-      const data = await response.json();
+      const data = await response.json()
+      if (!response.ok) throw new Error(data.error || 'Failed to create order')
 
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to create order');
-      }
-
-      setOrderNumber(data.order.order_number);
-      setSuccess(true);
-      setFormSubmitted(true); // Allow navigation after successful submission
-    } catch (err: any) {
-      console.error('Order submission error:', err);
-      setError(err.message || 'Failed to submit order. Please try again.');
+      setOrderNumber(data.order.order_number)
+      setSuccess(true)
+      setFormSubmitted(true)
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Failed to submit order. Please try again.'
+      console.error('Order submission error:', err)
+      setError(message)
     } finally {
-      setSubmitting(false);
+      setSubmitting(false)
     }
-  };
+  }
 
   if (loading) {
     return (
       <div style={{ textAlign: 'center', padding: '40px', backgroundColor: '#ffffff', color: '#000000' }}>
         <p style={{ color: '#000000' }}>Loading...</p>
       </div>
-    );
+    )
   }
 
-  if (!authorized) {
-    return null; // Will redirect
-  }
+  if (!authorized) return null
 
   if (success) {
-  return (
-      <div style={{ maxWidth: '600px', margin: '40px auto', padding: '40px', backgroundColor: '#ffffff' }}>
-        <div style={{ 
-          background: '#ecfdf5',
-          border: '2px solid #059669',
-          padding: '24px',
-          borderRadius: '8px',
-          textAlign: 'center'
-        }}>
-          <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '16px', color: '#059669' }}>
-            Order Submitted Successfully!
-          </h2>
-          <p style={{ fontSize: '18px', marginBottom: '8px', color: '#000' }}>
-            Order Number: <strong>{orderNumber}</strong>
-          </p>
-          <p style={{ fontSize: '14px', color: '#6b7280', marginBottom: '24px' }}>
-            {paymentMethod === 'card' 
-              ? "We'll contact you to process your credit card payment."
-              : paymentMethod === 'check'
-              ? "Please send your check with the order number included."
-              : "Please complete ACH transfer with the order number as reference."
-            }
-          </p>
-          <button
-            onClick={() => {
-              setSuccess(false);
-              setFormData({
-                firstName: '',
-                lastName: '',
-                company: dealer?.company_name || '',
-                purchaseOrderNumber: '',
-                email: user?.email || '',
-                sidemark: '',
-                phone: user?.phone || '',
-                stairType: '',
-                stepsNoOpenReturn: 0,
-                stepsOneOpenReturn: 0,
-                stepsTwoOpenReturn: 0,
-                longestPlankSize: '',
-                stepsDetails: '',
-                railCapTrimNeeded: false,
-                railCapTrimDetails: '',
-                manufacturer: '',
-                style: '',
-                color: '',
-                floorMatchDescription: '',
-              });
-              setProjectImages([]);
-              setUploadedFiles([]);
-            }}
-            style={{
-              padding: '12px 24px',
-              background: '#000',
-              color: '#fff',
-              border: 'none',
-          borderRadius: '6px', 
-              cursor: 'pointer',
-              fontWeight: '600',
-              fontSize: '16px'
-            }}
-          >
-            Place Another Order
-          </button>
-        </div>
-      </div>
-    );
+    return (
+      <OrderConfirmation
+        orderNumber={orderNumber}
+        paymentMethod={paymentMethod}
+        onPlaceAnother={() => {
+          setSuccess(false)
+          setFormData({
+            ...INITIAL_FORM_DATA,
+            company: (dealer as Record<string, string>)?.company_name || '',
+            email: (user as Record<string, string>)?.email || '',
+            phone: (user as Record<string, string>)?.phone || '',
+          })
+          setProjectImages([])
+        }}
+      />
+    )
   }
 
   return (
     <>
       <style jsx global>{`
         input[type="number"]::-webkit-inner-spin-button,
-        input[type="number"]::-webkit-outer-spin-button {
-          -webkit-appearance: none;
-          margin: 0;
-        }
-        input[type="number"] {
-          -moz-appearance: textfield;
-        }
+        input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        input[type="number"] { -moz-appearance: textfield; }
       `}</style>
-      <div style={{ 
-        maxWidth: '1000px', 
-        margin: '0 auto', 
-        padding: '40px 20px', 
-        backgroundColor: '#f5f0e8', 
-        color: '#3d2817',
-        minHeight: '100vh'
+      <div style={{
+        maxWidth: '1000px', margin: '0 auto', padding: '40px 20px',
+        backgroundColor: '#f5f0e8', color: '#3d2817', minHeight: '100vh'
       }}>
-        <h1 style={{
-        fontSize: '36px', 
-        fontWeight: 'bold', 
-        marginBottom: '12px', 
-        color: '#3d2817',
-        fontFamily: 'Georgia, serif',
-        letterSpacing: '-0.5px'
-      }}>
-        We Look Forward to Helping You
-      </h1>
+        <h1 style={{ fontSize: '36px', fontWeight: 'bold', marginBottom: '12px', color: '#3d2817', fontFamily: 'Georgia, serif', letterSpacing: '-0.5px' }}>
+          We Look Forward to Helping You
+        </h1>
 
-      {error && (
-        <div style={{ 
-          background: '#fef2f2',
-          border: '1px solid #fecaca',
-          color: '#b91c1c',
-          padding: '14px', 
-          borderRadius: '8px', 
-          marginBottom: '24px',
-          boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-        }}>
-          {error}
-        </div>
-      )}
-      
-      <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
-        {/* Basic Information Section */}
-        <div style={{ 
-          background: '#ffffff', 
-          padding: '32px', 
-          borderRadius: '12px', 
-          marginBottom: '28px',
-          border: 'none',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.08)'
-        }}>
-          <h2 style={{ 
-            fontSize: '24px', 
-            fontWeight: '600', 
-            marginBottom: '24px', 
-            color: '#3d2817',
-            fontFamily: 'Georgia, serif'
-          }}>
-            Basic Information
-          </h2>
-          
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '20px' }}>
-            <div>
-              <label style={{ 
-                display: 'block', 
-                marginBottom: '8px', 
-                fontWeight: '500', 
-                fontSize: '14px',
-                color: '#3d2817'
-              }}>
-                First Name <span style={{ color: '#dc2626' }}>*</span>
-              </label>
-              <input
-                type="text"
-                value={formData.firstName}
-                onChange={(e) => setFormData({...formData, firstName: e.target.value})}
-                placeholder="First Name"
-                required
-                style={{
-                  width: '100%',
-                  maxWidth: '300px',
-                  padding: '10px 12px',
-                  border: '1px solid #e5ddd4',
-                  borderRadius: '8px',
-                  fontSize: '14px',
-                  backgroundColor: '#faf8f3',
-                  color: '#3d2817',
-                  transition: 'all 0.2s',
-                  outline: 'none'
-                }}
-                onFocus={(e) => {
-                  e.target.style.borderColor = '#c9a882';
-                  e.target.style.backgroundColor = '#ffffff';
-                }}
-                onBlur={(e) => {
-                  e.target.style.borderColor = '#e5ddd4';
-                  e.target.style.backgroundColor = '#faf8f3';
-                }}
-              />
-            </div>
-            <div>
-              <label style={{ 
-                display: 'block', 
-                marginBottom: '8px', 
-                fontWeight: '500', 
-                fontSize: '14px',
-                color: '#3d2817'
-              }}>
-                Last Name <span style={{ color: '#dc2626' }}>*</span>
-              </label>
-              <input
-                type="text"
-                value={formData.lastName}
-                onChange={(e) => setFormData({...formData, lastName: e.target.value})}
-                placeholder="Last Name"
-                required
-                style={{
-                  width: '100%',
-                  maxWidth: '300px',
-                  padding: '10px 12px',
-                  border: '1px solid #e5ddd4',
-                  borderRadius: '8px',
-                  fontSize: '14px',
-                  backgroundColor: '#faf8f3',
-                  color: '#3d2817',
-                  transition: 'all 0.2s',
-                  outline: 'none'
-                }}
-                onFocus={(e) => {
-                  e.target.style.borderColor = '#c9a882';
-                  e.target.style.backgroundColor = '#ffffff';
-                }}
-                onBlur={(e) => {
-                  e.target.style.borderColor = '#e5ddd4';
-                  e.target.style.backgroundColor = '#faf8f3';
-                }}
-              />
-            </div>
+        {error && (
+          <div style={{ background: '#fef2f2', border: '1px solid #fecaca', color: '#b91c1c', padding: '14px', borderRadius: '8px', marginBottom: '24px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+            {error}
           </div>
+        )}
 
+<<<<<<< Updated upstream
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '20px' }}>
             <div>
               <label style={{ 
@@ -1803,7 +1408,19 @@ export default function DealerOrderingPage() {
           </button>
         </div>
       </form>
+=======
+        <form onSubmit={(e) => { e.preventDefault(); handleSubmit() }}>
+          <BasicInfoSection formData={formData} onChange={updateFormData} />
+          <StairDetailsSection formData={formData} onChange={updateFormData} />
+          <FlooringDetailsSection formData={formData} onChange={updateFormData} />
+          <ImageUploadSection userId={(user as Record<string, string>)?.id} projectImages={projectImages} setProjectImages={setProjectImages} />
+          <ShippingSection needsShipping={needsShipping} setNeedsShipping={setNeedsShipping}
+            shippingAddress={shippingAddress} setShippingAddress={setShippingAddress} />
+          <PaymentSection paymentMethod={paymentMethod} setPaymentMethod={setPaymentMethod}
+            notes={notes} setNotes={setNotes} submitting={submitting} />
+        </form>
+>>>>>>> Stashed changes
       </div>
     </>
-  );
+  )
 }

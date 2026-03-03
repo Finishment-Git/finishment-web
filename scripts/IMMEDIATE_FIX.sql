@@ -47,4 +47,3 @@ GRANT EXECUTE ON FUNCTION create_dealer_for_registration TO anon;
 
 -- Verify it worked
 SELECT 'Fix applied successfully! Try registering again.' as status;
-

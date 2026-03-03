@@ -285,4 +285,3 @@ CREATE POLICY "Primary users can update team member profiles"
 -- ============================================================================
 
 SELECT 'Database setup completed successfully! Try registering a dealer now.' as status;
-
