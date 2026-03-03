@@ -64,6 +64,19 @@ export default function DealerOrderingPage() {
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [needsShipping, setNeedsShipping] = useState(false);
 
+  // Stair quantity: track which fields user has touched (never auto-overwrite these)
+  const [stepsTouchedFields, setStepsTouchedFields] = useState({
+    stepsNoOpenReturn: false,
+    stepsOneOpenReturn: false,
+    stepsTwoOpenReturn: false,
+  });
+  // Track first entry per field for auto-fill (only trigger once per field)
+  const stepsTriggeredAutoFillRef = useRef({
+    stepsNoOpenReturn: false,
+    stepsOneOpenReturn: false,
+    stepsTwoOpenReturn: false,
+  });
+
   // Check authorization on mount
   useEffect(() => {
     const checkAuthorization = async () => {
@@ -242,6 +255,26 @@ export default function DealerOrderingPage() {
   const removeImage = (index: number) => {
     setProjectImages(prev => prev.filter((_, i) => i !== index));
     setUploadedFiles(prev => prev.filter((_, i) => i !== index));
+  };
+
+  type StepsFieldKey = 'stepsNoOpenReturn' | 'stepsOneOpenReturn' | 'stepsTwoOpenReturn';
+  const handleStepsQuantityChange = (field: StepsFieldKey, e: React.ChangeEvent<HTMLInputElement>) => {
+    const raw = e.target.value;
+    const val = raw === '' ? 0 : Math.min(9999, Math.max(0, parseInt(raw, 10) || 0));
+
+    setStepsTouchedFields(prev => ({ ...prev, [field]: true }));
+    setFormData(prev => {
+      const next = { ...prev, [field]: val };
+      // On first entry to this field only, auto-fill untouched others with 0
+      if (!stepsTriggeredAutoFillRef.current[field]) {
+        stepsTriggeredAutoFillRef.current[field] = true;
+        const others: StepsFieldKey[] = ['stepsNoOpenReturn', 'stepsOneOpenReturn', 'stepsTwoOpenReturn'].filter(k => k !== field) as StepsFieldKey[];
+        others.forEach(other => {
+          if (!stepsTouchedFields[other]) next[other] = 0;
+        });
+      }
+      return next;
+    });
   };
 
   const validateForm = (): boolean => {
@@ -997,13 +1030,8 @@ export default function DealerOrderingPage() {
                   type="number"
                   min="0"
                   max="9999"
-                  value={formData.stepsNoOpenReturn || ''}
-                  onChange={(e) => {
-                    const val = parseInt(e.target.value) || 0;
-                    if (val >= 0 && val <= 9999) {
-                      setFormData({...formData, stepsNoOpenReturn: val});
-                    }
-                  }}
+                  value={formData.stepsNoOpenReturn}
+                  onChange={(e) => handleStepsQuantityChange('stepsNoOpenReturn', e)}
                   placeholder="Quantity"
                   required
                   style={{
@@ -1068,13 +1096,8 @@ export default function DealerOrderingPage() {
                   type="number"
                   min="0"
                   max="9999"
-                  value={formData.stepsOneOpenReturn || ''}
-                  onChange={(e) => {
-                    const val = parseInt(e.target.value) || 0;
-                    if (val >= 0 && val <= 9999) {
-                      setFormData({...formData, stepsOneOpenReturn: val});
-                    }
-                  }}
+                  value={formData.stepsOneOpenReturn}
+                  onChange={(e) => handleStepsQuantityChange('stepsOneOpenReturn', e)}
                   placeholder="Quantity"
                   required
                   style={{
@@ -1131,13 +1154,8 @@ export default function DealerOrderingPage() {
                   type="number"
                   min="0"
                   max="9999"
-                  value={formData.stepsTwoOpenReturn || ''}
-                  onChange={(e) => {
-                    const val = parseInt(e.target.value) || 0;
-                    if (val >= 0 && val <= 9999) {
-                      setFormData({...formData, stepsTwoOpenReturn: val});
-                    }
-                  }}
+                  value={formData.stepsTwoOpenReturn}
+                  onChange={(e) => handleStepsQuantityChange('stepsTwoOpenReturn', e)}
                   placeholder="Quantity"
                   required
                   style={{
@@ -1694,6 +1712,8 @@ export default function DealerOrderingPage() {
                 <div style={{ fontWeight: '600', marginBottom: '4px' }}>Check</div>
                 <div style={{ fontSize: '14px', color: '#6b7280' }}>
                   Mail check with order number included
+                  <br />
+                  Note, mailing checks may delay production time.
                 </div>
               </div>
             </label>
