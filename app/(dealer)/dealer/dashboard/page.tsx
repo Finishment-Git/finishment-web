@@ -5,9 +5,6 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import Link from "next/link";
 
-// Prevent static generation - this page requires authentication
-export const dynamic = 'force-dynamic';
-
 export default function DealerDashboard() {
   const router = useRouter();
   const [user, setUser] = useState<any>(null);
@@ -19,11 +16,7 @@ export default function DealerDashboard() {
     const loadData = async () => {
       const supabase = createClient();
       const { data: { user } } = await supabase.auth.getUser();
-      
-      if (!user) {
-        router.push('/dealer-login');
-        return;
-      }
+      if (!user) return;
 
       setUser(user);
 

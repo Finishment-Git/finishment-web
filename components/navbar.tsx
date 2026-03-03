@@ -1,5 +1,6 @@
 "use client";
 import { Instagram, Facebook } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 export default function Navbar() {
@@ -19,16 +20,13 @@ export default function Navbar() {
       {/* LOGO SECTION */}
       <div style={{ height: '100%', display: 'flex', alignItems: 'center' }}>
         <a href="/" style={{ height: '100%', display: 'flex', alignItems: 'center' }}>
-          <img 
-            src="/logo2.png" 
-            alt="Logo" 
-            style={{ 
-              height: '100%',    
-              width: 'auto', 
-              display: 'block',
-              objectFit: 'contain'
-            }} 
-            onError={(e) => { e.currentTarget.style.display = 'none'; }} 
+          <Image
+            src="/logo2.png"
+            alt="Logo"
+            width={400}
+            height={140}
+            style={{ height: '100%', width: 'auto', display: 'block', objectFit: 'contain' }}
+            priority
           />
         </a>
       </div>

@@ -5,9 +5,6 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import { CheckCircle, AlertTriangle, ShieldCheck, Ruler, Package, Zap, Truck, DollarSign, Wrench, Clock, Award, TrendingUp, X, MapPin, Sparkles, Settings } from 'lucide-react';
 
-// Prevent static generation - this page requires authentication
-export const dynamic = 'force-dynamic';
-
 export default function DealerEducation() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -19,10 +16,7 @@ export default function DealerEducation() {
     const getUser = async () => {
       const supabase = createClient();
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        router.push('/dealer-login');
-        return;
-      }
+      if (!user) return;
       
       setUser(user);
       
