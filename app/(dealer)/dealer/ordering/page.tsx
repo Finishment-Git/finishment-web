@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import type { User } from '@supabase/supabase-js'
 import { createClient } from '@/utils/supabase/client'
 import { BasicInfoSection } from '@/components/dealer/ordering/basic-info-section'
 import { StairDetailsSection } from '@/components/dealer/ordering/stair-details-section'
@@ -23,7 +24,7 @@ export default function DealerOrderingPage() {
   const [submitting, setSubmitting] = useState(false)
   const [userProfile, setUserProfile] = useState<Record<string, unknown> | null>(null)
   const [dealer, setDealer] = useState<Record<string, unknown> | null>(null)
-  const [user, setUser] = useState<Record<string, unknown> | null>(null)
+  const [user, setUser] = useState<User | null>(null)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
   const [orderNumber, setOrderNumber] = useState('')
@@ -221,8 +222,8 @@ export default function DealerOrderingPage() {
           setFormData({
             ...INITIAL_FORM_DATA,
             company: (dealer as Record<string, string>)?.company_name || '',
-            email: (user as Record<string, string>)?.email || '',
-            phone: (user as Record<string, string>)?.phone || '',
+            email: user?.email || '',
+            phone: user?.phone || '',
           })
           setProjectImages([])
         }}
@@ -255,7 +256,7 @@ export default function DealerOrderingPage() {
           <BasicInfoSection formData={formData} onChange={updateFormData} />
           <StairDetailsSection formData={formData} onChange={updateFormData} />
           <FlooringDetailsSection formData={formData} onChange={updateFormData} />
-          <ImageUploadSection userId={(user as Record<string, string>)?.id} projectImages={projectImages} setProjectImages={setProjectImages} />
+          <ImageUploadSection userId={user?.id} projectImages={projectImages} setProjectImages={setProjectImages} />
           <ShippingSection needsShipping={needsShipping} setNeedsShipping={setNeedsShipping}
             shippingAddress={shippingAddress} setShippingAddress={setShippingAddress} />
           <PaymentSection paymentMethod={paymentMethod} setPaymentMethod={setPaymentMethod}
