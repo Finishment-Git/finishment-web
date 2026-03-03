@@ -189,7 +189,7 @@ export default function DealerOrderingPage() {
         throw new Error(response.ok ? 'Invalid response from server' : `Request failed (${response.status})`)
       }
       if (!response.ok) {
-        const msg = data?.error || data?.details || 'Failed to create order'
+        const msg = data?.details || data?.error || 'Failed to create order'
         throw new Error(typeof msg === 'string' ? msg : String(msg))
       }
       if (!data?.order?.id || !data?.order?.order_number) {

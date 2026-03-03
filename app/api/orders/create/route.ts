@@ -1,4 +1,4 @@
-import { createClient } from '@/utils/supabase/server';
+import { createClient, createServiceRoleClient } from '@/utils/supabase/server';
 import { generateOrderNumber } from '@/lib/orders';
 import { calculateOrderTotalCents } from '@/lib/pricing';
 import { sendOrderConfirmation } from '@/lib/email';
@@ -29,6 +29,13 @@ export async function POST(request: Request) {
       return NextResponse.json(
         { error: 'Profile not found' },
         { status: 404 }
+      );
+    }
+
+    if (!profile.dealer_id) {
+      return NextResponse.json(
+        { error: 'Your account is not linked to a dealer. Please contact support.' },
+        { status: 400 }
       );
     }
 
@@ -166,14 +173,20 @@ export async function POST(request: Request) {
       .single();
 
     if (orderError || !order) {
+      console.error('Order insert failed:', {
+        message: orderError?.message,
+        code: orderError?.code,
+        details: orderError?.details,
+      });
       return NextResponse.json(
         { error: 'Failed to create order', details: orderError?.message },
         { status: 500 }
       );
     }
 
-    // Create payment record
-    const { error: paymentError } = await supabase
+    // Create payment record (use service role - dealers cannot INSERT into order_payments)
+    const adminClient = createServiceRoleClient();
+    const { error: paymentError } = await adminClient
       .from('order_payments')
       .insert({
         order_id: order.id,
