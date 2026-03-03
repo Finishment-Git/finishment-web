@@ -224,20 +224,24 @@ export default function DealerOrderingPage() {
           continue;
         }
 
-        // Get public URL
-        const { data: urlData } = supabase.storage
+        // Get signed URL (works with private bucket, expires in 24 hours)
+        const { data: signedData, error: signedError } = await supabase.storage
           .from('order-images')
-          .getPublicUrl(filePath);
+          .createSignedUrl(filePath, 86400); // 86400 seconds = 24 hours
 
-        if (urlData?.publicUrl) {
-          uploadedUrls.push({
-            url: urlData.publicUrl,
-            fileName: file.name,
-            fileSize: file.size,
-            fileType: file.type
-          });
-          setUploadedFiles(prev => [...prev, file]);
+        if (signedError || !signedData?.signedUrl) {
+          console.error('Signed URL error:', signedError);
+          alert(`Failed to get preview URL for ${file.name}. Image uploaded but preview may not display.`);
+          continue;
         }
+
+        uploadedUrls.push({
+          url: signedData.signedUrl,
+          fileName: file.name,
+          fileSize: file.size,
+          fileType: file.type
+        });
+        setUploadedFiles(prev => [...prev, file]);
       }
 
       setProjectImages(prev => [...prev, ...uploadedUrls]);
