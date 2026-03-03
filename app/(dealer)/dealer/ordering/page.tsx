@@ -1720,7 +1720,7 @@ export default function DealerOrderingPage() {
                 <div style={{ fontSize: '14px', color: '#6b7280' }}>
                   Mail check with order number included
                   <br />
-                  Note, mailing checks may delay production time.
+                  <span style={{ fontWeight: '600' }}>Note, mailing checks may delay production time.</span>
                 </div>
               </div>
             </label>
