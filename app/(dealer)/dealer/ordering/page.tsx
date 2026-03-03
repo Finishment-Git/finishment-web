@@ -1052,6 +1052,7 @@ export default function DealerOrderingPage() {
                     MozAppearance: 'textfield'
                   }}
                   onFocus={(e) => {
+                    e.target.select();
                     e.target.style.borderColor = '#c9a882';
                     e.target.style.backgroundColor = '#ffffff';
                   }}
@@ -1118,6 +1119,7 @@ export default function DealerOrderingPage() {
                     MozAppearance: 'textfield'
                   }}
                   onFocus={(e) => {
+                    e.target.select();
                     e.target.style.borderColor = '#c9a882';
                     e.target.style.backgroundColor = '#ffffff';
                   }}
@@ -1176,6 +1178,7 @@ export default function DealerOrderingPage() {
                     MozAppearance: 'textfield'
                   }}
                   onFocus={(e) => {
+                    e.target.select();
                     e.target.style.borderColor = '#c9a882';
                     e.target.style.backgroundColor = '#ffffff';
                   }}
