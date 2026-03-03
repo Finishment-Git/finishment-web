@@ -1,6 +1,7 @@
 import { createClient } from '@/utils/supabase/server';
 import { generateOrderNumber } from '@/lib/orders';
-import { sendOrderConfirmation, sendPaymentInstructionsCard, sendPaymentInstructionsCheck, sendPaymentInstructionsACH } from '@/lib/email';
+import { calculateOrderTotalCents } from '@/lib/pricing';
+import { sendOrderConfirmation } from '@/lib/email';
 import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
@@ -69,14 +70,13 @@ export async function POST(request: Request) {
       image_metadata, // Optional: array of {url, fileName, fileSize, fileType}
       // Payment and shipping
       payment_method,
-      total_amount_cents,
       shipping_address,
       contact_info,
       notes,
     } = body;
 
-    // Validate required fields
-    if (!payment_method || !first_name || !last_name || !purchase_order_number || 
+    // Validate required fields (payment_method is set on Order Confirmation; default to 'card')
+    if (!first_name || !last_name || !purchase_order_number || 
         !email || !sidemark || !phone || !longest_plank_size || 
         !steps_details || !manufacturer || !style || 
         !color) {
@@ -85,6 +85,10 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
+
+    const paymentMethod = payment_method && ['card', 'check', 'ach'].includes(payment_method)
+      ? payment_method
+      : 'card';
     
     // Validate shipping address if provided
     if (shipping_address && (!shipping_address.name || !shipping_address.address1 || 
@@ -105,11 +109,11 @@ export async function POST(request: Request) {
       );
     }
 
-    // Determine initial status based on payment method
-    let initialStatus = 'PENDING_PAYMENT';
-    if (payment_method === 'check' || payment_method === 'ach') {
-      initialStatus = 'PAYMENT_ARRANGED';
-    }
+    // Pricing: $28 per unit (stair nose). Only dealers can order (enforced above).
+    const totalAmountCents = calculateOrderTotalCents(totalSteps);
+
+    // Initial status is always PENDING_PAYMENT (payment method selected on Order Confirmation)
+    const initialStatus = 'PENDING_PAYMENT';
 
     // Generate order number
     const orderNumber = generateOrderNumber();
@@ -146,9 +150,9 @@ export async function POST(request: Request) {
         rail_cap_trim_details: rail_cap_trim_details || null,
         // Images
         project_images: project_images || [],
-        // Payment and shipping
-        payment_method,
-        total_amount_cents: total_amount_cents || 0, // Will be calculated by admin
+        // Payment and shipping (default card; updated when user selects on Order Confirmation)
+        payment_method: paymentMethod,
+        total_amount_cents: totalAmountCents,
         order_items: [], // Empty for now, can be populated later if needed
         shipping_address,
         contact_info: contact_info || {
@@ -173,8 +177,8 @@ export async function POST(request: Request) {
       .from('order_payments')
       .insert({
         order_id: order.id,
-        payment_method,
-        amount_cents: total_amount_cents,
+        payment_method: paymentMethod,
+        amount_cents: totalAmountCents,
         payment_received: false,
       });
 
@@ -211,15 +215,8 @@ export async function POST(request: Request) {
       }
     }
 
-    // Send email notifications (placeholders)
+    // Send order confirmation email (payment instructions sent after user selects method on checkout)
     await sendOrderConfirmation(order);
-    if (payment_method === 'card') {
-      await sendPaymentInstructionsCard(order);
-    } else if (payment_method === 'check') {
-      await sendPaymentInstructionsCheck(order);
-    } else if (payment_method === 'ach') {
-      await sendPaymentInstructionsACH(order);
-    }
 
     return NextResponse.json({ order }, { status: 201 });
   } catch (error: any) {
