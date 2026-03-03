@@ -215,8 +215,10 @@ export async function POST(request: Request) {
       }
     }
 
-    // Send order confirmation email (payment instructions sent after user selects method on checkout)
-    await sendOrderConfirmation(order);
+    // Send order confirmation email (non-blocking - don't fail order if email fails)
+    sendOrderConfirmation(order).catch((err) =>
+      console.error('Failed to send order confirmation email:', err)
+    );
 
     return NextResponse.json({ order }, { status: 201 });
   } catch (error: any) {

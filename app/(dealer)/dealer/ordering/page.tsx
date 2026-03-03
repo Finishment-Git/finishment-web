@@ -9,7 +9,6 @@ import { FlooringDetailsSection } from '@/components/dealer/ordering/flooring-de
 import { ImageUploadSection } from '@/components/dealer/ordering/image-upload-section'
 import { ShippingSection } from '@/components/dealer/ordering/shipping-section'
 import { OrderConfirmation } from '@/components/dealer/ordering/order-confirmation'
-import { OrderSummary } from '@/components/dealer/ordering/order-summary'
 import {
   type OrderFormData, type ShippingAddress, type ProjectImage,
   INITIAL_FORM_DATA, INITIAL_SHIPPING,
@@ -183,8 +182,19 @@ export default function DealerOrderingPage() {
         body: JSON.stringify(orderData),
       })
 
-      const data = await response.json()
-      if (!response.ok) throw new Error(data.error || 'Failed to create order')
+      let data: { order?: { id: string; order_number: string }; error?: string; details?: string }
+      try {
+        data = await response.json()
+      } catch {
+        throw new Error(response.ok ? 'Invalid response from server' : `Request failed (${response.status})`)
+      }
+      if (!response.ok) {
+        const msg = data?.error || data?.details || 'Failed to create order'
+        throw new Error(typeof msg === 'string' ? msg : String(msg))
+      }
+      if (!data?.order?.id || !data?.order?.order_number) {
+        throw new Error('Invalid order response from server')
+      }
 
       setOrderId(data.order.id)
       setOrderNumber(data.order.order_number)
@@ -210,10 +220,15 @@ export default function DealerOrderingPage() {
   if (!authorized) return null
 
   if (success) {
+    const totalSteps =
+      (formData.stepsNoOpenReturn || 0) + (formData.stepsOneOpenReturn || 0) + (formData.stepsTwoOpenReturn || 0)
+    const totalAmountCents = totalSteps * 28 * 100 // $28 per unit
     return (
       <OrderConfirmation
         orderId={orderId}
         orderNumber={orderNumber}
+        totalSteps={totalSteps}
+        totalAmountCents={totalAmountCents}
         onPlaceAnother={() => {
           setSuccess(false)
           setOrderId('')
@@ -258,7 +273,6 @@ export default function DealerOrderingPage() {
           <ImageUploadSection userId={user?.id} projectImages={projectImages} setProjectImages={setProjectImages} />
           <ShippingSection needsShipping={needsShipping} setNeedsShipping={setNeedsShipping}
             shippingAddress={shippingAddress} setShippingAddress={setShippingAddress} />
-          <OrderSummary formData={formData} />
           <div style={{ textAlign: 'center', marginTop: '24px', marginBottom: '40px' }}>
             <button type="submit" disabled={submitting}
               style={{

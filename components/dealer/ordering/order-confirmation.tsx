@@ -1,6 +1,9 @@
 'use client'
 import { useState } from 'react'
 import type { PaymentMethod } from './types'
+import { formatAmount } from '@/lib/orders'
+
+const PRICE_PER_UNIT = 28
 
 const PAYMENT_OPTIONS: { value: PaymentMethod; label: string; description: string }[] = [
   { value: 'card', label: 'Credit Card', description: 'Complete payment securely at checkout' },
@@ -11,6 +14,8 @@ const PAYMENT_OPTIONS: { value: PaymentMethod; label: string; description: strin
 interface OrderConfirmationProps {
   orderId: string
   orderNumber: string
+  totalSteps: number
+  totalAmountCents: number
   onPlaceAnother: () => void
   onProceedToCheckout: (orderId: string) => void
 }
@@ -18,6 +23,8 @@ interface OrderConfirmationProps {
 export function OrderConfirmation({
   orderId,
   orderNumber,
+  totalSteps,
+  totalAmountCents,
   onPlaceAnother,
   onProceedToCheckout,
 }: OrderConfirmationProps) {
@@ -55,6 +62,22 @@ export function OrderConfirmation({
         <p style={{ fontSize: '18px', marginBottom: '8px', color: '#000' }}>
           Order Number: <strong>{orderNumber}</strong>
         </p>
+      </div>
+
+      <div style={{ background: '#ffffff', padding: '24px', borderRadius: '8px', marginBottom: '24px', border: '1px solid #e5e7eb' }}>
+        <h2 style={{ fontSize: '20px', fontWeight: '600', marginBottom: '16px', color: '#000000' }}>
+          Order Summary
+        </h2>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '15px', color: '#374151', marginBottom: '24px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <span>{totalSteps} unit{totalSteps !== 1 ? 's' : ''} × ${PRICE_PER_UNIT}</span>
+            <span>{formatAmount(totalAmountCents)}</span>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: '600', fontSize: '18px', paddingTop: '12px', borderTop: '1px solid #e5e7eb' }}>
+            <span>Order Total</span>
+            <span>{formatAmount(totalAmountCents)}</span>
+          </div>
+        </div>
       </div>
 
       <div style={{ background: '#ffffff', padding: '24px', borderRadius: '8px', marginBottom: '24px', border: '1px solid #e5e7eb' }}>
