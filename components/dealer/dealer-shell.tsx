@@ -38,8 +38,8 @@ export function DealerShell({
             <Image
               src="/logo2.png"
               alt="Finishment Logo"
-              width={480}
-              height={160}
+              width={180}
+              height={60}
               style={{ objectFit: 'contain', filter: 'brightness(0) invert(1)', margin: 0, padding: 0, display: 'block' }}
               priority
             />
@@ -49,8 +49,8 @@ export function DealerShell({
             <Image
               src="/logo2.png"
               alt="Finishment Logo"
-              width={480}
-              height={160}
+              width={180}
+              height={60}
               style={{ objectFit: 'contain', filter: 'brightness(0) invert(1)', margin: 0, padding: 0, display: 'block' }}
               priority
             />
