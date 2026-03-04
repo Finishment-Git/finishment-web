@@ -8,10 +8,9 @@ import { StairDetailsSection } from '@/components/dealer/ordering/stair-details-
 import { FlooringDetailsSection } from '@/components/dealer/ordering/flooring-details-section'
 import { ImageUploadSection } from '@/components/dealer/ordering/image-upload-section'
 import { ShippingSection } from '@/components/dealer/ordering/shipping-section'
-import { PaymentSection } from '@/components/dealer/ordering/payment-section'
 import { OrderConfirmation } from '@/components/dealer/ordering/order-confirmation'
 import {
-  type OrderFormData, type ShippingAddress, type PaymentMethod, type ProjectImage,
+  type OrderFormData, type ShippingAddress, type ProjectImage,
   INITIAL_FORM_DATA, INITIAL_SHIPPING,
 } from '@/components/dealer/ordering/types'
 
@@ -27,13 +26,12 @@ export default function DealerOrderingPage() {
   const [user, setUser] = useState<User | null>(null)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
+  const [orderId, setOrderId] = useState('')
   const [orderNumber, setOrderNumber] = useState('')
   const [formSubmitted, setFormSubmitted] = useState(false)
 
   const [formData, setFormData] = useState<OrderFormData>(INITIAL_FORM_DATA)
   const [shippingAddress, setShippingAddress] = useState<ShippingAddress>(INITIAL_SHIPPING)
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('card')
-  const [notes, setNotes] = useState('')
   const [projectImages, setProjectImages] = useState<ProjectImage[]>([])
   const [needsShipping, setNeedsShipping] = useState(false)
 
@@ -174,11 +172,8 @@ export default function DealerOrderingPage() {
         rail_cap_trim_details: formData.railCapTrimDetails || null,
         project_images: projectImages.map(img => img.url),
         image_metadata: projectImages,
-        payment_method: paymentMethod,
-        total_amount_cents: 0,
         shipping_address: needsShipping ? shippingAddress : null,
         contact_info: { email: formData.email, phone: formData.phone, name: `${formData.firstName} ${formData.lastName}` },
-        notes: notes.trim() || null,
       }
 
       const response = await fetch('/api/orders/create', {
@@ -187,9 +182,21 @@ export default function DealerOrderingPage() {
         body: JSON.stringify(orderData),
       })
 
-      const data = await response.json()
-      if (!response.ok) throw new Error(data.error || 'Failed to create order')
+      let data: { order?: { id: string; order_number: string }; error?: string; details?: string }
+      try {
+        data = await response.json()
+      } catch {
+        throw new Error(response.ok ? 'Invalid response from server' : `Request failed (${response.status})`)
+      }
+      if (!response.ok) {
+        const msg = data?.details || data?.error || 'Failed to create order'
+        throw new Error(typeof msg === 'string' ? msg : String(msg))
+      }
+      if (!data?.order?.id || !data?.order?.order_number) {
+        throw new Error('Invalid order response from server')
+      }
 
+      setOrderId(data.order.id)
       setOrderNumber(data.order.order_number)
       setSuccess(true)
       setFormSubmitted(true)
@@ -213,12 +220,18 @@ export default function DealerOrderingPage() {
   if (!authorized) return null
 
   if (success) {
+    const totalSteps =
+      (formData.stepsNoOpenReturn || 0) + (formData.stepsOneOpenReturn || 0) + (formData.stepsTwoOpenReturn || 0)
+    const totalAmountCents = totalSteps * 28 * 100 // $28 per unit
     return (
       <OrderConfirmation
+        orderId={orderId}
         orderNumber={orderNumber}
-        paymentMethod={paymentMethod}
+        totalSteps={totalSteps}
+        totalAmountCents={totalAmountCents}
         onPlaceAnother={() => {
           setSuccess(false)
+          setOrderId('')
           setFormData({
             ...INITIAL_FORM_DATA,
             company: (dealer as Record<string, string>)?.company_name || '',
@@ -227,6 +240,7 @@ export default function DealerOrderingPage() {
           })
           setProjectImages([])
         }}
+        onProceedToCheckout={(id) => router.push(`/dealer/ordering/checkout?orderId=${id}`)}
       />
     )
   }
@@ -259,8 +273,16 @@ export default function DealerOrderingPage() {
           <ImageUploadSection userId={user?.id} projectImages={projectImages} setProjectImages={setProjectImages} />
           <ShippingSection needsShipping={needsShipping} setNeedsShipping={setNeedsShipping}
             shippingAddress={shippingAddress} setShippingAddress={setShippingAddress} />
-          <PaymentSection paymentMethod={paymentMethod} setPaymentMethod={setPaymentMethod}
-            notes={notes} setNotes={setNotes} submitting={submitting} />
+          <div style={{ textAlign: 'center', marginTop: '24px', marginBottom: '40px' }}>
+            <button type="submit" disabled={submitting}
+              style={{
+                padding: '14px 32px', background: submitting ? '#9ca3af' : '#000', color: '#fff',
+                border: 'none', borderRadius: '6px', cursor: submitting ? 'not-allowed' : 'pointer',
+                fontWeight: '600', fontSize: '18px', minWidth: '200px'
+              }}>
+              {submitting ? 'Submitting...' : 'Submit Order'}
+            </button>
+          </div>
         </form>
       </div>
     </>
