@@ -94,4 +94,3 @@ After applying the fix, test the registration flow:
 - Check the browser console for detailed error messages
 - Verify that the `profiles` table RLS policies are correct
 - Check that the `dealer_id` foreign key constraint is valid
-

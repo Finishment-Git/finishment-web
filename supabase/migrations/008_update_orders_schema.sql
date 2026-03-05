@@ -39,17 +39,20 @@ VALUES ('order-images', 'order-images', true)
 ON CONFLICT (id) DO NOTHING;
 
 -- Set up RLS policies for order-images bucket
-CREATE POLICY IF NOT EXISTS "Dealers can upload order images"
+DROP POLICY IF EXISTS "Dealers can upload order images" ON storage.objects;
+CREATE POLICY "Dealers can upload order images"
   ON storage.objects FOR INSERT
   TO authenticated
   WITH CHECK (bucket_id = 'order-images');
 
-CREATE POLICY IF NOT EXISTS "Dealers can view their order images"
+DROP POLICY IF EXISTS "Dealers can view their order images" ON storage.objects;
+CREATE POLICY "Dealers can view their order images"
   ON storage.objects FOR SELECT
   TO authenticated
   USING (bucket_id = 'order-images');
 
-CREATE POLICY IF NOT EXISTS "Admins can view all order images"
+DROP POLICY IF EXISTS "Admins can view all order images" ON storage.objects;
+CREATE POLICY "Admins can view all order images"
   ON storage.objects FOR SELECT
   TO authenticated
   USING (

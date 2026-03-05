@@ -1,9 +1,11 @@
-import Navbar from "../components/navbar";
-import Hero from "../components/hero";
-import HowItWorks from "../components/howitworks";
-import WhyUs from "../components/whyus";
-import FAQ from "../components/faq";
-import ContactUs from "../components/contactus";
+import dynamic from 'next/dynamic'
+import Navbar from "../components/navbar"
+import Hero from "../components/hero"
+
+const HowItWorks = dynamic(() => import("../components/howitworks"))
+const WhyUs = dynamic(() => import("../components/whyus"))
+const FAQ = dynamic(() => import("../components/faq"))
+const ContactUs = dynamic(() => import("../components/contactus"))
 
 export default function Page() {
   return (

@@ -51,4 +51,3 @@ CREATE POLICY "Authenticated users can insert dealers"
 
 -- Verify the function was created
 SELECT 'Function created successfully!' as status;
-

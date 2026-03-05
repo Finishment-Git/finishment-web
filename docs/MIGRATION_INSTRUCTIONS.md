@@ -81,4 +81,3 @@ AND table_name = 'dealers';
 ```
 
 You should see `dealers` in the results.
-

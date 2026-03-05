@@ -155,4 +155,3 @@ If you continue to have issues:
 1. Check the Supabase logs (Dashboard → Logs)
 2. Verify your environment variables are correct
 3. Make sure you're connected to the right Supabase project
-

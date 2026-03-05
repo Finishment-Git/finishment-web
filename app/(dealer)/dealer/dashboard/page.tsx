@@ -5,9 +5,6 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import Link from "next/link";
 
-// Prevent static generation - this page requires authentication
-export const dynamic = 'force-dynamic';
-
 export default function DealerDashboard() {
   const router = useRouter();
   const [user, setUser] = useState<any>(null);
@@ -19,11 +16,7 @@ export default function DealerDashboard() {
     const loadData = async () => {
       const supabase = createClient();
       const { data: { user } } = await supabase.auth.getUser();
-      
-      if (!user) {
-        router.push('/dealer-login');
-        return;
-      }
+      if (!user) return;
 
       setUser(user);
 
@@ -92,21 +85,26 @@ export default function DealerDashboard() {
       }}>
         <div style={{ 
           background: '#ffffff', 
-          padding: '24px', 
+          padding: '0',
           borderRadius: '12px', 
           border: '2px solid #000000',
-          boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+          boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+          overflow: 'hidden'
         }}>
           <h3 style={{ 
-            fontSize: '14px', 
-            color: '#000000', 
-            marginBottom: '12px',
+            fontSize: '12px', 
+            color: '#4b5563', 
+            margin: 0,
+            padding: '12px 24px',
             fontWeight: '600',
             textTransform: 'uppercase',
-            letterSpacing: '0.05em'
+            letterSpacing: '0.05em',
+            background: '#f3f4f6',
+            borderBottom: '1px solid #e5e7eb'
           }}>
             Account Status
           </h3>
+          <div style={{ padding: '24px' }}>
           <p style={{ 
             fontSize: '24px', 
             fontWeight: 'bold', 
@@ -115,52 +113,74 @@ export default function DealerDashboard() {
           }}>
             {profile?.status === 'ACTIVE' ? 'Active' : 'Pending'}
           </p>
+          </div>
         </div>
 
         <div style={{ 
           background: '#ffffff', 
-          padding: '24px', 
+          padding: '0',
           borderRadius: '12px', 
           border: '2px solid #000000',
-          boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+          boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+          overflow: 'hidden'
         }}>
           <h3 style={{ 
-            fontSize: '14px', 
-            color: '#000000', 
-            marginBottom: '12px',
+            fontSize: '12px', 
+            color: '#4b5563', 
+            margin: 0,
+            padding: '12px 24px',
             fontWeight: '600',
             textTransform: 'uppercase',
-            letterSpacing: '0.05em'
+            letterSpacing: '0.05em',
+            background: '#f3f4f6',
+            borderBottom: '1px solid #e5e7eb'
           }}>
             Role
           </h3>
+          <div style={{ padding: '24px' }}>
           <p style={{ 
-            fontSize: '24px', 
-            fontWeight: 'bold',
+            fontSize: '16px', 
+            fontWeight: '600',
             color: '#000000',
             margin: 0
           }}>
             {isPrimary ? 'Primary Account Holder' : 'Team Member'}
           </p>
+          {user?.email && (
+            <p style={{ 
+              fontSize: '14px', 
+              color: '#4b5563',
+              marginTop: '6px',
+              marginBottom: 0
+            }}>
+              {user.email}
+            </p>
+          )}
+          </div>
         </div>
 
         <div style={{ 
           background: '#ffffff', 
-          padding: '24px', 
+          padding: '0',
           borderRadius: '12px', 
           border: '2px solid #000000',
-          boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+          boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+          overflow: 'hidden'
         }}>
           <h3 style={{ 
-            fontSize: '14px', 
-            color: '#000000', 
-            marginBottom: '12px',
+            fontSize: '12px', 
+            color: '#4b5563', 
+            margin: 0,
+            padding: '12px 24px',
             fontWeight: '600',
             textTransform: 'uppercase',
-            letterSpacing: '0.05em'
+            letterSpacing: '0.05em',
+            background: '#f3f4f6',
+            borderBottom: '1px solid #e5e7eb'
           }}>
             Ordering Permission
           </h3>
+          <div style={{ padding: '24px' }}>
           <p style={{ 
             fontSize: '24px', 
             fontWeight: 'bold', 
@@ -169,81 +189,92 @@ export default function DealerDashboard() {
           }}>
             {canOrder ? 'Authorized' : 'Not Authorized'}
           </p>
+          </div>
         </div>
       </div>
 
       {/* Dealer Information */}
       {dealer && (
         <div style={{ 
-          background: '#ffffff', 
-          padding: '32px', 
+          maxWidth: '600px',
+          margin: '0 auto 30px',
+          background: '#f3f4f6', 
+          padding: '0',
           borderRadius: '12px', 
-          border: '2px solid #000000', 
-          marginBottom: '30px',
-          boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+          border: '1px solid #e5e7eb', 
+          boxShadow: '0 2px 4px rgba(0,0,0,0.08)',
+          overflow: 'hidden'
         }}>
           <h2 style={{ 
-            fontSize: '24px', 
-            fontWeight: 'bold', 
-            marginBottom: '24px',
-            color: '#000000'
+            fontSize: '12px', 
+            fontWeight: '600', 
+            margin: 0,
+            padding: '12px 24px',
+            color: '#4b5563',
+            textTransform: 'uppercase',
+            letterSpacing: '0.05em',
+            background: '#e5e7eb',
+            borderBottom: '1px solid #d1d5db'
           }}>
             Dealer Information
           </h2>
-          <div style={{ display: 'grid', gap: '20px' }}>
+          <div style={{ padding: '24px', display: 'grid', gap: '20px', textAlign: 'center' }}>
             <div>
               <span style={{ 
-                color: '#000000', 
-                fontSize: '14px',
+                color: '#4b5563', 
+                fontSize: '12px',
                 fontWeight: '600',
                 textTransform: 'uppercase',
                 letterSpacing: '0.05em'
               }}>
-                Company Name:
+                Company Name
               </span>
               <p style={{ 
                 fontWeight: '600', 
-                marginTop: '8px',
+                marginTop: '6px',
+                marginBottom: 0,
                 fontSize: '18px',
-                color: '#000000'
+                color: '#111827'
               }}>
                 {dealer.company_name}
               </p>
             </div>
             <div>
               <span style={{ 
-                color: '#000000', 
-                fontSize: '14px',
+                color: '#4b5563', 
+                fontSize: '12px',
                 fontWeight: '600',
                 textTransform: 'uppercase',
                 letterSpacing: '0.05em'
               }}>
-                Tax ID:
+                Tax ID
               </span>
               <p style={{ 
                 fontWeight: '600', 
-                marginTop: '8px',
+                marginTop: '6px',
+                marginBottom: 0,
                 fontSize: '18px',
-                color: '#000000'
+                color: '#111827'
               }}>
                 {dealer.tax_id}
               </p>
             </div>
             <div>
               <span style={{ 
-                color: '#000000', 
-                fontSize: '14px',
+                color: '#4b5563', 
+                fontSize: '12px',
                 fontWeight: '600',
                 textTransform: 'uppercase',
                 letterSpacing: '0.05em'
               }}>
-                Business Type:
+                Business Type
               </span>
               <p style={{ 
                 fontWeight: '600', 
-                marginTop: '8px',
+                marginTop: '6px',
+                marginBottom: 0,
                 fontSize: '18px',
-                color: '#000000'
+                color: '#111827'
               }}>
                 {dealer.business_type}
               </p>

@@ -41,12 +41,12 @@ This system supports **multi-user dealer accounts** where:
 
 ### Primary Account Holder (`is_primary = true`)
 **Capabilities:**
-- ✅ Always has ordering permissions (cannot be revoked)
-- ✅ Can manage team members
-- ✅ Can grant/revoke ordering permissions for team members
-- ✅ Can view all team member information
-- ✅ Can invite new users to join the dealer account
-- ✅ Completes training to activate dealer account
+- Always has ordering permissions (cannot be revoked)
+- Can manage team members
+- Can grant/revoke ordering permissions for team members
+- Can view all team member information
+- Can invite new users to join the dealer account
+- Completes training to activate dealer account
 
 **Limitations:**
 - Cannot remove themselves as primary (requires admin intervention)
@@ -54,12 +54,12 @@ This system supports **multi-user dealer accounts** where:
 
 ### Team Members (`is_primary = false`)
 **Capabilities:**
-- ✅ Can view dealer information
-- ✅ Can access dashboard
-- ✅ Can complete training (if status is PENDING)
-- ✅ Can place orders **IF** `can_order = true` (granted by primary user)
-- ❌ Cannot manage team members
-- ❌ Cannot grant permissions to others
+- Can view dealer information
+- Can access dashboard
+- Can complete training (if status is PENDING)
+- Can place orders **IF** `can_order = true` (granted by primary user)
+- Cannot manage team members
+- Cannot grant permissions to others
 
 **Default State:**
 - `can_order = false` (must be granted by primary user)
@@ -162,8 +162,8 @@ All authenticated users can access `/dealer/dashboard`
    - Changes take effect immediately
 
 3. **Permission States**
-   - ✅ **Authorized**: `can_order = true` → Can place orders
-   - ❌ **Not Authorized**: `can_order = false` → Cannot place orders
+   - **Authorized**: `can_order = true` → Can place orders
+   - **Not Authorized**: `can_order = false` → Cannot place orders
 
 ### Viewing Team Status
 
@@ -251,7 +251,7 @@ can_order = false → (Primary User Grants) → can_order = true
    - This will:
      - Create `dealers` table
      - Add columns to `profiles` table
-     - Migrate existing data (creates dealer for each existing profile)
+     - Migrate existing data (if any profiles exist)
      - Set up RLS policies
      - Create indexes
 
@@ -405,4 +405,3 @@ For issues or questions:
 
 **Last Updated:** 2024
 **Version:** 1.0
-
