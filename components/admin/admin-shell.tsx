@@ -94,6 +94,12 @@ export function AdminShell({
 
             {isAdmin && (
               <>
+                <NavLink href="/admin/dealers" pathname={pathname}>
+                  Dealers
+                </NavLink>
+                <NavLink href="/admin/dealer-users" pathname={pathname}>
+                  Dealer Users
+                </NavLink>
                 <NavLink href="/admin/users" pathname={pathname}>
                   Users
                 </NavLink>

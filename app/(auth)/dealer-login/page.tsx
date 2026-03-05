@@ -16,6 +16,7 @@ const DealerLoginContent = () => {
   
   // Show a success message if they just registered
   const justRegistered = searchParams.get('registered') === 'true';
+  const isRecoveryParam = searchParams.get('recovery') === 'true';
 
   const [view, setView] = useState<'login' | 'forgot' | 'reset'>('login');
   const [resetEmailSent, setResetEmailSent] = useState(false);
@@ -34,11 +35,16 @@ const DealerLoginContent = () => {
 
   // Check if we are returning from a password recovery link
   useEffect(() => {
-    // Supabase sends recovery links with a specific hash
+    // From auth callback (PKCE) or token_hash flow
+    if (isRecoveryParam) {
+      setView('reset');
+      return;
+    }
+    // Implicit flow: Supabase sends recovery links with hash
     if (window.location.hash && (window.location.hash.includes('type=recovery') || window.location.hash.includes('access_token='))) {
       setView('reset');
     }
-  }, []);
+  }, [isRecoveryParam]);
 
   const handleForgotPassword = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,7 +53,7 @@ const DealerLoginContent = () => {
     
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(formData.email, {
-        redirectTo: `${window.location.origin}/dealer-login`,
+        redirectTo: `${window.location.origin}/auth/callback?next=/dealer-login`,
       });
 
       if (error) {
@@ -135,32 +141,39 @@ const DealerLoginContent = () => {
         return;
       }
 
-      setDebugMsg("Session OK, fetching profile...");
+      setDebugMsg("Session OK, checking access...");
 
-      // 3. Check their Dealer Status and Permissions
+      // 3. Check admin_users first (Platform Admin)
+      const { data: adminUser } = await supabase
+        .from('admin_users')
+        .select('id')
+        .eq('id', authData.user.id)
+        .single();
+
+      if (adminUser) {
+        setDebugMsg("Platform Admin detected, redirecting...");
+        window.location.href = "/admin/dashboard";
+        return;
+      }
+
+      // 4. Check profiles (Dealer)
       const { data: profile, error: profileError } = await supabase
         .from('profiles')
         .select('status, is_primary, can_order')
         .eq('id', authData.user.id)
         .single();
 
-      if (profileError) {
-        setErrorMsg("Profile error: " + profileError.message);
-        setDebugMsg("");
-        setLoading(false);
-        return;
-      }
-      
-      if (!profile) {
-        setErrorMsg("Profile not found. Please contact support.");
+      if (profileError || !profile) {
+        await supabase.auth.signOut();
+        setErrorMsg("Access denied. This account is not authorized.");
         setDebugMsg("");
         setLoading(false);
         return;
       }
 
-      setDebugMsg("Profile found: " + profile.status + ", redirecting...");
+      setDebugMsg("Dealer profile found: " + profile.status + ", redirecting...");
 
-      // 4. Route them based on Status - use window.location for reliable redirect after auth
+      // 5. Route dealers based on Status
       if (profile.status === 'PENDING') {
         window.location.href = "/dealer/education";
       } else if (profile.status === 'ACTIVE') {

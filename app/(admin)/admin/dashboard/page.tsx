@@ -34,6 +34,13 @@ export default async function AdminDashboard() {
     .order('created_at', { ascending: false })
     .limit(10);
 
+  // Get all dealers (Platform Admin only - requires RLS migration 012)
+  const { data: dealers } = await supabase
+    .from('dealers')
+    .select('id, company_name, tax_id, business_type, status, created_at')
+    .order('created_at', { ascending: false })
+    .limit(10);
+
   // Calculate metrics
   const statusCounts: Record<string, number> = {};
   ordersByStatus?.forEach(order => {
@@ -54,10 +61,22 @@ export default async function AdminDashboard() {
   return (
     <div>
       <div style={{ marginBottom: '2rem' }}>
-        <h1 style={{ fontSize: '28px', fontWeight: 'bold', marginBottom: '8px' }}>
-          Dashboard
-        </h1>
-        <p style={{ color: '#6b7280' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
+          <h1 style={{ fontSize: '28px', fontWeight: 'bold', margin: 0 }}>
+            Dashboard
+          </h1>
+          <span style={{
+            padding: '4px 10px',
+            borderRadius: '6px',
+            fontSize: '12px',
+            fontWeight: '500',
+            backgroundColor: '#1f2937',
+            color: '#fff'
+          }}>
+            Platform Admin
+          </span>
+        </div>
+        <p style={{ color: '#6b7280', margin: 0 }}>
           Welcome back, {adminUser.full_name || adminUser.email}
         </p>
       </div>
@@ -141,6 +160,97 @@ export default async function AdminDashboard() {
             {formatAmount(pendingPaymentAmount)}
           </p>
         </div>
+      </div>
+
+      {/* All Dealers */}
+      <div style={{
+        background: '#fff',
+        padding: '1.5rem',
+        borderRadius: '8px',
+        border: '1px solid #e5e7eb',
+        marginBottom: '2rem'
+      }}>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: '1.5rem'
+        }}>
+          <h2 style={{ fontSize: '20px', fontWeight: '600' }}>
+            All Dealers
+          </h2>
+          <Link
+            href="/admin/dealers"
+            style={{
+              color: '#3b82f6',
+              textDecoration: 'none',
+              fontSize: '14px',
+              fontWeight: '500'
+            }}
+          >
+            View All →
+          </Link>
+        </div>
+
+        {dealers && dealers.length > 0 ? (
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+              <thead>
+                <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+                  <th style={{ textAlign: 'left', padding: '12px', fontSize: '14px', fontWeight: '500', color: '#6b7280' }}>
+                    Company
+                  </th>
+                  <th style={{ textAlign: 'left', padding: '12px', fontSize: '14px', fontWeight: '500', color: '#6b7280' }}>
+                    Tax ID
+                  </th>
+                  <th style={{ textAlign: 'left', padding: '12px', fontSize: '14px', fontWeight: '500', color: '#6b7280' }}>
+                    Status
+                  </th>
+                  <th style={{ textAlign: 'left', padding: '12px', fontSize: '14px', fontWeight: '500', color: '#6b7280' }}>
+                    Business Type
+                  </th>
+                  <th style={{ textAlign: 'left', padding: '12px', fontSize: '14px', fontWeight: '500', color: '#6b7280' }}>
+                    Created
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {dealers.map((dealer: { id: string; company_name: string; tax_id: string; status: string; business_type: string; created_at: string }) => (
+                  <tr key={dealer.id} style={{ borderBottom: '1px solid #f3f4f6' }}>
+                    <td style={{ padding: '12px', fontSize: '14px', fontWeight: '500' }}>
+                      {dealer.company_name || 'N/A'}
+                    </td>
+                    <td style={{ padding: '12px', fontSize: '14px' }}>
+                      {dealer.tax_id || '—'}
+                    </td>
+                    <td style={{ padding: '12px' }}>
+                      <span style={{
+                        padding: '4px 12px',
+                        borderRadius: '12px',
+                        fontSize: '12px',
+                        fontWeight: '500',
+                        backgroundColor: dealer.status === 'ACTIVE' ? '#10b98120' : '#f59e0b20',
+                        color: dealer.status === 'ACTIVE' ? '#059669' : '#d97706'
+                      }}>
+                        {dealer.status || 'N/A'}
+                      </span>
+                    </td>
+                    <td style={{ padding: '12px', fontSize: '14px', color: '#6b7280' }}>
+                      {dealer.business_type || '—'}
+                    </td>
+                    <td style={{ padding: '12px', fontSize: '14px', color: '#6b7280' }}>
+                      {new Date(dealer.created_at).toLocaleDateString()}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <p style={{ color: '#6b7280', textAlign: 'center', padding: '2rem' }}>
+            No dealers yet. Run migration 012 if you see this and expect dealers.
+          </p>
+        )}
       </div>
 
       {/* Recent Orders */}
