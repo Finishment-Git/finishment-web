@@ -83,6 +83,7 @@ export async function middleware(request: NextRequest) {
       }
 
       const adminOnlyRoutes = ['/admin/users', '/admin/settings', '/admin/dealers', '/admin/dealer-users']
+      const adminOnlyRoutes = ['/admin/users', '/admin/settings']
       if (adminOnlyRoutes.some(route => pathname.startsWith(route)) && adminUser.role !== 'admin') {
         return NextResponse.redirect(new URL('/admin/dashboard', request.url))
       }
