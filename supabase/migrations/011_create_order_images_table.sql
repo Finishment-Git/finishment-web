@@ -24,7 +24,8 @@ CREATE INDEX IF NOT EXISTS idx_order_images_uploaded_by ON order_images(uploaded
 ALTER TABLE order_images ENABLE ROW LEVEL SECURITY;
 
 -- Policy: Dealers can view images for their own orders
-CREATE POLICY IF NOT EXISTS "Dealers can view their order images"
+DROP POLICY IF EXISTS "Dealers can view their order images" ON order_images;
+CREATE POLICY "Dealers can view their order images"
   ON order_images FOR SELECT
   TO authenticated
   USING (
@@ -37,7 +38,8 @@ CREATE POLICY IF NOT EXISTS "Dealers can view their order images"
   );
 
 -- Policy: Dealers can insert images for their own orders
-CREATE POLICY IF NOT EXISTS "Dealers can upload images to their orders"
+DROP POLICY IF EXISTS "Dealers can upload images to their orders" ON order_images;
+CREATE POLICY "Dealers can upload images to their orders"
   ON order_images FOR INSERT
   TO authenticated
   WITH CHECK (
@@ -50,7 +52,8 @@ CREATE POLICY IF NOT EXISTS "Dealers can upload images to their orders"
   );
 
 -- Policy: Admins can view all order images
-CREATE POLICY IF NOT EXISTS "Admins can view all order images"
+DROP POLICY IF EXISTS "Admins can view all order images" ON order_images;
+CREATE POLICY "Admins can view all order images"
   ON order_images FOR SELECT
   TO authenticated
   USING (
@@ -60,7 +63,8 @@ CREATE POLICY IF NOT EXISTS "Admins can view all order images"
   );
 
 -- Policy: Admins can insert images for any order
-CREATE POLICY IF NOT EXISTS "Admins can upload images to any order"
+DROP POLICY IF EXISTS "Admins can upload images to any order" ON order_images;
+CREATE POLICY "Admins can upload images to any order"
   ON order_images FOR INSERT
   TO authenticated
   WITH CHECK (
@@ -75,17 +79,20 @@ VALUES ('order-images', 'order-images', true)
 ON CONFLICT (id) DO NOTHING;
 
 -- Set up RLS policies for order-images bucket (idempotent)
-CREATE POLICY IF NOT EXISTS "Dealers can upload order images"
+DROP POLICY IF EXISTS "Dealers can upload order images" ON storage.objects;
+CREATE POLICY "Dealers can upload order images"
   ON storage.objects FOR INSERT
   TO authenticated
   WITH CHECK (bucket_id = 'order-images');
 
-CREATE POLICY IF NOT EXISTS "Dealers can view their order images"
+DROP POLICY IF EXISTS "Dealers can view their order images" ON storage.objects;
+CREATE POLICY "Dealers can view their order images"
   ON storage.objects FOR SELECT
   TO authenticated
   USING (bucket_id = 'order-images');
 
-CREATE POLICY IF NOT EXISTS "Admins can view all order images"
+DROP POLICY IF EXISTS "Admins can view all order images" ON storage.objects;
+CREATE POLICY "Admins can view all order images"
   ON storage.objects FOR SELECT
   TO authenticated
   USING (
