@@ -61,7 +61,7 @@ export default function DealerOrderingPage() {
       setUserProfile(profileData)
       setDealer(profileData.dealers)
 
-      const fullName = authUser.user_metadata?.full_name || ''
+      const fullName = authUser.user_metadata?.full_name || profileData.full_name || ''
       const nameParts = fullName.split(' ')
 
       setFormData(prev => ({

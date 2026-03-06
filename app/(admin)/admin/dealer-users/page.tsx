@@ -30,12 +30,13 @@ export default async function DealerUsersPage({
       is_primary,
       can_order,
       company_name,
+      full_name,
       dealer_id,
       dealers(company_name, tax_id)
     `, { count: 'exact' });
 
   if (searchQuery) {
-    query = query.or(`company_name.ilike.%${searchQuery}%`);
+    query = query.or(`company_name.ilike.%${searchQuery}%,full_name.ilike.%${searchQuery}%`);
   }
 
   query = query

@@ -9,6 +9,7 @@ interface DealerUser {
   is_primary: boolean;
   can_order: boolean;
   company_name: string | null;
+  full_name: string | null;
   dealer_id: string;
   dealers: { company_name: string; tax_id: string } | { company_name: string; tax_id: string }[] | null;
 }
@@ -65,13 +66,13 @@ export default function DealerUsersListClient({
         <form onSubmit={handleSearch} style={{ display: 'flex', gap: '1rem', alignItems: 'end' }}>
           <div style={{ flex: '1', maxWidth: '400px' }}>
             <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: '500' }}>
-              Search by company
+              Search by company or name
             </label>
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Company name..."
+              placeholder="Company or name..."
               style={{
                 width: '100%',
                 padding: '10px',
@@ -113,6 +114,7 @@ export default function DealerUsersListClient({
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
                 <tr style={{ background: '#f9fafb', borderBottom: '1px solid #e5e7eb' }}>
+                  <th style={{ textAlign: 'left', padding: '12px 16px', fontSize: '14px', fontWeight: '500' }}>Name</th>
                   <th style={{ textAlign: 'left', padding: '12px 16px', fontSize: '14px', fontWeight: '500' }}>User ID</th>
                   <th style={{ textAlign: 'left', padding: '12px 16px', fontSize: '14px', fontWeight: '500' }}>Dealer</th>
                   <th style={{ textAlign: 'left', padding: '12px 16px', fontSize: '14px', fontWeight: '500' }}>Status</th>
@@ -123,6 +125,9 @@ export default function DealerUsersListClient({
               <tbody>
                 {initialUsers.map((user) => (
                   <tr key={user.id} style={{ borderBottom: '1px solid #f3f4f6' }}>
+                    <td style={{ padding: '12px 16px', fontSize: '14px' }}>
+                      {user.full_name || '—'}
+                    </td>
                     <td style={{ padding: '12px 16px', fontSize: '14px', fontFamily: 'monospace' }}>
                       {user.id.substring(0, 8)}...
                     </td>

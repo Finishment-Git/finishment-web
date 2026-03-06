@@ -19,6 +19,7 @@ const DealerJoinContent = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     taxId: '',
+    fullName: '',
     email: '',
     password: '',
   });
@@ -63,6 +64,7 @@ const DealerJoinContent = () => {
     const { data: authData, error: authError } = await supabase.auth.signUp({
       email: formData.email,
       password: formData.password,
+      options: { data: { full_name: formData.fullName } },
     });
 
     if (authError) {
@@ -82,6 +84,7 @@ const DealerJoinContent = () => {
             company_name: dealerInfo.company_name,
             tax_id: dealerInfo.tax_id,
             business_type: 'Retailer', // Default, can be updated later
+            full_name: formData.fullName,
             status: 'PENDING',
             is_primary: false,  // Not primary user
             can_order: false    // Default: no ordering permission
@@ -182,6 +185,18 @@ const DealerJoinContent = () => {
 
       <form onSubmit={handleRegister} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
         <div>
+          <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>Full Name</label>
+          <input
+            type="text"
+            placeholder="John Smith"
+            value={formData.fullName}
+            onChange={(e) => setFormData({...formData, fullName: e.target.value})}
+            required
+            style={{ width: '100%', padding: '12px', border: '1px solid #ccc', borderRadius: '4px', boxSizing: 'border-box' }}
+          />
+        </div>
+
+        <div>
           <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>Email Address</label>
           <input
             type="email"
@@ -252,7 +267,7 @@ const DealerJoinContent = () => {
           onClick={() => {
             setStep('search');
             setErrorMsg('');
-            setFormData({ taxId: formData.taxId, email: '', password: '' });
+            setFormData({ taxId: formData.taxId, fullName: '', email: '', password: '' });
           }}
           style={{ background: 'none', border: 'none', color: '#666', textDecoration: 'underline', cursor: 'pointer' }}
         >
