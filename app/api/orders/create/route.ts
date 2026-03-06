@@ -62,6 +62,7 @@ export async function POST(request: Request) {
       steps_no_open_return,
       steps_one_open_return,
       steps_two_open_return,
+      pieces_for_end_returns,
       longest_plank_size,
       steps_details,
       // Flooring match information
@@ -145,6 +146,7 @@ export async function POST(request: Request) {
         steps_no_open_return: steps_no_open_return || 0,
         steps_one_open_return: steps_one_open_return || 0,
         steps_two_open_return: steps_two_open_return || 0,
+        pieces_for_end_returns: pieces_for_end_returns ?? 0,
         longest_plank_size,
         steps_details,
         // Flooring match information

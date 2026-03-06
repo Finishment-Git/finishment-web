@@ -96,7 +96,7 @@ export function StairDetailsSection({ formData, onChange }: StairDetailsSectionP
 
         <div style={{ maxWidth: '500px', margin: '0 auto', padding: '28px', background: '#faf8f3', borderRadius: '12px', border: '1px solid #e5ddd4', boxShadow: '0 2px 8px rgba(0,0,0,0.08)' }}>
           <label style={{ display: 'block', marginBottom: '12px', fontSize: '18px', fontWeight: '600', color: '#3d2817', textAlign: 'center' }}>
-            Total # of stair noses
+            Total # of stair noses needed
           </label>
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             <input type="number" value={totalSteps > 0 ? totalSteps : ''} readOnly

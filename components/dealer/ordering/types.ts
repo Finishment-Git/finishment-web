@@ -10,8 +10,8 @@ export interface OrderFormData {
   stepsNoOpenReturn: number
   stepsOneOpenReturn: number
   stepsTwoOpenReturn: number
+  piecesForEndReturns: number
   longestPlankSize: string
-  stepsDetails: string
   railCapTrimNeeded: boolean
   railCapTrimDetails: string
   manufacturer: string
@@ -53,8 +53,8 @@ export const INITIAL_FORM_DATA: OrderFormData = {
   stepsNoOpenReturn: 0,
   stepsOneOpenReturn: 0,
   stepsTwoOpenReturn: 0,
+  piecesForEndReturns: 0,
   longestPlankSize: '',
-  stepsDetails: '',
   railCapTrimNeeded: false,
   railCapTrimDetails: '',
   manufacturer: '',

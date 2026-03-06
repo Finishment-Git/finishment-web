@@ -14,6 +14,8 @@ const fieldInputStyle: React.CSSProperties = {
 }
 
 export function FlooringDetailsSection({ formData, onChange }: FlooringDetailsSectionProps) {
+  const totalSteps = (formData.stepsNoOpenReturn || 0) + (formData.stepsOneOpenReturn || 0) + (formData.stepsTwoOpenReturn || 0)
+
   return (
     <div style={sectionStyle}>
       <h2 style={sectionHeadingStyle}>
@@ -54,10 +56,59 @@ export function FlooringDetailsSection({ formData, onChange }: FlooringDetailsSe
 
       <div style={{ marginBottom: '20px' }}>
         <label style={{ display: 'block', marginBottom: '4px', fontWeight: '500', fontSize: '14px' }}>
-          List Number of Steps and the Size of each step <span style={{ color: '#dc2626' }}>*</span>
+          Total number of stair noses (pulled from above)
         </label>
-        <input type="text" value={formData.stepsDetails} onChange={(e) => onChange({ stepsDetails: e.target.value })}
-          placeholder="Example: (18 Steps at 55 inches)" required style={fieldInputStyle} />
+        <input
+          type="number"
+          value={totalSteps > 0 ? totalSteps : ''}
+          readOnly
+          style={{
+            ...fieldInputStyle,
+            maxWidth: '120px',
+            backgroundColor: '#f3f4f6',
+            cursor: 'not-allowed',
+            color: '#6b7280',
+            fontWeight: '600',
+          }}
+        />
+      </div>
+
+      <div style={{ marginBottom: '20px' }}>
+        <label style={{ display: 'block', marginBottom: '4px', fontWeight: '500', fontSize: '14px' }}>
+          Number of pieces needed to complete end returns (based on your product length)
+        </label>
+        <select
+          value={formData.piecesForEndReturns}
+          onChange={(e) => onChange({ piecesForEndReturns: parseInt(e.target.value, 10) })}
+          style={{
+            ...fieldInputStyle,
+            maxWidth: '120px',
+            cursor: 'pointer',
+          }}
+        >
+          {Array.from({ length: 11 }, (_, i) => (
+            <option key={i} value={i}>{i}</option>
+          ))}
+        </select>
+      </div>
+
+      <div style={{ marginBottom: '20px' }}>
+        <label style={{ display: 'block', marginBottom: '4px', fontWeight: '500', fontSize: '14px' }}>
+          Total # of pieces (Total # of stairs + end returns)
+        </label>
+        <input
+          type="number"
+          value={totalSteps + (formData.piecesForEndReturns || 0)}
+          readOnly
+          style={{
+            ...fieldInputStyle,
+            maxWidth: '120px',
+            backgroundColor: '#f3f4f6',
+            cursor: 'not-allowed',
+            color: '#6b7280',
+            fontWeight: '600',
+          }}
+        />
       </div>
 
       <div style={{ marginBottom: '20px' }}>
@@ -69,18 +120,6 @@ export function FlooringDetailsSection({ formData, onChange }: FlooringDetailsSe
           style={{ ...fieldInputStyle, resize: 'vertical' as const }} />
       </div>
 
-      <div>
-        <label style={{ display: 'flex', alignItems: 'center', marginBottom: '12px', fontWeight: '500', fontSize: '14px' }}>
-          <input type="checkbox" checked={formData.railCapTrimNeeded} onChange={(e) => onChange({ railCapTrimNeeded: e.target.checked })}
-            style={{ marginRight: '8px' }} />
-          Additional Information: Are additional pieces needed for rail cap trim? <span style={{ color: '#dc2626' }}>*</span>
-        </label>
-        {formData.railCapTrimNeeded && (
-          <textarea value={formData.railCapTrimDetails} onChange={(e) => onChange({ railCapTrimDetails: e.target.value })}
-            placeholder="Additional information (Optional)" rows={4}
-            style={{ ...fieldInputStyle, resize: 'vertical' as const }} />
-        )}
-      </div>
     </div>
   )
 }

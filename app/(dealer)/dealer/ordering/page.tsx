@@ -132,7 +132,6 @@ export default function DealerOrderingPage() {
     const totalSteps = formData.stepsNoOpenReturn + formData.stepsOneOpenReturn + formData.stepsTwoOpenReturn
     if (totalSteps === 0) { setError('Please enter the number of steps for at least one stair layout option'); return false }
     if (!formData.longestPlankSize.trim()) { setError('Longest plank size is required'); return false }
-    if (!formData.stepsDetails.trim()) { setError('Steps details are required (e.g., "18 Steps at 55 inches")'); return false }
     if (!formData.manufacturer.trim()) { setError('Manufacturer is required'); return false }
     if (!formData.style.trim()) { setError('Style is required'); return false }
     if (!formData.color.trim()) { setError('Color is required'); return false }
@@ -149,6 +148,8 @@ export default function DealerOrderingPage() {
     setSubmitting(true)
     setError('')
 
+    const totalSteps = formData.stepsNoOpenReturn + formData.stepsOneOpenReturn + formData.stepsTwoOpenReturn
+
     try {
       const orderData = {
         first_name: formData.firstName,
@@ -162,8 +163,9 @@ export default function DealerOrderingPage() {
         steps_no_open_return: formData.stepsNoOpenReturn,
         steps_one_open_return: formData.stepsOneOpenReturn,
         steps_two_open_return: formData.stepsTwoOpenReturn,
+        pieces_for_end_returns: formData.piecesForEndReturns,
         longest_plank_size: formData.longestPlankSize,
-        steps_details: formData.stepsDetails,
+        steps_details: `${totalSteps} steps`,
         manufacturer: formData.manufacturer,
         style: formData.style,
         color: formData.color,
