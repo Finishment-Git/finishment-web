@@ -10,6 +10,7 @@ export default function TeamManagement() {
   const [profile, setProfile] = useState<any>(null);
   const [teamMembers, setTeamMembers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [inviteFullName, setInviteFullName] = useState('');
   const [inviteEmail, setInviteEmail] = useState('');
   const [inviting, setInviting] = useState(false);
   const [error, setError] = useState('');
@@ -59,7 +60,8 @@ export default function TeamManagement() {
         is_primary,
         can_order,
         status,
-        company_name
+        company_name,
+        full_name
       `)
       .eq('dealer_id', dealerId)
       .order('is_primary', { ascending: false });
@@ -73,9 +75,13 @@ export default function TeamManagement() {
       
       // Map profiles with email information
       const profilesWithEmails = (data || []).map((p) => {
+        const displayName = p.id === currentUser?.id
+          ? (currentUser?.user_metadata?.full_name || currentUser?.email || 'N/A')
+          : (p.full_name || `User ${p.id.substring(0, 8)}...`);
         return { 
           ...p, 
-          email: p.id === currentUser?.id ? (currentUser?.email || 'N/A') : `User ${p.id.substring(0, 8)}...` 
+          email: p.id === currentUser?.id ? (currentUser?.email || 'N/A') : `User ${p.id.substring(0, 8)}...`,
+          displayName
         };
       });
       
@@ -124,14 +130,16 @@ export default function TeamManagement() {
     // Check if email already exists in auth
     // Note: In production, you'd want to send an actual invite email
     // For now, we'll just show instructions
+    const namePart = inviteFullName.trim() ? `${inviteFullName.trim()} (${inviteEmail})` : inviteEmail;
     alert(
-      `To invite ${inviteEmail}:\n\n` +
+      `To invite ${namePart}:\n\n` +
       `1. Share this link: ${window.location.origin}/dealer-join\n` +
       `2. They should register with this email\n` +
       `3. Use Tax ID: ${taxId}\n\n` +
       `Or they can register normally and you can manually add them later.`
     );
 
+    setInviteFullName('');
     setInviteEmail('');
     setInviting(false);
   };
@@ -185,39 +193,60 @@ export default function TeamManagement() {
         }}>
           Invite Team Member
         </h2>
-        <form onSubmit={handleInvite} style={{ display: 'flex', gap: '12px' }}>
-          <input
-            type="email"
-            placeholder="Enter email address"
-            value={inviteEmail}
-            onChange={(e) => setInviteEmail(e.target.value)}
-            style={{
-              flex: 1,
-              padding: '12px',
-              border: '2px solid #000000',
-              borderRadius: '6px',
-              fontSize: '14px',
-              backgroundColor: '#ffffff',
-              color: '#000000'
-            }}
-          />
-          <button
-            type="submit"
-            disabled={inviting}
-            style={{
-              padding: '12px 24px',
-              background: '#000000',
-              color: '#ffffff',
-              border: 'none',
-              borderRadius: '6px',
-              fontWeight: 'bold',
-              cursor: inviting ? 'not-allowed' : 'pointer',
-              opacity: inviting ? 0.7 : 1,
-              fontSize: '14px'
-            }}
-          >
-            {inviting ? 'Sending...' : 'Get Invite Link'}
-          </button>
+        <form onSubmit={handleInvite} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+            <input
+              type="text"
+              placeholder="Full name"
+              value={inviteFullName}
+              onChange={(e) => setInviteFullName(e.target.value)}
+              style={{
+                flex: 1,
+                minWidth: '180px',
+                padding: '12px',
+                border: '2px solid #000000',
+                borderRadius: '6px',
+                fontSize: '14px',
+                backgroundColor: '#ffffff',
+                color: '#000000'
+              }}
+            />
+            <input
+              type="email"
+              placeholder="Enter email address"
+              value={inviteEmail}
+              onChange={(e) => setInviteEmail(e.target.value)}
+              required
+              style={{
+                flex: 1,
+                minWidth: '180px',
+                padding: '12px',
+                border: '2px solid #000000',
+                borderRadius: '6px',
+                fontSize: '14px',
+                backgroundColor: '#ffffff',
+                color: '#000000'
+              }}
+            />
+            <button
+              type="submit"
+              disabled={inviting}
+              style={{
+                padding: '12px 24px',
+                background: '#000000',
+                color: '#ffffff',
+                border: 'none',
+                borderRadius: '6px',
+                fontWeight: 'bold',
+                cursor: inviting ? 'not-allowed' : 'pointer',
+                opacity: inviting ? 0.7 : 1,
+                fontSize: '14px',
+                alignSelf: 'flex-end'
+              }}
+            >
+              {inviting ? 'Sending...' : 'Get Invite Link'}
+            </button>
+          </div>
         </form>
         {error && (
           <p style={{ 
@@ -291,7 +320,7 @@ export default function TeamManagement() {
                       color: '#000000',
                       margin: 0
                     }}>
-                      {member.email || 'N/A'}
+                      {member.displayName || member.email || 'N/A'}
                     </p>
                     {member.is_primary && (
                       <span style={{

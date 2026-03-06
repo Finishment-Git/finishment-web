@@ -1,8 +1,8 @@
-import type { ShippingAddress } from './types'
+import type { ShippingAddress, TransferOptions } from './types'
 
 interface ShippingSectionProps {
-  needsShipping: boolean
-  setNeedsShipping: (v: boolean) => void
+  transferOptions: TransferOptions
+  setTransferOptions: React.Dispatch<React.SetStateAction<TransferOptions>>
   shippingAddress: ShippingAddress
   setShippingAddress: React.Dispatch<React.SetStateAction<ShippingAddress>>
 }
@@ -15,23 +15,45 @@ const fieldInputStyle: React.CSSProperties = {
   fontSize: '14px',
 }
 
-export function ShippingSection({ needsShipping, setNeedsShipping, shippingAddress, setShippingAddress }: ShippingSectionProps) {
+const checkboxStyle: React.CSSProperties = { marginRight: '8px', width: '18px', height: '18px', cursor: 'pointer' }
+const labelStyle: React.CSSProperties = { display: 'flex', alignItems: 'flex-start', cursor: 'pointer', marginBottom: '12px', gap: '8px' }
+
+export function ShippingSection({ transferOptions, setTransferOptions, shippingAddress, setShippingAddress }: ShippingSectionProps) {
   const update = (field: keyof ShippingAddress, value: string) =>
     setShippingAddress(prev => ({ ...prev, [field]: value }))
 
+  const toggle = (key: keyof TransferOptions) =>
+    setTransferOptions(prev => ({ ...prev, [key]: !prev[key] }))
+
+  const needsAddress = transferOptions.finishmentDelivery || transferOptions.shipping
+
   return (
     <div style={{ background: '#ffffff', padding: '24px', borderRadius: '8px', marginBottom: '24px', border: '1px solid #e5e7eb' }}>
+      <h2 style={{ fontSize: '20px', fontWeight: '600', marginBottom: '16px', color: '#000000' }}>
+        Product Transfer Options
+      </h2>
       <div style={{ marginBottom: '20px' }}>
-        <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-          <input type="checkbox" checked={needsShipping} onChange={(e) => setNeedsShipping(e.target.checked)}
-            style={{ marginRight: '8px', width: '18px', height: '18px', cursor: 'pointer' }} />
+        <label style={labelStyle}>
+          <input type="checkbox" checked={transferOptions.leanderPickup} onChange={() => toggle('leanderPickup')} style={checkboxStyle} />
           <span style={{ fontSize: '16px', fontWeight: '500', color: '#000000' }}>
-            NOT able to pick up completed order in Leander, TX
+            Client to deliver to and pick up at our facility in Leander (free of charge)
+          </span>
+        </label>
+        <label style={labelStyle}>
+          <input type="checkbox" checked={transferOptions.finishmentDelivery} onChange={() => toggle('finishmentDelivery')} style={checkboxStyle} />
+          <span style={{ fontSize: '16px', fontWeight: '500', color: '#000000' }}>
+            Finishment to pickup and deliver product ($20 each direction within 30 miles of Leander)
+          </span>
+        </label>
+        <label style={labelStyle}>
+          <input type="checkbox" checked={transferOptions.shipping} onChange={() => toggle('shipping')} style={checkboxStyle} />
+          <span style={{ fontSize: '16px', fontWeight: '500', color: '#000000' }}>
+            Shipping (Client ships to Finishment and Finishment ships back at client expense)
           </span>
         </label>
       </div>
 
-      {needsShipping && (
+      {needsAddress && (
         <>
           <h2 style={{ fontSize: '20px', fontWeight: '600', marginBottom: '20px', color: '#000000' }}>
             Shipping Address

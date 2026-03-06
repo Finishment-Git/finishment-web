@@ -80,14 +80,31 @@ export function ImageUploadSection({ userId, projectImages, setProjectImages }: 
   return (
     <div style={{ background: '#ffffff', padding: '24px', borderRadius: '8px', marginBottom: '24px', border: '1px solid #e5e7eb' }}>
       <h2 style={{ fontSize: '20px', fontWeight: '600', marginBottom: '20px', color: '#000000' }}>
-        Project Images (Optional)
+        Project Images (Optional but always helpful for order accuracy)
       </h2>
       <p style={{ fontSize: '14px', color: '#6b7280', marginBottom: '16px' }}>
         Upload photos of your project if you think it will help us understand your requirements better.
       </p>
 
       <input ref={fileInputRef} type="file" accept="image/*" multiple onChange={handleImageUpload}
-        style={{ marginBottom: '16px' }} />
+        style={{ display: 'none' }} />
+      <button
+        type="button"
+        onClick={() => fileInputRef.current?.click()}
+        style={{
+          padding: '10px 20px',
+          background: '#000',
+          color: '#fff',
+          border: 'none',
+          borderRadius: '6px',
+          fontSize: '14px',
+          fontWeight: '600',
+          cursor: 'pointer',
+          marginBottom: '16px',
+        }}
+      >
+        Upload
+      </button>
 
       {projectImages.length > 0 && (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '12px' }}>

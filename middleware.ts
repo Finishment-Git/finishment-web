@@ -82,7 +82,7 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL('/unauthorized', request.url))
       }
 
-      const adminOnlyRoutes = ['/admin/users', '/admin/settings']
+      const adminOnlyRoutes = ['/admin/users', '/admin/settings', '/admin/dealers', '/admin/dealer-users']
       if (adminOnlyRoutes.some(route => pathname.startsWith(route)) && adminUser.role !== 'admin') {
         return NextResponse.redirect(new URL('/admin/dashboard', request.url))
       }
@@ -96,6 +96,20 @@ export async function middleware(request: NextRequest) {
     }
 
     if (user && (pathname === '/dealer-login' || pathname === '/dealer-register')) {
+      // Allow password reset flow: user landed from recovery link and needs to set new password
+      if (pathname === '/dealer-login' && request.nextUrl.searchParams.get('recovery') === 'true') {
+        return response
+      }
+      // Platform Admins go to admin; dealers go to dealer dashboard
+      const { data: adminUser } = await supabase
+        .from('admin_users')
+        .select('id')
+        .eq('id', user.id)
+        .single()
+
+      if (adminUser) {
+        return NextResponse.redirect(new URL('/admin/dashboard', request.url))
+      }
       return NextResponse.redirect(new URL('/dealer/dashboard', request.url))
     }
 

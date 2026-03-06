@@ -10,8 +10,8 @@ export interface OrderFormData {
   stepsNoOpenReturn: number
   stepsOneOpenReturn: number
   stepsTwoOpenReturn: number
+  piecesForEndReturns: number
   longestPlankSize: string
-  stepsDetails: string
   railCapTrimNeeded: boolean
   railCapTrimDetails: string
   manufacturer: string
@@ -29,6 +29,18 @@ export interface ShippingAddress {
   state: string
   zip: string
   phone: string
+}
+
+export interface TransferOptions {
+  leanderPickup: boolean
+  finishmentDelivery: boolean
+  shipping: boolean
+}
+
+export const INITIAL_TRANSFER_OPTIONS: TransferOptions = {
+  leanderPickup: false,
+  finishmentDelivery: false,
+  shipping: false,
 }
 
 export interface ProjectImage {
@@ -53,8 +65,8 @@ export const INITIAL_FORM_DATA: OrderFormData = {
   stepsNoOpenReturn: 0,
   stepsOneOpenReturn: 0,
   stepsTwoOpenReturn: 0,
+  piecesForEndReturns: 0,
   longestPlankSize: '',
-  stepsDetails: '',
   railCapTrimNeeded: false,
   railCapTrimDetails: '',
   manufacturer: '',

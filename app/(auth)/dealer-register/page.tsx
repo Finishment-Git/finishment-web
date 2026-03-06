@@ -16,6 +16,7 @@ const DealerRegister = () => {
   const [formData, setFormData] = useState({
     companyName: '',
     taxId: '',
+    fullName: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -38,6 +39,7 @@ const DealerRegister = () => {
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
+        options: { data: { full_name: formData.fullName } },
       });
 
       if (authError) throw authError;
@@ -63,6 +65,7 @@ const DealerRegister = () => {
               company_name: formData.companyName,
               tax_id: formData.taxId,
               business_type: formData.businessType,
+              full_name: formData.fullName,
               status: 'PENDING',
               is_primary: true,
               can_order: true
@@ -116,6 +119,11 @@ const DealerRegister = () => {
         </div>
 
         <hr style={{ border: '0', borderTop: '1px solid #333', margin: '10px 0' }} />
+
+        <div>
+          <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px' }}>Full Name</label>
+          <input type="text" required value={formData.fullName} onChange={(e) => setFormData({...formData, fullName: e.target.value})} placeholder="John Smith" style={{ width: '100%', padding: '12px', backgroundColor: '#000', border: '1px solid #444', borderRadius: '4px', color: '#fff', boxSizing: 'border-box' }} />
+        </div>
 
         <div>
           <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px' }}>Email Address</label>
