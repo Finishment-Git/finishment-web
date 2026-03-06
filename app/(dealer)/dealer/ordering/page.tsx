@@ -10,8 +10,8 @@ import { ImageUploadSection } from '@/components/dealer/ordering/image-upload-se
 import { ShippingSection } from '@/components/dealer/ordering/shipping-section'
 import { OrderConfirmation } from '@/components/dealer/ordering/order-confirmation'
 import {
-  type OrderFormData, type ShippingAddress, type ProjectImage,
-  INITIAL_FORM_DATA, INITIAL_SHIPPING,
+  type OrderFormData, type ShippingAddress, type ProjectImage, type TransferOptions,
+  INITIAL_FORM_DATA, INITIAL_SHIPPING, INITIAL_TRANSFER_OPTIONS,
 } from '@/components/dealer/ordering/types'
 
 export default function DealerOrderingPage() {
@@ -33,7 +33,7 @@ export default function DealerOrderingPage() {
   const [formData, setFormData] = useState<OrderFormData>(INITIAL_FORM_DATA)
   const [shippingAddress, setShippingAddress] = useState<ShippingAddress>(INITIAL_SHIPPING)
   const [projectImages, setProjectImages] = useState<ProjectImage[]>([])
-  const [needsShipping, setNeedsShipping] = useState(false)
+  const [transferOptions, setTransferOptions] = useState<TransferOptions>(INITIAL_TRANSFER_OPTIONS)
 
   const updateFormData = (updates: Partial<OrderFormData>) =>
     setFormData(prev => ({ ...prev, ...updates }))
@@ -135,7 +135,12 @@ export default function DealerOrderingPage() {
     if (!formData.manufacturer.trim()) { setError('Manufacturer is required'); return false }
     if (!formData.style.trim()) { setError('Style is required'); return false }
     if (!formData.color.trim()) { setError('Color is required'); return false }
-    if (needsShipping && (!shippingAddress.name.trim() || !shippingAddress.address1.trim() ||
+    const hasTransferOption = transferOptions.leanderPickup || transferOptions.finishmentDelivery || transferOptions.shipping
+    if (!hasTransferOption) {
+      setError('Please select at least one product transfer option'); return false
+    }
+    const needsAddress = transferOptions.finishmentDelivery || transferOptions.shipping
+    if (needsAddress && (!shippingAddress.name.trim() || !shippingAddress.address1.trim() ||
         !shippingAddress.city.trim() || !shippingAddress.state.trim() ||
         !shippingAddress.zip.trim() || !shippingAddress.phone.trim())) {
       setError('Please complete all required shipping address fields'); return false
@@ -174,8 +179,13 @@ export default function DealerOrderingPage() {
         rail_cap_trim_details: formData.railCapTrimDetails || null,
         project_images: projectImages.map(img => img.url),
         image_metadata: projectImages,
-        shipping_address: needsShipping ? shippingAddress : null,
-        contact_info: { email: formData.email, phone: formData.phone, name: `${formData.firstName} ${formData.lastName}` },
+        shipping_address: (transferOptions.finishmentDelivery || transferOptions.shipping) ? shippingAddress : null,
+        contact_info: {
+          email: formData.email,
+          phone: formData.phone,
+          name: `${formData.firstName} ${formData.lastName}`,
+          transfer_options: transferOptions,
+        },
       }
 
       const response = await fetch('/api/orders/create', {
@@ -273,7 +283,7 @@ export default function DealerOrderingPage() {
           <StairDetailsSection formData={formData} onChange={updateFormData} />
           <FlooringDetailsSection formData={formData} onChange={updateFormData} />
           <ImageUploadSection userId={user?.id} projectImages={projectImages} setProjectImages={setProjectImages} />
-          <ShippingSection needsShipping={needsShipping} setNeedsShipping={setNeedsShipping}
+          <ShippingSection transferOptions={transferOptions} setTransferOptions={setTransferOptions}
             shippingAddress={shippingAddress} setShippingAddress={setShippingAddress} />
           <div style={{ textAlign: 'center', marginTop: '24px', marginBottom: '40px' }}>
             <button type="submit" disabled={submitting}

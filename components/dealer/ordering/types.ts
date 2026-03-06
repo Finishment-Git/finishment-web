@@ -31,6 +31,18 @@ export interface ShippingAddress {
   phone: string
 }
 
+export interface TransferOptions {
+  leanderPickup: boolean
+  finishmentDelivery: boolean
+  shipping: boolean
+}
+
+export const INITIAL_TRANSFER_OPTIONS: TransferOptions = {
+  leanderPickup: false,
+  finishmentDelivery: false,
+  shipping: false,
+}
+
 export interface ProjectImage {
   url: string
   fileName: string
