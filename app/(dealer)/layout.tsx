@@ -1,3 +1,4 @@
+import './dealer/ordering/ordering-responsive.css'
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import { DealerShell } from '@/components/dealer/dealer-shell'

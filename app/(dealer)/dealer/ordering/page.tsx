@@ -267,8 +267,8 @@ export default function DealerOrderingPage() {
       <div style={{
         maxWidth: '1000px', margin: '0 auto', padding: '40px 20px',
         backgroundColor: '#f5f0e8', color: '#3d2817', minHeight: '100vh'
-      }}>
-        <h1 style={{ fontSize: '36px', fontWeight: 'bold', marginBottom: '12px', color: '#3d2817', fontFamily: 'Georgia, serif', letterSpacing: '-0.5px' }}>
+      }} className="order-form-page-padding">
+        <h1 style={{ fontSize: '36px', fontWeight: 'bold', marginBottom: '12px', color: '#3d2817', fontFamily: 'Georgia, serif', letterSpacing: '-0.5px' }} className="order-form-page-title">
           We Look Forward to Helping You
         </h1>
 
@@ -278,7 +278,7 @@ export default function DealerOrderingPage() {
           </div>
         )}
 
-        <form onSubmit={(e) => { e.preventDefault(); handleSubmit() }}>
+        <form onSubmit={(e) => { e.preventDefault(); handleSubmit() }} className="order-form-inputs">
           <BasicInfoSection formData={formData} onChange={updateFormData} />
           <StairDetailsSection formData={formData} onChange={updateFormData} />
           <FlooringDetailsSection formData={formData} onChange={updateFormData} />

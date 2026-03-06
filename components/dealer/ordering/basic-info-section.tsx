@@ -7,10 +7,10 @@ interface BasicInfoSectionProps {
 
 export function BasicInfoSection({ formData, onChange }: BasicInfoSectionProps) {
   return (
-    <div style={sectionStyle}>
+    <div style={sectionStyle} className="order-form-section">
       <h2 style={sectionHeadingStyle}>Basic Information</h2>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '20px' }}>
+      <div className="order-form-grid-2col">
         <Field label="First Name" required>
           <input type="text" value={formData.firstName} onChange={(e) => onChange({ firstName: e.target.value })}
             placeholder="First Name" required style={inputStyle} onFocus={handleInputFocus} onBlur={handleInputBlur} />
@@ -21,7 +21,7 @@ export function BasicInfoSection({ formData, onChange }: BasicInfoSectionProps) 
         </Field>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '20px' }}>
+      <div className="order-form-grid-2col">
         <Field label="Company">
           <input type="text" value={formData.company} onChange={(e) => onChange({ company: e.target.value })}
             placeholder="Company" style={inputStyle} onFocus={handleInputFocus} onBlur={handleInputBlur} />
@@ -32,7 +32,7 @@ export function BasicInfoSection({ formData, onChange }: BasicInfoSectionProps) 
         </Field>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '20px' }}>
+      <div className="order-form-grid-2col">
         <Field label="Email" required>
           <input type="email" value={formData.email} onChange={(e) => onChange({ email: e.target.value })}
             placeholder="Email Address" required style={inputStyle} onFocus={handleInputFocus} onBlur={handleInputBlur} />

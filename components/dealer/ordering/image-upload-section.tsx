@@ -78,7 +78,7 @@ export function ImageUploadSection({ userId, projectImages, setProjectImages }: 
   }
 
   return (
-    <div style={{ background: '#ffffff', padding: '24px', borderRadius: '8px', marginBottom: '24px', border: '1px solid #e5e7eb' }}>
+    <div style={{ background: '#ffffff', padding: '24px', borderRadius: '8px', marginBottom: '24px', border: '1px solid #e5e7eb' }} className="order-form-section">
       <h2 style={{ fontSize: '20px', fontWeight: '600', marginBottom: '20px', color: '#000000' }}>
         Project Images (Optional but always helpful for order accuracy)
       </h2>

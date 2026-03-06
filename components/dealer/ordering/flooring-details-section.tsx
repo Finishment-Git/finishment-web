@@ -17,12 +17,12 @@ export function FlooringDetailsSection({ formData, onChange }: FlooringDetailsSe
   const totalSteps = (formData.stepsNoOpenReturn || 0) + (formData.stepsOneOpenReturn || 0) + (formData.stepsTwoOpenReturn || 0)
 
   return (
-    <div style={sectionStyle}>
+    <div style={sectionStyle} className="order-form-section">
       <h2 style={sectionHeadingStyle}>
         Please provide any additional details we might need to know
       </h2>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '16px', marginBottom: '20px' }}>
+      <div className="order-form-grid-3col-tight">
         <div>
           <label style={{ display: 'block', marginBottom: '4px', fontWeight: '500', fontSize: '14px' }}>
             Manufacturer <span style={{ color: '#dc2626' }}>*</span>
@@ -75,7 +75,7 @@ export function FlooringDetailsSection({ formData, onChange }: FlooringDetailsSe
 
       <div style={{ marginBottom: '20px' }}>
         <label style={{ display: 'block', marginBottom: '4px', fontWeight: '500', fontSize: '14px' }}>
-          Number of pieces needed to complete end returns (based on your product length)
+          Number of additional pieces needed to complete end returns
         </label>
         <select
           value={formData.piecesForEndReturns}

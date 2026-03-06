@@ -112,7 +112,7 @@ export function CheckoutCardForm({
             <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px', fontWeight: '500' }}>Card Number</label>
             <div id="ccnumber" style={{ padding: '10px', border: '1px solid #d1d5db', borderRadius: '6px', minHeight: '40px' }} />
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
+          <div className="order-form-checkout-row">
             <div>
               <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px', fontWeight: '500' }}>Expiration</label>
               <div id="ccexp" style={{ padding: '10px', border: '1px solid #d1d5db', borderRadius: '6px', minHeight: '40px' }} />
