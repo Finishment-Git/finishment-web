@@ -1,0 +1,102 @@
+/* Order form mobile responsive styles - stacks grids on small screens */
+
+/* 2-column grid: stack on mobile */
+.order-form-grid-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+/* 3-column grid: stack on mobile */
+.order-form-grid-3col {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+/* 3-column grid (flooring): tighter gap */
+.order-form-grid-3col-tight {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+/* Shipping address city/state row */
+.order-form-ship-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 16px;
+}
+
+/* Shipping address zip/phone row */
+.order-form-ship-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* Checkout card form expiration/cvv */
+.order-form-checkout-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+/* Section padding - reduce on mobile */
+.order-form-section {
+  padding: 32px;
+}
+
+@media (max-width: 640px) {
+  /* Input - ensure 16px min to prevent iOS zoom on focus */
+  .order-form-inputs input,
+  .order-form-inputs select,
+  .order-form-inputs textarea {
+    font-size: 16px !important;
+  }
+
+  /* Checkbox - larger touch target */
+  .order-form-checkbox {
+    min-width: 22px;
+    min-height: 22px;
+  }
+
+  .order-form-grid-2col {
+    grid-template-columns: 1fr;
+  }
+
+  .order-form-grid-3col,
+  .order-form-grid-3col-tight {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .order-form-ship-row,
+  .order-form-ship-row-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .order-form-checkout-row {
+    grid-template-columns: 1fr;
+  }
+
+  .order-form-section {
+    padding: 20px 16px !important;
+  }
+
+  .order-form-nosing-section {
+    padding: 20px 16px !important;
+  }
+
+  .order-form-page-title {
+    font-size: 28px !important;
+  }
+
+  .order-form-page-padding {
+    padding: 24px 16px !important;
+  }
+}

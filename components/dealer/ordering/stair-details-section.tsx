@@ -46,11 +46,11 @@ export function StairDetailsSection({ formData, onChange }: StairDetailsSectionP
   return (
     <>
       {/* Nosing Type Selection */}
-      <div style={{ background: '#ffffff', padding: '24px', borderRadius: '8px', marginBottom: '24px', border: '1px solid #e5e7eb' }}>
+      <div style={{ background: '#ffffff', padding: '24px', borderRadius: '8px', marginBottom: '24px', border: '1px solid #e5e7eb' }} className="order-form-nosing-section">
         <h2 style={{ fontSize: '20px', fontWeight: '600', marginBottom: '20px', color: '#000000' }}>
           Select type of nosing <span style={{ color: '#dc2626' }}>*</span>
         </h2>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+        <div className="order-form-grid-2col" style={{ marginBottom: 0 }}>
           <NosingSelectorCard
             value="standard_bullnose"
             label="Standard Bullnose with return"
@@ -69,7 +69,7 @@ export function StairDetailsSection({ formData, onChange }: StairDetailsSectionP
       </div>
 
       {/* Stair Layout */}
-      <div style={sectionStyle}>
+      <div style={sectionStyle} className="order-form-section">
         <h2 style={sectionHeadingStyle}>Select Stairs Layout</h2>
 
         <div style={{
@@ -85,7 +85,7 @@ export function StairDetailsSection({ formData, onChange }: StairDetailsSectionP
           </p>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px', marginBottom: '32px' }}>
+        <div className="order-form-grid-3col">
           <StairLayoutOption label="No Open Returns" image="/no_return.png"
             value={formData.stepsNoOpenReturn} onChangeValue={(e) => handleStepsQuantityChange('stepsNoOpenReturn', e)} />
           <StairLayoutOption label="One Open Returns" image="/one_return.png"

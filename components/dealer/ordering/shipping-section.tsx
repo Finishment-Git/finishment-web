@@ -16,6 +16,7 @@ const fieldInputStyle: React.CSSProperties = {
 }
 
 const checkboxStyle: React.CSSProperties = { marginRight: '8px', width: '18px', height: '18px', cursor: 'pointer' }
+const checkboxClassName = 'order-form-checkbox'
 const labelStyle: React.CSSProperties = { display: 'flex', alignItems: 'flex-start', cursor: 'pointer', marginBottom: '12px', gap: '8px' }
 
 export function ShippingSection({ transferOptions, setTransferOptions, shippingAddress, setShippingAddress }: ShippingSectionProps) {
@@ -28,25 +29,25 @@ export function ShippingSection({ transferOptions, setTransferOptions, shippingA
   const needsAddress = transferOptions.finishmentDelivery || transferOptions.shipping
 
   return (
-    <div style={{ background: '#ffffff', padding: '24px', borderRadius: '8px', marginBottom: '24px', border: '1px solid #e5e7eb' }}>
+    <div style={{ background: '#ffffff', padding: '24px', borderRadius: '8px', marginBottom: '24px', border: '1px solid #e5e7eb' }} className="order-form-section">
       <h2 style={{ fontSize: '20px', fontWeight: '600', marginBottom: '16px', color: '#000000' }}>
         Product Transfer Options
       </h2>
       <div style={{ marginBottom: '20px' }}>
         <label style={labelStyle}>
-          <input type="checkbox" checked={transferOptions.leanderPickup} onChange={() => toggle('leanderPickup')} style={checkboxStyle} />
+          <input type="checkbox" checked={transferOptions.leanderPickup} onChange={() => toggle('leanderPickup')} style={checkboxStyle} className={checkboxClassName} />
           <span style={{ fontSize: '16px', fontWeight: '500', color: '#000000' }}>
             Client to deliver to and pick up at our facility in Leander (free of charge)
           </span>
         </label>
         <label style={labelStyle}>
-          <input type="checkbox" checked={transferOptions.finishmentDelivery} onChange={() => toggle('finishmentDelivery')} style={checkboxStyle} />
+          <input type="checkbox" checked={transferOptions.finishmentDelivery} onChange={() => toggle('finishmentDelivery')} style={checkboxStyle} className={checkboxClassName} />
           <span style={{ fontSize: '16px', fontWeight: '500', color: '#000000' }}>
             Finishment to pickup and deliver product ($20 each direction within 30 miles of Leander)
           </span>
         </label>
         <label style={labelStyle}>
-          <input type="checkbox" checked={transferOptions.shipping} onChange={() => toggle('shipping')} style={checkboxStyle} />
+          <input type="checkbox" checked={transferOptions.shipping} onChange={() => toggle('shipping')} style={checkboxStyle} className={checkboxClassName} />
           <span style={{ fontSize: '16px', fontWeight: '500', color: '#000000' }}>
             Shipping (Client ships to Finishment and Finishment ships back at client expense)
           </span>
@@ -63,11 +64,11 @@ export function ShippingSection({ transferOptions, setTransferOptions, shippingA
             <ShipField label="Company Name" value={shippingAddress.company} onChange={(v) => update('company', v)} />
             <ShipField label="Address Line 1" required value={shippingAddress.address1} onChange={(v) => update('address1', v)} />
             <ShipField label="Address Line 2" value={shippingAddress.address2} onChange={(v) => update('address2', v)} />
-            <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '16px' }}>
+            <div className="order-form-ship-row">
               <ShipField label="City" required value={shippingAddress.city} onChange={(v) => update('city', v)} />
               <ShipField label="State" required value={shippingAddress.state} onChange={(v) => update('state', v)} maxLength={2} placeholder="TX" />
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+            <div className="order-form-ship-row-2">
               <ShipField label="ZIP Code" required value={shippingAddress.zip} onChange={(v) => update('zip', v)} />
               <ShipField label="Phone" required value={shippingAddress.phone} onChange={(v) => update('phone', v)} type="tel" />
             </div>
